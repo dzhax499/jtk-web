@@ -13,8 +13,10 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->string('slug')->nullable();
             $table->text('source_url')->nullable(); // URL asli gambar
-            $table->bigInteger('author_id')->nullable();
+            $table->unsignedBigInteger('author_id')->nullable();
             $table->timestamps();
+
+            $table->foreign('author_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 

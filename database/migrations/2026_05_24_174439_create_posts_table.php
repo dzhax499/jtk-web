@@ -15,10 +15,13 @@ return new class extends Migration
             $table->longText('content')->nullable();
             $table->text('excerpt')->nullable();
             $table->string('status')->default('publish');
-            $table->bigInteger('author_id')->nullable();
+            $table->unsignedBigInteger('author_id')->nullable();
             $table->bigInteger('featured_media_id')->nullable();
             $table->dateTime('published_at')->nullable();
             $table->timestamps();
+
+            $table->foreign('author_id')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('featured_media_id')->references('id')->on('media')->onDelete('set null');
         });
     }
 

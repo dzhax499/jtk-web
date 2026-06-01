@@ -9,31 +9,22 @@ use Illuminate\Support\Str;
 
 class PostResource extends JsonResource
 {
+    private const PLACEHOLDER_IMAGE = 'https://placehold.co/600x400?text=JTK+POLBAN';
+
     public function toArray(Request $request): array
     {
-        $imageUrl = null;
-
-        if ($this->relationLoaded('featuredMedia') && $this->featuredMedia) {
-            $sourceUrl = $this->featuredMedia->source_url;
-
-            $imageUrl = $sourceUrl
-                ? (Str::startsWith($sourceUrl, ['http://', 'https://']) ? $sourceUrl : Storage::url($sourceUrl))
-                : null;
-        }
+        $imageUrl = $this->resolveImageUrl();
 
         return [
             'id' => $this->id,
             'title' => $this->title,
             'slug' => $this->slug,
             'content' => $this->content,
-            'excerpt' => $this->excerpt,
+            'excerpt' => $this->cleanText($this->excerpt ?: $this->content, 220),
             'status' => $this->status,
             'published_at' => $this->published_at,
-
-            // Karena tabel posts saat ini belum punya category_id,
-            // kategori/type diturunkan sederhana dari isi konten untuk kebutuhan Berita/Prestasi.
             'type' => $this->detectType(),
-            'category' => $this->detectType() === 'prestasi' ? 'Prestasi' : 'Berita',
+            'category' => $this->detectType() === 'prestasi' ? 'Prestasi Mahasiswa' : 'Berita',
 
             'author' => $this->whenLoaded('author', fn () => $this->author ? [
                 'id' => $this->author->id,
@@ -49,21 +40,58 @@ class PostResource extends JsonResource
             ] : null),
 
             'image_url' => $imageUrl,
-            'api_url' => url('/api/posts/' . $this->slug),
+            'api_url' => url('/api/posts/' . ($this->slug ?? $this->id)),
+            'web_url' => url('/berita/' . ($this->slug ?? $this->id)),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
     }
 
+    private function resolveImageUrl(): string
+    {
+        if (!($this->relationLoaded('featuredMedia') && $this->featuredMedia)) {
+            return self::PLACEHOLDER_IMAGE;
+        }
+
+        $sourceUrl = trim((string) $this->featuredMedia->source_url);
+
+        if ($sourceUrl === '') {
+            return self::PLACEHOLDER_IMAGE;
+        }
+
+        if (Str::startsWith($sourceUrl, ['http://', 'https://'])) {
+            return $sourceUrl;
+        }
+
+        if (Str::startsWith($sourceUrl, '/')) {
+            return 'https://jtk.polban.ac.id' . $sourceUrl;
+        }
+
+        return Storage::url($sourceUrl);
+    }
+
     private function detectType(): string
     {
-        $haystack = Str::lower(implode(' ', array_filter([
+        $haystack = Str::lower($this->cleanText(implode(' ', array_filter([
             $this->title,
             $this->slug,
             $this->excerpt,
-            strip_tags((string) $this->content),
-        ])));
+            $this->content,
+        ])), 5000));
 
         return Str::contains($haystack, 'prestasi') ? 'prestasi' : 'berita';
+    }
+
+    private function cleanText(?string $text, int $limit = 180): string
+    {
+        if (!$text) {
+            return '';
+        }
+
+        $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $text = strip_tags($text);
+        $text = trim(preg_replace('/\s+/', ' ', $text));
+
+        return Str::limit($text, $limit);
     }
 }

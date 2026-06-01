@@ -8,6 +8,16 @@ class Post extends Model
 {
     protected $guarded = [];
 
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            if (empty($model->id)) {
+                $model->id = static::max('id') + 1;
+            }
+        });
+    }
+
     public function author()
     {
         return $this->belongsTo(User::class, 'author_id');

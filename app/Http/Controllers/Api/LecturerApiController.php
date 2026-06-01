@@ -80,8 +80,10 @@ class LecturerApiController extends Controller
             'name' => $lecturer->name,
             'slug' => $lecturer->slug,
             'nidn' => $lecturer->nidn,
+            'gender' => $lecturer->gender,
             'academic_position' => $lecturer->academic_position,
             'highest_education' => $lecturer->highest_education,
+            'activity_status' => $lecturer->activity_status,
             'photo_url' => $lecturer->photo_url,
             'study_program' => $lecturer->studyProgram ? [
                 'id' => $lecturer->studyProgram->id,

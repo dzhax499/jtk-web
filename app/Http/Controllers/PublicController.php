@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use App\Http\Controllers\Api\LecturerApiController;
+use App\Http\Controllers\Api\PostApiController;
+use App\Http\Controllers\Api\StudyProgramApiController;
+use App\Http\Controllers\Api\PageApiController;
 
 class PublicController extends Controller
 {
@@ -21,9 +25,22 @@ class PublicController extends Controller
 
     public function home(): View
     {
+        // Ambil Program Studi dari REST API secara internal
+        $programsResponse = app(StudyProgramApiController::class)->index(request());
+        $programsData = $programsResponse->resolve();
+
+        $programs = collect($programsData)->map(function ($program) {
+            return [
+                'title' => ($program['degree'] ? $program['degree'] . ' ' : '') . $program['name'],
+                'icon' => $program['degree'] === 'D3' ? '💻' : '🎓',
+                'accreditation' => 'UNGGUL',
+                'description' => $program['description'] ?? 'Program studi unggulan Jurusan Teknik Komputer dan Informatika.',
+            ];
+        })->toArray();
+
         return view('pages.home', [
             'latestNews' => $this->getLatestNewsForHome(),
-            'programs' => $this->getStaticPrograms(),
+            'programs' => $programs,
         ]);
     }
 
@@ -87,38 +104,37 @@ class PublicController extends Controller
             ]);
         }
 
-        $lecturers = Lecturer::query()
-            ->orderBy('name')
-            ->get()
-            ->map(function ($lecturer) {
-                return [
-                    'id' => $lecturer->slug ?? $lecturer->id,
-                    'name' => $lecturer->name ?? '-',
-                    'initials' => $this->getInitials($lecturer->name ?? '-'),
-                    'gender' => $lecturer->gender ?? '-',
-                    'position' => $lecturer->highest_education ?? '-',
-                    'functional' => $lecturer->academic_position ?? '-',
-                    'status' => $lecturer->activity_status ?? '-',
-                    'expertise' => '-',
-                ];
-            })
-            ->toArray();
+        // Memanggil REST API secara internal
+        $response = app(LecturerApiController::class)->index(request());
+        $data = $response->getData(true);
+        $lecturersData = $data['data'] ?? [];
 
-        $educationFilters = Lecturer::query()
-            ->whereNotNull('highest_education')
-            ->distinct()
-            ->orderBy('highest_education')
+        $lecturers = collect($lecturersData)->map(function ($item) {
+            return [
+                'id' => $item['slug'] ?? $item['id'],
+                'name' => $item['name'] ?? '-',
+                'initials' => $this->getInitials($item['name'] ?? '-'),
+                'gender' => $item['gender'] ?? '-',
+                'position' => $item['highest_education'] ?? '-',
+                'functional' => $item['academic_position'] ?? '-',
+                'status' => $item['activity_status'] ?? '-',
+                'expertise' => collect($item['expertise_areas'] ?? [])->pluck('name')->implode(', ') ?: '-',
+            ];
+        })->toArray();
+
+        $educationFilters = collect($lecturersData)
             ->pluck('highest_education')
             ->filter()
+            ->unique()
+            ->sort()
             ->values()
             ->toArray();
 
-        $positionFilters = Lecturer::query()
-            ->whereNotNull('academic_position')
-            ->distinct()
-            ->orderBy('academic_position')
+        $positionFilters = collect($lecturersData)
             ->pluck('academic_position')
             ->filter()
+            ->unique()
+            ->sort()
             ->values()
             ->toArray();
 
@@ -296,9 +312,19 @@ class PublicController extends Controller
 
     public function tentangJTK(): View
     {
+        try {
+            $response = app(PageApiController::class)->show('tentang-jtk');
+            $pageData = $response->resolve();
+        } catch (\Throwable $e) {
+            $pageData = [
+                'title' => 'Tentang JTK',
+                'content' => null,
+            ];
+        }
+
         return view('pages.tentang-jtk', [
-            'page' => $this->getPageBySlug('tentang-jtk'),
-            'pageContent' => $this->getPageContent('tentang-jtk'),
+            'page' => $pageData,
+            'pageContent' => $pageData['content'] ?? null,
         ]);
     }
 
@@ -394,18 +420,27 @@ class PublicController extends Controller
 
     private function getLatestNewsForHome(): array
     {
-        return collect($this->getPostsForCards(2))
-            ->map(function ($post) {
-                return [
-                    'id' => $post['id'],
-                    'title' => $post['title'],
-                    'date' => $post['date'],
-                    'views' => $post['views'],
-                    'image' => $post['image'],
-                    'excerpt' => $post['excerpt'],
-                ];
-            })
-            ->toArray();
+        $request = \Illuminate\Http\Request::create('/api/posts', 'GET', [
+            'per_page' => 2,
+            'status' => 'publish'
+        ]);
+        
+        $response = app(PostApiController::class)->index($request);
+        $postsData = $response->resolve();
+
+        return collect($postsData)->map(function ($post) {
+            $slug = $post['slug'] ?? $post['id'];
+            $date = $this->formatPostDate($post['published_at'] ?? null);
+
+            return [
+                'id' => $slug,
+                'title' => $this->cleanText($post['title'] ?? 'Tanpa Judul', 120),
+                'date' => $date,
+                'views' => $post['views'] ?? 0,
+                'image' => $post['image_url'] ?? self::PLACEHOLDER_IMAGE,
+                'excerpt' => $this->cleanText($post['excerpt'] ?? $post['content'] ?? '', 180),
+            ];
+        })->toArray();
     }
 
     private function getPostsForCards(int $limit = 12, ?string $categoryKeyword = null, ?string $search = null): array

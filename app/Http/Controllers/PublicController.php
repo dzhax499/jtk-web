@@ -185,6 +185,55 @@ class PublicController extends Controller
             ->values()
             ->toArray();
 
+        $teachingHistoryList = $lecturerModel->teachingHistories
+            ->sortByDesc('academic_year')
+            ->map(fn ($history) => [
+                'course' => $history->course_name ?? '-',
+                'year' => $history->academic_year ?? '-',
+                'semester' => $history->semester ?? '-',
+            ])
+            ->values()
+            ->toArray();
+
+        $researchList = $lecturerModel->portfolioItems
+            ->where('type', 'research')
+            ->sortByDesc('year')
+            ->map(fn ($item) => [
+                'title' => $item->title ?? '-',
+                'year' => $item->year ?? '-',
+            ])
+            ->values()
+            ->toArray();
+
+        $communityServiceList = $lecturerModel->portfolioItems
+            ->where('type', 'community_service')
+            ->sortByDesc('year')
+            ->map(fn ($item) => [
+                'title' => $item->title ?? '-',
+                'year' => $item->year ?? '-',
+            ])
+            ->values()
+            ->toArray();
+
+        $publicationList = $lecturerModel->publications
+            ->sortByDesc('year')
+            ->map(fn ($pub) => [
+                'title' => $pub->title ?? '-',
+                'year' => $pub->year ?? '-',
+            ])
+            ->values()
+            ->toArray();
+
+        $hkiList = $lecturerModel->portfolioItems
+            ->whereIn('type', ['hki', 'patent', 'award'])
+            ->sortByDesc('year')
+            ->map(fn ($item) => [
+                'title' => $item->title ?? '-',
+                'year' => $item->year ?? '-',
+            ])
+            ->values()
+            ->toArray();
+
         $portfolioPublications = $lecturerModel->portfolioItems
             ->sortByDesc('year')
             ->map(fn ($item) => [
@@ -211,6 +260,11 @@ class PublicController extends Controller
                 'institutionalStatus' => 'Status Ikatan Kerja: ' . ($lecturerModel->employment_status ?? '-'),
                 'activityStatus' => $lecturerModel->activity_status ?? '-',
                 'educationList' => $educationList,
+                'teachingHistoryList' => $teachingHistoryList,
+                'researchList' => $researchList,
+                'communityServiceList' => $communityServiceList,
+                'publicationList' => $publicationList,
+                'hkiList' => $hkiList,
                 'publications' => $portfolioPublications
                     ->merge($scientificPublications)
                     ->filter(fn ($publication) => !empty($publication['title']) && $publication['title'] !== '-')

@@ -85,7 +85,10 @@ class PublicController extends Controller
     /**
      * Halaman Profil Dosen
      *
-     * Catatan: bagian dosen tetap memakai Eloquent langsung supaya tidak ikut rusak saat merge.
+     * Catatan penting:
+     * Bagian ini sengaja memakai Query Builder langsung dan tidak mengakses relasi
+     * expertiseAreas. Tujuannya agar aman saat memakai Supabase pooler dan menghindari
+     * N+1 query / error prepared statement pada halaman /profil-dosen.
      */
     public function profilDosen(): View
     {
@@ -96,11 +99,20 @@ class PublicController extends Controller
             ]);
         }
 
-        $lecturerModels = Lecturer::query()
+        $lecturersData = DB::table('lecturers')
+            ->select([
+                'id',
+                'name',
+                'slug',
+                'gender',
+                'highest_education',
+                'academic_position',
+                'activity_status',
+            ])
             ->orderBy('name')
             ->get();
 
-        $lecturers = $lecturerModels
+        $lecturers = $lecturersData
             ->map(function ($lecturer) {
                 return [
                     'id' => $lecturer->slug ?? $lecturer->id,
@@ -110,14 +122,16 @@ class PublicController extends Controller
                     'position' => $lecturer->highest_education ?? '-',
                     'functional' => $lecturer->academic_position ?? '-',
                     'status' => $lecturer->activity_status ?? '-',
-                    'expertise' => method_exists($lecturer, 'expertiseAreas')
-                        ? $lecturer->expertiseAreas->pluck('name')->implode(', ')
-                        : '-',
+
+                    // Untuk keamanan merge, bidang keahlian tidak diambil dari relasi dulu.
+                    // Relasi expertise bisa diaktifkan lagi nanti oleh pemegang halaman dosen
+                    // setelah query-nya dibuat eager loading / join yang aman.
+                    'expertise' => '-',
                 ];
             })
             ->toArray();
 
-        $educationFilters = $lecturerModels
+        $educationFilters = $lecturersData
             ->pluck('highest_education')
             ->filter()
             ->unique()
@@ -125,7 +139,7 @@ class PublicController extends Controller
             ->values()
             ->toArray();
 
-        $positionFilters = $lecturerModels
+        $positionFilters = $lecturersData
             ->pluck('academic_position')
             ->filter()
             ->unique()

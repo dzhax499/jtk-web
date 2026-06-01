@@ -4,27 +4,32 @@ namespace App\Http\Resources\Api;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class PostResource extends JsonResource
 {
-    private const PLACEHOLDER_IMAGE = 'https://placehold.co/600x400?text=JTK+POLBAN';
-
     public function toArray(Request $request): array
     {
         $imageUrl = $this->resolveImageUrl();
+        $type = $this->detectType();
 
         return [
             'id' => $this->id,
-            'title' => $this->title,
+            'title' => $this->title ?? 'Tanpa Judul',
             'slug' => $this->slug,
             'content' => $this->content,
-            'excerpt' => $this->cleanText($this->excerpt ?: $this->content, 220),
+            'excerpt' => $this->cleanText($this->excerpt ?: $this->content, 190),
             'status' => $this->status,
             'published_at' => $this->published_at,
-            'type' => $this->detectType(),
-            'category' => $this->detectType() === 'prestasi' ? 'Prestasi Mahasiswa' : 'Berita',
+            'date_label' => $this->formatDate($this->published_at ?? $this->created_at),
+            'views' => 0,
+
+            // Karena tabel posts saat ini belum punya category_id,
+            // kategori/type diturunkan sederhana dari isi konten untuk kebutuhan Berita/Prestasi.
+            'type' => $type,
+            'category' => $type === 'prestasi' ? 'Prestasi Mahasiswa' : 'Berita',
 
             'author' => $this->whenLoaded('author', fn () => $this->author ? [
                 'id' => $this->author->id,
@@ -40,49 +45,41 @@ class PostResource extends JsonResource
             ] : null),
 
             'image_url' => $imageUrl,
-            'api_url' => url('/api/posts/' . ($this->slug ?? $this->id)),
-            'web_url' => url('/berita/' . ($this->slug ?? $this->id)),
+            'api_url' => url('/api/posts/' . ($this->slug ?: $this->id)),
+            'web_url' => url('/berita/' . ($this->slug ?: $this->id)),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
     }
 
-    private function resolveImageUrl(): string
+    private function formatDate($date): string
     {
-        if (!($this->relationLoaded('featuredMedia') && $this->featuredMedia)) {
-            return self::PLACEHOLDER_IMAGE;
+        if (!$date) {
+            return '-';
         }
 
-        $sourceUrl = trim((string) $this->featuredMedia->source_url);
-
-        if ($sourceUrl === '') {
-            return self::PLACEHOLDER_IMAGE;
+        try {
+            return Carbon::parse($date)->format('d M Y');
+        } catch (\Throwable $e) {
+            return (string) $date;
         }
-
-        if (Str::startsWith($sourceUrl, ['http://', 'https://'])) {
-            return $sourceUrl;
-        }
-
-        if (Str::startsWith($sourceUrl, '/')) {
-            return 'https://jtk.polban.ac.id' . $sourceUrl;
-        }
-
-        return Storage::url($sourceUrl);
     }
 
     private function detectType(): string
     {
-        $haystack = Str::lower($this->cleanText(implode(' ', array_filter([
+        $haystack = Str::lower(implode(' ', array_filter([
             $this->title,
             $this->slug,
             $this->excerpt,
-            $this->content,
-        ])), 5000));
+            strip_tags((string) $this->content),
+        ])));
 
-        return Str::contains($haystack, 'prestasi') ? 'prestasi' : 'berita';
+        return Str::contains($haystack, ['prestasi', 'juara', 'kompetisi', 'lomba', 'penghargaan', 'hackathon'])
+            ? 'prestasi'
+            : 'berita';
     }
 
-    private function cleanText(?string $text, int $limit = 180): string
+    private function cleanText(?string $text, int $limit = 190): string
     {
         if (!$text) {
             return '';
@@ -93,5 +90,22 @@ class PostResource extends JsonResource
         $text = trim(preg_replace('/\s+/', ' ', $text));
 
         return Str::limit($text, $limit);
+    }
+
+    private function resolveImageUrl(): ?string
+    {
+        if (! $this->relationLoaded('featuredMedia') || ! $this->featuredMedia) {
+            return null;
+        }
+
+        $sourceUrl = $this->featuredMedia->source_url;
+
+        if (! $sourceUrl) {
+            return null;
+        }
+
+        return Str::startsWith($sourceUrl, ['http://', 'https://'])
+            ? $sourceUrl
+            : Storage::url($sourceUrl);
     }
 }

@@ -1,5 +1,8 @@
 # Dokumentasi Pengembangan Filament Resources - Dosen & Akademik
 
+**PIC:** Ibnu Hilmi 
+**Kelompok:** Haytham  
+
 Dokumen ini berisi analisis lengkap dan dokumentasi perubahan terhadap **4 Filament Resources baru** yang telah ditambahkan ke dalam sistem manajemen panel admin (**Filament CMS**) pada aplikasi web JTK.
 
 Resources ini dirancang untuk memfasilitasi pengelolaan data dosen yang lebih komprehensif, mulai dari bidang keahlian, tautan eksternal (Google Scholar, SINTA, dll), portofolio kegiatan (penelitian, pengabdian, proyek), hingga riwayat mengajar di program studi terkait.

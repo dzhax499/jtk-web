@@ -47,6 +47,11 @@ class LecturerForm
                 TextInput::make('activity_status'),
                 TextInput::make('highest_education'),
                 TextInput::make('raw_data'),
+                Select::make('expertiseAreas')
+                    ->relationship('expertiseAreas', 'name')
+                    ->multiple()
+                    ->searchable()
+                    ->preload(),
             ]);
     }
 }

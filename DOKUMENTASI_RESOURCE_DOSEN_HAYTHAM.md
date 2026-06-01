@@ -21,7 +21,24 @@ Semua perubahan ini telah di-_commit_ dan di-_push_ ke dalam *branch* `cluster2/
 
 ---
 
-## 2. Implementasi Filament Resource
+## 2. Detail Langkah Pengerjaan
+
+Secara kronologis, berikut adalah rincian apa saja yang dikerjakan pada implementasi ini:
+
+1. **Analisis Skema Database:** 
+   Mengecek struktur *migration* (`create_lecturers_table.php` dan kawan-kawan) agar *resource* yang dibuat benar-benar sinkron dengan kolom *database* yang sudah dirancang sebelumnya.
+2. **Generate Filament Resource:** 
+   Menggunakan *Artisan CLI* (`php artisan make:filament-resource <Model> --generate`) untuk membuat 4 *resource* (Lecturer, StudyProgram, LecturerEducation, dan LecturerPublication). Opsi `--generate` digunakan agar form dan tabel otomatis terbentuk sesuai struktur *database*.
+3. **Refactoring & Modifikasi UI:**
+   Melakukan modifikasi terhadap *file* `*Form.php` dan `*Table.php` hasil _generate_. Pekerjaan utamanya adalah mengubah `TextInput` (yang menampilkan dan meminta angka/ID) menjadi `Select` *Dropdown* yang terkoneksi langsung dengan relasi tabel (*Foreign Key*), serta mengatur beberapa opsi label manual (seperti enum 'L' dan 'P' pada kolom *gender*).
+4. **Git Branch Management:**
+   - Melakukan `checkout` *branch* baru turunan dari *branch* tim klaster 2.
+   - Mengubah penamaan *branch* yang semula `haytham` menjadi `cluster2/haytham` agar lebih terstruktur.
+   - Melakukan sinkronisasi, *rebase*, *commit*, dan *push* hasil akhir pekerjaan ke *remote repository* GitHub.
+
+---
+
+## 3. Implementasi Filament Resource
 
 Untuk mengelola data dari *database* secara dinamis, kami mengonversi tabel-tabel tersebut menjadi *Filament Resource*. *Resource* ini menyediakan halaman _List_ (Tabel), _Create_ (Tambah), _Edit_ (Ubah), dan _View_ (Detail) secara otomatis.
 
@@ -34,7 +51,7 @@ Dalam proses pembuatannya, skema bawaan dari *generator* disempurnakan agar lebi
 
 ---
 
-## 3. Penjelasan Teknis: Kenapa Tidak Ada `ImportLecturer` di Console Commands?
+## 4. Penjelasan Teknis: Kenapa Tidak Ada `ImportLecturer` di Console Commands?
 
 Jika melihat pada folder `app/Console/Commands/`, terdapat *command* untuk *import* data dari CMS lama seperti `ImportUsers`, `ImportPosts`, `ImportMedia`, dsb. Namun, **tidak ada perintah untuk *import* dosen di sana**.
 
@@ -58,7 +75,7 @@ php artisan db:seed --class=LecturerBiodataOnlySeeder
 
 ---
 
-## 4. Cara Testing
+## 5. Cara Testing
 
 Untuk memastikan semua *Resource* yang dibuat telah berjalan dengan baik, Anda dapat melakukan pengujian dengan langkah-langkah berikut:
 

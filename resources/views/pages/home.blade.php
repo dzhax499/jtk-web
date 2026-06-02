@@ -67,25 +67,17 @@
             />
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                @foreach($programs as $program)
                 <x-card 
-                    title="D3 Teknik Informatika"
-                    image="https://via.placeholder.com/500x300?text=D3+Teknik+Informatika"
-                    href="/program-studi/d3">
+                    title="{{ $program['title'] }}"
+                    image="https://via.placeholder.com/500x300?text={{ urlencode($program['title']) }}"
+                    href="/program-studi/{{ $program['slug'] ?? '#' }}">
                     <div class="bg-blue-100 text-blue-900 px-3 py-1 rounded-full text-sm font-semibold mb-3 inline-block">
-                        Akreditasi: UNGGUL
+                        Akreditasi: {{ $program['accreditation'] ?? 'UNGGUL' }}
                     </div>
-                    <p>Pendidikan selama 3 tahun yang menghasilkan mahasiswa dengan keterampatan di bidang teknik informatika dan pengembangan perangkat lunak.</p>
+                    <p>{{ $program['description'] }}</p>
                 </x-card>
-
-                <x-card 
-                    title="D4 Teknik Informatika"
-                    image="https://via.placeholder.com/500x300?text=D4+Teknik+Informatika"
-                    href="/program-studi/sarjana">
-                    <div class="bg-blue-100 text-blue-900 px-3 py-1 rounded-full text-sm font-semibold mb-3 inline-block">
-                        Akreditasi: UNGGUL
-                    </div>
-                    <p>Pendidikan selama 3 tahun yang membekali mahasiswa dengan keterampatan di bidang perangcangan dan implementasi sistem informatika.</p>
-                </x-card>
+                @endforeach
             </div>
 
             <div class="text-center mt-8">

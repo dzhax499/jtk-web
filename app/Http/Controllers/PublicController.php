@@ -15,9 +15,45 @@ class PublicController extends Controller
      */
     public function home(): View
     {
+        try {
+            $programsRequest = request()->duplicate();
+            $programsResponse = app(\App\Http\Controllers\Api\StudyProgramApiController::class)->index($programsRequest);
+            $programsData = $programsResponse->resolve();
+            $programs = collect($programsData)->map(function ($program) {
+                return [
+                    'title' => $program['name'] ?? 'Program Studi',
+                    'slug' => $program['slug'] ?? '#',
+                    'icon' => str_contains(strtolower($program['degree'] ?? ''), 'd3') ? '💻' : '🎓',
+                    'accreditation' => 'UNGGUL',
+                    'description' => $program['description'] ?? 'Program studi unggulan yang menghasilkan lulusan kompeten.',
+                ];
+            })->toArray();
+        } catch (\Throwable $e) {
+            $programs = $this->getStaticPrograms();
+        }
+
+        try {
+            $newsRequest = request()->duplicate(['type' => 'berita', 'per_page' => 5]);
+            $newsResponse = app(\App\Http\Controllers\Api\PostApiController::class)->index($newsRequest);
+            $latestNewsData = $newsResponse->resolve();
+            $latestNews = collect($latestNewsData)->map(function ($news) {
+                return [
+                    'id' => $news['slug'] ?? $news['id'],
+                    'title' => $news['title'],
+                    'date' => $news['date_label'] ?? '-',
+                    'views' => $news['views'] ?? '0',
+                    'image' => $news['image_url'] ?? 'https://via.placeholder.com/400x250?text=Berita',
+                    'excerpt' => $news['excerpt'],
+                    'slug' => $news['slug'] ?? $news['id'],
+                ];
+            })->toArray();
+        } catch (\Throwable $e) {
+            $latestNews = $this->getStaticLatestNews();
+        }
+
         return view('pages.home', [
-            'latestNews' => $this->getStaticLatestNews(),
-            'programs' => $this->getStaticPrograms(),
+            'latestNews' => $latestNews,
+            'programs' => $programs,
         ]);
     }
 

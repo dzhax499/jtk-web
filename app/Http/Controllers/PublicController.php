@@ -3,54 +3,38 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lecturer;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
-use App\Http\Controllers\Api\LecturerApiController;
-use App\Http\Controllers\Api\PostApiController;
-use App\Http\Controllers\Api\StudyProgramApiController;
-use App\Http\Controllers\Api\PageApiController;
 
 class PublicController extends Controller
 {
-    private const PLACEHOLDER_IMAGE = 'https://placehold.co/600x400?text=JTK+POLBAN';
-
-    private const POLBAN_KALENDER_URL = 'https://www.polban.ac.id/tentang-polban/kalender-akademik/';
-    private const POLBAN_PERATURAN_AKADEMIK_URL = 'https://www.polban.ac.id/peraturan-akademik/';
-    private const LAM_INFOKOM_URL = 'https://laminfokom.or.id/official/data-akreditasi-1.html';
-    private const D3_CERTIFICATE_URL = 'https://www.polban.ac.id/wp-content/uploads/2024/01/24.-Sertifikat-Akreditasi-D3-Teknik-Informatika_073-2023-2028.pdf';
-    private const D4_CERTIFICATE_URL = 'https://www.polban.ac.id/wp-content/uploads/2025/08/file_sertifikat_25051520395200500455301_1755423415.pdf';
-
+    /**
+     * Halaman Beranda
+     */
     public function home(): View
     {
-        // Ambil Program Studi dari REST API secara internal
-        $programsResponse = app(StudyProgramApiController::class)->index(request());
-        $programsData = $programsResponse->resolve();
-
-        $programs = collect($programsData)->map(function ($program) {
-            return [
-                'title' => ($program['degree'] ? $program['degree'] . ' ' : '') . $program['name'],
-                'icon' => $program['degree'] === 'D3' ? '💻' : '🎓',
-                'accreditation' => 'UNGGUL',
-                'description' => $program['description'] ?? 'Program studi unggulan Jurusan Teknik Komputer dan Informatika.',
-            ];
-        })->toArray();
-
         return view('pages.home', [
-            'latestNews' => $this->getLatestNewsForHome(),
-            'programs' => $programs,
+            'latestNews' => $this->getStaticLatestNews(),
+            'programs' => $this->getStaticPrograms(),
         ]);
     }
 
+    /**
+     * Halaman Program Studi
+     */
     public function programStudi(): View
     {
         return view('pages.program-studi', [
             'page' => $this->getPageBySlug('program-studi'),
+            'pageContent' => $this->getPageContent('program-studi'),
         ]);
     }
 
+    /**
+     * Halaman D3 Teknik Informatika
+     */
     public function d3TeknikInformatika(): View
     {
         return view('pages.program-detail', [
@@ -73,6 +57,9 @@ class PublicController extends Controller
         ]);
     }
 
+    /**
+     * Halaman Sarjana Terapan Teknik Informatika
+     */
     public function sarjanaTerapan(): View
     {
         return view('pages.program-detail', [
@@ -95,6 +82,14 @@ class PublicController extends Controller
         ]);
     }
 
+    /**
+     * Halaman Profil Dosen
+     *
+     * Catatan penting:
+     * Bagian ini sengaja memakai Query Builder langsung dan tidak mengakses relasi
+     * expertiseAreas. Tujuannya agar aman saat memakai Supabase pooler dan menghindari
+     * N+1 query / error prepared statement pada halaman /profil-dosen.
+     */
     public function profilDosen(): View
     {
         if (!Schema::hasTable('lecturers')) {
@@ -104,25 +99,39 @@ class PublicController extends Controller
             ]);
         }
 
-        // Memanggil REST API secara internal
-        $response = app(LecturerApiController::class)->index(request());
-        $data = $response->getData(true);
-        $lecturersData = $data['data'] ?? [];
+        $lecturersData = DB::table('lecturers')
+            ->select([
+                'id',
+                'name',
+                'slug',
+                'gender',
+                'highest_education',
+                'academic_position',
+                'activity_status',
+            ])
+            ->orderBy('name')
+            ->get();
 
-        $lecturers = collect($lecturersData)->map(function ($item) {
-            return [
-                'id' => $item['slug'] ?? $item['id'],
-                'name' => $item['name'] ?? '-',
-                'initials' => $this->getInitials($item['name'] ?? '-'),
-                'gender' => $item['gender'] ?? '-',
-                'position' => $item['highest_education'] ?? '-',
-                'functional' => $item['academic_position'] ?? '-',
-                'status' => $item['activity_status'] ?? '-',
-                'expertise' => collect($item['expertise_areas'] ?? [])->pluck('name')->implode(', ') ?: '-',
-            ];
-        })->toArray();
+        $lecturers = $lecturersData
+            ->map(function ($lecturer) {
+                return [
+                    'id' => $lecturer->slug ?? $lecturer->id,
+                    'name' => $lecturer->name ?? '-',
+                    'initials' => $this->getInitials($lecturer->name ?? '-'),
+                    'gender' => $lecturer->gender ?? '-',
+                    'position' => $lecturer->highest_education ?? '-',
+                    'functional' => $lecturer->academic_position ?? '-',
+                    'status' => $lecturer->activity_status ?? '-',
 
-        $educationFilters = collect($lecturersData)
+                    // Untuk keamanan merge, bidang keahlian tidak diambil dari relasi dulu.
+                    // Relasi expertise bisa diaktifkan lagi nanti oleh pemegang halaman dosen
+                    // setelah query-nya dibuat eager loading / join yang aman.
+                    'expertise' => '-',
+                ];
+            })
+            ->toArray();
+
+        $educationFilters = $lecturersData
             ->pluck('highest_education')
             ->filter()
             ->unique()
@@ -130,7 +139,7 @@ class PublicController extends Controller
             ->values()
             ->toArray();
 
-        $positionFilters = collect($lecturersData)
+        $positionFilters = $lecturersData
             ->pluck('academic_position')
             ->filter()
             ->unique()
@@ -149,6 +158,9 @@ class PublicController extends Controller
         ]);
     }
 
+    /**
+     * Halaman Detail Dosen
+     */
     public function detailDosen($id): View
     {
         abort_unless(Schema::hasTable('lecturers'), 404);
@@ -185,6 +197,55 @@ class PublicController extends Controller
             ->values()
             ->toArray();
 
+        $teachingHistoryList = $lecturerModel->teachingHistories
+            ->sortByDesc('academic_year')
+            ->map(fn ($history) => [
+                'course' => $history->course_name ?? '-',
+                'year' => $history->academic_year ?? '-',
+                'semester' => $history->semester ?? '-',
+            ])
+            ->values()
+            ->toArray();
+
+        $researchList = $lecturerModel->portfolioItems
+            ->where('type', 'research')
+            ->sortByDesc('year')
+            ->map(fn ($item) => [
+                'title' => $item->title ?? '-',
+                'year' => $item->year ?? '-',
+            ])
+            ->values()
+            ->toArray();
+
+        $communityServiceList = $lecturerModel->portfolioItems
+            ->where('type', 'community_service')
+            ->sortByDesc('year')
+            ->map(fn ($item) => [
+                'title' => $item->title ?? '-',
+                'year' => $item->year ?? '-',
+            ])
+            ->values()
+            ->toArray();
+
+        $publicationList = $lecturerModel->publications
+            ->sortByDesc('year')
+            ->map(fn ($pub) => [
+                'title' => $pub->title ?? '-',
+                'year' => $pub->year ?? '-',
+            ])
+            ->values()
+            ->toArray();
+
+        $hkiList = $lecturerModel->portfolioItems
+            ->whereIn('type', ['hki', 'patent', 'award'])
+            ->sortByDesc('year')
+            ->map(fn ($item) => [
+                'title' => $item->title ?? '-',
+                'year' => $item->year ?? '-',
+            ])
+            ->values()
+            ->toArray();
+
         $portfolioPublications = $lecturerModel->portfolioItems
             ->sortByDesc('year')
             ->map(fn ($item) => [
@@ -211,6 +272,11 @@ class PublicController extends Controller
                 'institutionalStatus' => 'Status Ikatan Kerja: ' . ($lecturerModel->employment_status ?? '-'),
                 'activityStatus' => $lecturerModel->activity_status ?? '-',
                 'educationList' => $educationList,
+                'teachingHistoryList' => $teachingHistoryList,
+                'researchList' => $researchList,
+                'communityServiceList' => $communityServiceList,
+                'publicationList' => $publicationList,
+                'hkiList' => $hkiList,
                 'publications' => $portfolioPublications
                     ->merge($scientificPublications)
                     ->filter(fn ($publication) => !empty($publication['title']) && $publication['title'] !== '-')
@@ -221,183 +287,199 @@ class PublicController extends Controller
         ]);
     }
 
+    /**
+     * Halaman Berita
+     *
+     * Data halaman ini diambil oleh Blade menggunakan fetch API ke /api/posts.
+     */
     public function berita(): View
     {
-        $category = request('category');
-        $search = request('search');
-        $news = $this->getPostsForCards(12, $category, $search);
-
-        return view('pages.berita', [
-            'news' => $news,
-            'categories' => $this->getCategoryNames(),
-            'activeCategory' => $category ?: 'Semua Berita',
-            'search' => $search ?: '',
-            'totalNews' => count($news),
-        ]);
+        return view('pages.berita');
     }
 
+    /**
+     * Halaman Detail Berita
+     *
+     * Data detail diambil oleh Blade menggunakan fetch API ke /api/posts/{slug}.
+     */
     public function detailBerita($id): View
     {
-        $post = $this->findPostBySlugOrId($id);
-
-        abort_if(!$post, 404);
-
-        $mediaMap = $this->getMediaMap(collect([$post]));
-        $image = $this->getImageForPost($post, $mediaMap);
-
-        $article = [
-            'id' => $post->slug ?? $post->id,
-            'title' => $this->cleanText($post->title ?? 'Tanpa Judul', 160),
-            'date' => $this->formatPostDate($post->published_at ?? $post->created_at ?? null),
-            'views' => $post->views ?? 0,
-            'image' => $image,
-            'content' => $this->cleanHtml($post->content ?? $post->excerpt ?? ''),
-        ];
-
-        $relatedArticles = collect($this->getPostsForCards(2))
-            ->reject(fn ($item) => (string) $item['id'] === (string) $article['id'])
-            ->take(2)
-            ->values()
-            ->toArray();
-
-        return view('pages.detail-berita', [
-            'article' => $article,
-            'relatedArticles' => $relatedArticles,
-        ]);
+        return view('pages.detail-berita', ['slug' => $id]);
     }
 
+    /**
+     * Halaman Prestasi
+     *
+     * Data halaman ini diambil oleh Blade menggunakan fetch API ke /api/posts?type=prestasi.
+     */
     public function prestasi(): View
     {
-        return view('pages.prestasi', [
-            'achievements' => $this->getPostsForCards(9, 'prestasi'),
-        ]);
+        return view('pages.prestasi');
     }
 
+    /**
+     * Halaman Arsip Berita
+     */
     public function arsipBerita(): View
     {
-        return view('pages.arsip-berita', [
-            'news' => $this->getPostsForCards(30),
-        ]);
+        return view('pages.berita');
     }
 
+    /**
+     * Halaman Arsip Prestasi
+     */
     public function arsipPrestasi(): View
     {
-        return $this->arsipBerita();
+        return view('pages.prestasi');
     }
 
+    /**
+     * Halaman Akademik
+     *
+     * Konten CMS diambil oleh Blade menggunakan fetch API ke /api/pages/akademik.
+     */
     public function akademik(): View
     {
-        $page = $this->getPageBySlug('akademik');
-
-        return view('pages.akademik', [
-            'page' => $page,
-            'pageSummary' => $this->getPageSummary($page, 'Informasi akademik Jurusan Teknik Komputer dan Informatika Politeknik Negeri Bandung.'),
-            'links' => [
-                'calendar' => self::POLBAN_KALENDER_URL,
-                'rules' => self::POLBAN_PERATURAN_AKADEMIK_URL,
-            ],
-        ]);
+        return view('pages.akademik');
     }
 
+    /**
+     * Halaman Akreditasi
+     *
+     * Konten CMS diambil oleh Blade menggunakan fetch API ke /api/pages/akreditasi.
+     */
     public function akreditasi(): View
     {
-        $page = $this->getPageBySlug('akreditasi');
+        return view('pages.akreditasi');
+    }
 
-        return view('pages.akreditasi', [
-            'page' => $page,
-            'pageSummary' => $this->getPageSummary($page, 'Informasi status akreditasi program studi di lingkungan Jurusan Teknik Komputer dan Informatika.'),
-            'accreditations' => $this->getAccreditationData(),
+    /**
+     * Halaman Tentang JTK
+     */
+    public function tentangJTK(): View
+    {
+        return view('pages.tentang-jtk', [
+            'page' => $this->getPageBySlug('tentang-jtk'),
+            'pageContent' => $this->getPageContent('tentang-jtk'),
         ]);
     }
 
-    public function tentangJTK(): View
+    /**
+     * Halaman Fasilitas
+     */
+    public function fasilitas(): View
+    {
+        return $this->renderPageFromApi('fasilitas', 'pages.fasilitas');
+    }
+
+    /**
+     * Halaman Visi dan Misi
+     *
+     * Konten CMS diambil oleh Blade menggunakan fetch API ke /api/pages/visi-dan-misi.
+     */
+    public function visiMisi(): View
+    {
+        return view('pages.visi-misi');
+    }
+
+    /**
+     * Halaman Struktur Organisasi
+     */
+    public function strukturOrganisasi(): View
+    {
+        return $this->renderPageFromApi('struktur-organisasi', 'pages.struktur-organisasi');
+    }
+
+    /**
+     * Halaman Hasil Penelitian
+     */
+    public function hasilPenelitian(): View
+    {
+        return $this->renderPageFromApi('hasil-penelitian', 'pages.hasil-penelitian');
+    }
+
+    /**
+     * Halaman Riwayat Singkat
+     */
+    public function riwayatSingkat(): View
+    {
+        return $this->renderPageFromApi('riwayat-singkat', 'pages.riwayat-singkat');
+    }
+
+    /**
+     * Halaman Produk
+     */
+    public function produk(): View
+    {
+        return $this->renderPageFromApi('produk', 'pages.produk');
+    }
+
+    /**
+     * Halaman Tenaga Kependidikan
+     */
+    public function tenagaKependidikan(): View
+    {
+        return $this->renderPageFromApi('tenaga-kependidikan', 'pages.tenaga-kependidikan');
+    }
+
+    /**
+     * Halaman Reputasi
+     */
+    public function reputasi(): View
+    {
+        return $this->renderPageFromApi('reputasi', 'pages.reputasi');
+    }
+
+    /**
+     * Halaman Kompetensi Lulusan
+     */
+    public function kompetensiLulusan(): View
+    {
+        return $this->renderPageFromApi('kompetensi-lulusan', 'pages.kompetensi-lulusan');
+    }
+
+    /**
+     * Helper: Mengambil data halaman dari REST API secara internal,
+     * lalu mengirimkannya ke view Blade yang sesuai.
+     */
+    private function renderPageFromApi(string $slug, string $viewName): View
     {
         try {
-            $response = app(PageApiController::class)->show('tentang-jtk');
+            $response = app(PageApiController::class)->show($slug);
             $pageData = $response->resolve();
         } catch (\Throwable $e) {
             $pageData = [
-                'title' => 'Tentang JTK',
+                'title' => ucwords(str_replace('-', ' ', $slug)),
                 'content' => null,
             ];
         }
 
-        return view('pages.tentang-jtk', [
+        return view($viewName, [
             'page' => $pageData,
             'pageContent' => $pageData['content'] ?? null,
         ]);
     }
 
-    public function fasilitas(): View
+    private function getStaticLatestNews(): array
     {
-        return view('pages.fasilitas', [
-            'page' => $this->getPageBySlug('fasilitas'),
-            'pageContent' => $this->getPageContent('fasilitas'),
-        ]);
-    }
-
-    public function visiMisi(): View
-    {
-        return view('pages.visi-misi', [
-            'page' => $this->getPageBySlug('visi-dan-misi'),
-            'pageContent' => $this->getPageContent('visi-dan-misi'),
-        ]);
-    }
-
-    public function strukturOrganisasi(): View
-    {
-        return view('pages.struktur-organisasi', [
-            'page' => $this->getPageBySlug('struktur-organisasi'),
-            'pageContent' => $this->getPageContent('struktur-organisasi'),
-        ]);
-    }
-
-    public function hasilPenelitian(): View
-    {
-        return view('pages.hasil-penelitian', [
-            'page' => $this->getPageBySlug('hasil-penelitian'),
-            'pageContent' => $this->getPageContent('hasil-penelitian'),
-        ]);
-    }
-
-    public function riwayatSingkat(): View
-    {
-        return view('pages.riwayat-singkat', [
-            'page' => $this->getPageBySlug('riwayat-singkat'),
-            'pageContent' => $this->getPageContent('riwayat-singkat'),
-        ]);
-    }
-
-    public function produk(): View
-    {
-        return view('pages.produk', [
-            'page' => $this->getPageBySlug('produk'),
-            'pageContent' => $this->getPageContent('produk'),
-        ]);
-    }
-
-    public function tenagaKependidikan(): View
-    {
-        return view('pages.tenaga-kependidikan', [
-            'page' => $this->getPageBySlug('tenaga-kependidikan'),
-            'pageContent' => $this->getPageContent('tenaga-kependidikan'),
-        ]);
-    }
-
-    public function reputasi(): View
-    {
-        return view('pages.reputasi', [
-            'page' => $this->getPageBySlug('reputasi'),
-            'pageContent' => $this->getPageContent('reputasi'),
-        ]);
-    }
-
-    public function kompetensiLulusan(): View
-    {
-        return view('pages.kompetensi-lulusan', [
-            'page' => $this->getPageBySlug('kompetensi-lulusan'),
-            'pageContent' => $this->getPageContent('kompetensi-lulusan'),
-        ]);
+        return [
+            [
+                'id' => 1,
+                'title' => 'Wisuda Polban 2025: JTK Lahirkan Lulusan Unggul Siap Bersaing',
+                'date' => '30 Agustus 2025',
+                'views' => '522',
+                'image' => 'https://placehold.co/400x250?text=Wisuda+Polban',
+                'excerpt' => 'Politeknik Negeri Bandung menggelar Sidang Terbuka Senat Wisuda Program Magister Terapan.',
+            ],
+            [
+                'id' => 2,
+                'title' => 'Prodi Sarjana Terapan Teknik Informatika Polban Raih Akreditasi Unggul dari LAM INFOKOM',
+                'date' => '19 Agustus 2025',
+                'views' => '318',
+                'image' => 'https://placehold.co/400x250?text=Akreditasi',
+                'excerpt' => 'Program Studi Sarjana Terapan Teknik Informatika meraih predikat akreditasi unggul.',
+            ],
+        ];
     }
 
     private function getStaticPrograms(): array
@@ -416,238 +498,6 @@ class PublicController extends Controller
                 'description' => 'Program Sarjana Terapan dengan fokus pada aplikasi teknologi informatika.',
             ],
         ];
-    }
-
-    private function getLatestNewsForHome(): array
-    {
-        $request = \Illuminate\Http\Request::create('/api/posts', 'GET', [
-            'per_page' => 2,
-            'status' => 'publish'
-        ]);
-        
-        $response = app(PostApiController::class)->index($request);
-        $postsData = $response->resolve();
-
-        return collect($postsData)->map(function ($post) {
-            $slug = $post['slug'] ?? $post['id'];
-            $date = $this->formatPostDate($post['published_at'] ?? null);
-
-            return [
-                'id' => $slug,
-                'title' => $this->cleanText($post['title'] ?? 'Tanpa Judul', 120),
-                'date' => $date,
-                'views' => $post['views'] ?? 0,
-                'image' => $post['image_url'] ?? self::PLACEHOLDER_IMAGE,
-                'excerpt' => $this->cleanText($post['excerpt'] ?? $post['content'] ?? '', 180),
-            ];
-        })->toArray();
-    }
-
-    private function getPostsForCards(int $limit = 12, ?string $categoryKeyword = null, ?string $search = null): array
-    {
-        $query = $this->basePostsQuery();
-
-        $normalizedCategory = $this->normalizeCategoryKeyword($categoryKeyword);
-
-        if ($normalizedCategory === 'prestasi') {
-            $this->applyKeywordGroup($query, ['prestasi', 'juara', 'kompetisi', 'lomba', 'hackathon', 'kmipn']);
-        } elseif ($normalizedCategory === 'headline') {
-            $this->applyKeywordGroup($query, ['headline']);
-        }
-
-        $search = trim((string) $search);
-
-        if ($search !== '') {
-            $this->applyKeywordGroup($query, [$search]);
-        }
-
-        $posts = $query
-            ->limit($limit)
-            ->get();
-
-        $mediaMap = $this->getMediaMap($posts);
-
-        return $posts
-            ->map(fn ($post) => $this->mapPostToNewsItem($post, $mediaMap))
-            ->values()
-            ->toArray();
-    }
-
-    private function basePostsQuery()
-    {
-        return DB::table('posts')
-            ->where(function ($statusQuery) {
-                $statusQuery
-                    ->where('status', 'publish')
-                    ->orWhere('status', 'published')
-                    ->orWhere('status', 'Published')
-                    ->orWhere('status', 'PUBLISHED');
-            })
-            ->orderByDesc('published_at');
-    }
-
-    private function applyKeywordGroup($query, array $keywords): void
-    {
-        $query->where(function ($keywordQuery) use ($keywords) {
-            foreach ($keywords as $keyword) {
-                $keyword = Str::lower(trim($keyword));
-
-                if ($keyword === '') {
-                    continue;
-                }
-
-                $like = '%' . $keyword . '%';
-
-                $keywordQuery
-                    ->orWhereRaw('LOWER(COALESCE(title, \'\')) LIKE ?', [$like])
-                    ->orWhereRaw('LOWER(COALESCE(slug, \'\')) LIKE ?', [$like])
-                    ->orWhereRaw('LOWER(COALESCE(excerpt, \'\')) LIKE ?', [$like])
-                    ->orWhereRaw('LOWER(COALESCE(content, \'\')) LIKE ?', [$like]);
-            }
-        });
-    }
-
-    private function normalizeCategoryKeyword(?string $categoryKeyword): ?string
-    {
-        $categoryKeyword = Str::lower(trim((string) $categoryKeyword));
-
-        if ($categoryKeyword === '' || Str::contains($categoryKeyword, 'semua')) {
-            return null;
-        }
-
-        if (Str::contains($categoryKeyword, 'prestasi')) {
-            return 'prestasi';
-        }
-
-        if (Str::contains($categoryKeyword, 'headline')) {
-            return 'headline';
-        }
-
-        return 'berita';
-    }
-
-    private function getMediaMap($posts)
-    {
-        $mediaIds = collect($posts)
-            ->pluck('featured_media_id')
-            ->filter()
-            ->unique()
-            ->values();
-
-        if ($mediaIds->isEmpty()) {
-            return collect();
-        }
-
-        return DB::table('media')
-            ->whereIn('id', $mediaIds)
-            ->get()
-            ->keyBy('id');
-    }
-
-    private function mapPostToNewsItem(object $post, $mediaMap): array
-    {
-        $type = $this->detectPostType($post);
-
-        return [
-            'id' => $post->slug ?? $post->id,
-            'title' => $this->cleanText($post->title ?? 'Tanpa Judul', 120),
-            'category' => $type === 'prestasi' ? 'Prestasi Mahasiswa' : 'Berita',
-            'date' => $this->formatPostDate($post->published_at ?? $post->created_at ?? null),
-            'views' => $post->views ?? 0,
-            'image' => $this->getImageForPost($post, $mediaMap),
-            'excerpt' => $this->cleanText($post->excerpt ?? $post->content ?? '', 180),
-            'type' => $type,
-        ];
-    }
-
-    private function findPostBySlugOrId($id): ?object
-    {
-        return DB::table('posts')
-            ->where(function ($query) use ($id) {
-                $query->where('slug', $id);
-
-                if (is_numeric($id)) {
-                    $query->orWhere('id', $id);
-                }
-            })
-            ->first();
-    }
-
-    private function getCategoryNames(): array
-    {
-        $defaults = ['Semua Berita', 'Berita', 'Prestasi Mahasiswa'];
-
-        if (!Schema::hasTable('categories')) {
-            return $defaults;
-        }
-
-        $categories = DB::table('categories')
-            ->orderBy('name')
-            ->pluck('name')
-            ->filter()
-            ->values()
-            ->toArray();
-
-        return array_values(array_unique(array_merge($defaults, $categories)));
-    }
-
-    private function getImageForPost(object $post, $mediaMap): string
-    {
-        if (empty($post->featured_media_id)) {
-            return self::PLACEHOLDER_IMAGE;
-        }
-
-        $media = $mediaMap->get($post->featured_media_id);
-
-        if (!$media) {
-            return self::PLACEHOLDER_IMAGE;
-        }
-
-        foreach (['source_url', 'url', 'file_url', 'path', 'file_path', 'disk_path'] as $column) {
-            if (isset($media->{$column}) && !empty($media->{$column})) {
-                return $this->normalizeMediaUrl((string) $media->{$column});
-            }
-        }
-
-        return self::PLACEHOLDER_IMAGE;
-    }
-
-    private function normalizeMediaUrl(string $url): string
-    {
-        $url = trim($url);
-
-        if ($url === '') {
-            return self::PLACEHOLDER_IMAGE;
-        }
-
-        if (Str::startsWith($url, ['http://', 'https://'])) {
-            return $url;
-        }
-
-        if (Str::startsWith($url, '/')) {
-            return 'https://jtk.polban.ac.id' . $url;
-        }
-
-        return asset('storage/' . ltrim($url, '/'));
-    }
-
-    private function detectPostType(object $post): string
-    {
-        $haystack = $this->postHaystack($post);
-
-        return Str::contains($haystack, ['prestasi', 'juara', 'kompetisi', 'lomba', 'hackathon', 'kmipn'])
-            ? 'prestasi'
-            : 'berita';
-    }
-
-    private function postHaystack(object $post): string
-    {
-        return Str::lower($this->cleanText(implode(' ', array_filter([
-            $post->title ?? null,
-            $post->slug ?? null,
-            $post->excerpt ?? null,
-            $post->content ?? null,
-        ])), 5000));
     }
 
     private function getPageBySlug(string $slug): ?object
@@ -672,77 +522,13 @@ class PublicController extends Controller
         return $this->cleanHtml($page->content ?? $page->body ?? '');
     }
 
-    private function getPageSummary(?object $page, string $fallback): string
-    {
-        if (!$page) {
-            return $fallback;
-        }
-
-        $content = $page->excerpt ?? $page->content ?? $page->body ?? '';
-        $summary = $this->cleanText($content, 260);
-
-        return $summary !== '' ? $summary : $fallback;
-    }
-
-    private function getAccreditationData(): array
-    {
-        return [
-            [
-                'program' => 'D3 Teknik Informatika',
-                'status' => 'UNGGUL',
-                'date' => 'Terakreditasi tahun 2023, berlaku hingga 2028-08-07',
-                'noSk' => 'No. SK: 073/SK/LAM-INFOKOM/Ak/D3/VIII/2023',
-                'certificate' => 'Sertifikat Akreditasi D3 Teknik Informatika.',
-                'certificateUrl' => self::D3_CERTIFICATE_URL,
-                'lamUrl' => self::LAM_INFOKOM_URL,
-            ],
-            [
-                'program' => 'Sarjana Terapan Teknik Informatika',
-                'status' => 'UNGGUL',
-                'date' => 'Terakreditasi tahun 2025, berlaku hingga 2030-08-15',
-                'noSk' => 'No. SK: 146/SK/LAM-INFOKOM/Ak/STr/VIII/2025',
-                'certificate' => 'Sertifikat Akreditasi Sarjana Terapan Teknik Informatika.',
-                'certificateUrl' => self::D4_CERTIFICATE_URL,
-                'lamUrl' => self::LAM_INFOKOM_URL,
-            ],
-        ];
-    }
-
-    private function cleanText(?string $text, int $limit = 180): string
-    {
-        if (!$text) {
-            return '';
-        }
-
-        $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-        $text = strip_tags($text);
-        $text = trim(preg_replace('/\s+/', ' ', $text));
-
-        return Str::limit($text, $limit);
-    }
-
     private function cleanHtml(?string $html): string
     {
         if (!$html) {
             return '';
         }
 
-        $html = html_entity_decode($html, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-
-        return strip_tags($html, '<p><br><strong><b><em><i><u><ul><ol><li><h1><h2><h3><h4><a><blockquote><span>');
-    }
-
-    private function formatPostDate($date): string
-    {
-        if (!$date) {
-            return '-';
-        }
-
-        try {
-            return Carbon::parse($date)->format('d M Y');
-        } catch (\Throwable $e) {
-            return (string) $date;
-        }
+        return html_entity_decode($html, ENT_QUOTES | ENT_HTML5, 'UTF-8');
     }
 
     private function getInitials(string $name): string
@@ -757,7 +543,7 @@ class PublicController extends Controller
 
         return $parts
             ->take(2)
-            ->map(fn ($part) => strtoupper(substr($part, 0, 1)))
+            ->map(fn ($part) => Str::upper(Str::substr($part, 0, 1)))
             ->implode('');
     }
 

@@ -197,6 +197,55 @@ class PublicController extends Controller
             ->values()
             ->toArray();
 
+        $teachingHistoryList = $lecturerModel->teachingHistories
+            ->sortByDesc('academic_year')
+            ->map(fn ($history) => [
+                'course' => $history->course_name ?? '-',
+                'year' => $history->academic_year ?? '-',
+                'semester' => $history->semester ?? '-',
+            ])
+            ->values()
+            ->toArray();
+
+        $researchList = $lecturerModel->portfolioItems
+            ->where('type', 'research')
+            ->sortByDesc('year')
+            ->map(fn ($item) => [
+                'title' => $item->title ?? '-',
+                'year' => $item->year ?? '-',
+            ])
+            ->values()
+            ->toArray();
+
+        $communityServiceList = $lecturerModel->portfolioItems
+            ->where('type', 'community_service')
+            ->sortByDesc('year')
+            ->map(fn ($item) => [
+                'title' => $item->title ?? '-',
+                'year' => $item->year ?? '-',
+            ])
+            ->values()
+            ->toArray();
+
+        $publicationList = $lecturerModel->publications
+            ->sortByDesc('year')
+            ->map(fn ($pub) => [
+                'title' => $pub->title ?? '-',
+                'year' => $pub->year ?? '-',
+            ])
+            ->values()
+            ->toArray();
+
+        $hkiList = $lecturerModel->portfolioItems
+            ->whereIn('type', ['hki', 'patent', 'award'])
+            ->sortByDesc('year')
+            ->map(fn ($item) => [
+                'title' => $item->title ?? '-',
+                'year' => $item->year ?? '-',
+            ])
+            ->values()
+            ->toArray();
+
         $portfolioPublications = $lecturerModel->portfolioItems
             ->sortByDesc('year')
             ->map(fn ($item) => [
@@ -223,6 +272,11 @@ class PublicController extends Controller
                 'institutionalStatus' => 'Status Ikatan Kerja: ' . ($lecturerModel->employment_status ?? '-'),
                 'activityStatus' => $lecturerModel->activity_status ?? '-',
                 'educationList' => $educationList,
+                'teachingHistoryList' => $teachingHistoryList,
+                'researchList' => $researchList,
+                'communityServiceList' => $communityServiceList,
+                'publicationList' => $publicationList,
+                'hkiList' => $hkiList,
                 'publications' => $portfolioPublications
                     ->merge($scientificPublications)
                     ->filter(fn ($publication) => !empty($publication['title']) && $publication['title'] !== '-')
@@ -315,10 +369,7 @@ class PublicController extends Controller
      */
     public function fasilitas(): View
     {
-        return view('pages.fasilitas', [
-            'page' => $this->getPageBySlug('fasilitas'),
-            'pageContent' => $this->getPageContent('fasilitas'),
-        ]);
+        return $this->renderPageFromApi('fasilitas', 'pages.fasilitas');
     }
 
     /**
@@ -336,10 +387,7 @@ class PublicController extends Controller
      */
     public function strukturOrganisasi(): View
     {
-        return view('pages.struktur-organisasi', [
-            'page' => $this->getPageBySlug('struktur-organisasi'),
-            'pageContent' => $this->getPageContent('struktur-organisasi'),
-        ]);
+        return $this->renderPageFromApi('struktur-organisasi', 'pages.struktur-organisasi');
     }
 
     /**
@@ -347,10 +395,7 @@ class PublicController extends Controller
      */
     public function hasilPenelitian(): View
     {
-        return view('pages.hasil-penelitian', [
-            'page' => $this->getPageBySlug('hasil-penelitian'),
-            'pageContent' => $this->getPageContent('hasil-penelitian'),
-        ]);
+        return $this->renderPageFromApi('hasil-penelitian', 'pages.hasil-penelitian');
     }
 
     /**
@@ -358,10 +403,7 @@ class PublicController extends Controller
      */
     public function riwayatSingkat(): View
     {
-        return view('pages.riwayat-singkat', [
-            'page' => $this->getPageBySlug('riwayat-singkat'),
-            'pageContent' => $this->getPageContent('riwayat-singkat'),
-        ]);
+        return $this->renderPageFromApi('riwayat-singkat', 'pages.riwayat-singkat');
     }
 
     /**
@@ -369,10 +411,7 @@ class PublicController extends Controller
      */
     public function produk(): View
     {
-        return view('pages.produk', [
-            'page' => $this->getPageBySlug('produk'),
-            'pageContent' => $this->getPageContent('produk'),
-        ]);
+        return $this->renderPageFromApi('produk', 'pages.produk');
     }
 
     /**
@@ -380,10 +419,7 @@ class PublicController extends Controller
      */
     public function tenagaKependidikan(): View
     {
-        return view('pages.tenaga-kependidikan', [
-            'page' => $this->getPageBySlug('tenaga-kependidikan'),
-            'pageContent' => $this->getPageContent('tenaga-kependidikan'),
-        ]);
+        return $this->renderPageFromApi('tenaga-kependidikan', 'pages.tenaga-kependidikan');
     }
 
     /**
@@ -391,10 +427,7 @@ class PublicController extends Controller
      */
     public function reputasi(): View
     {
-        return view('pages.reputasi', [
-            'page' => $this->getPageBySlug('reputasi'),
-            'pageContent' => $this->getPageContent('reputasi'),
-        ]);
+        return $this->renderPageFromApi('reputasi', 'pages.reputasi');
     }
 
     /**
@@ -402,9 +435,28 @@ class PublicController extends Controller
      */
     public function kompetensiLulusan(): View
     {
-        return view('pages.kompetensi-lulusan', [
-            'page' => $this->getPageBySlug('kompetensi-lulusan'),
-            'pageContent' => $this->getPageContent('kompetensi-lulusan'),
+        return $this->renderPageFromApi('kompetensi-lulusan', 'pages.kompetensi-lulusan');
+    }
+
+    /**
+     * Helper: Mengambil data halaman dari REST API secara internal,
+     * lalu mengirimkannya ke view Blade yang sesuai.
+     */
+    private function renderPageFromApi(string $slug, string $viewName): View
+    {
+        try {
+            $response = app(PageApiController::class)->show($slug);
+            $pageData = $response->resolve();
+        } catch (\Throwable $e) {
+            $pageData = [
+                'title' => ucwords(str_replace('-', ' ', $slug)),
+                'content' => null,
+            ];
+        }
+
+        return view($viewName, [
+            'page' => $pageData,
+            'pageContent' => $pageData['content'] ?? null,
         ]);
     }
 

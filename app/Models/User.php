@@ -29,4 +29,19 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'author_id');
+    }
+
+    public function pages()
+    {
+        return $this->hasMany(Page::class, 'author_id');
+    }
+
+    public function media()
+    {
+        return $this->hasMany(Media::class, 'author_id');
+    }
 }

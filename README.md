@@ -1,367 +1,58 @@
-# Dokumentasi Pengembangan CMS (Content Management System)
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-Dokumen ini berisi rangkuman lengkap mengenai seluruh fitur dan pembaruan yang telah dikembangkan pada proyek CMS berbasis **Laravel** dan **Filament CMS**.
+<p align="center">
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
 
-## Teknologi yang Digunakan
+## About Laravel
 
-* **Framework:** Laravel
-* **Admin Panel:** Filament CMS
-* **Database:** MySQL / MariaDB
-* **ORM:** Eloquent ORM
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
----
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-# 1. Pembaruan Skema Database (Migrasi)
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-Struktur database dirancang menyerupai arsitektur WordPress dengan fokus pada relasi yang rapi dan konsisten menggunakan **Foreign Key Constraints**.
+## Learning Laravel
 
-## Tabel `categories`
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-Menambahkan dukungan kategori bertingkat (hierarki).
+In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-### Kolom Baru
+You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
 
-| Kolom       | Tipe               | Keterangan               |
-| ----------- | ------------------ | ------------------------ |
-| `parent_id` | unsignedBigInteger | Relasi ke kategori induk |
+## Agentic Development
 
-### Relasi
-
-* `parent_id` → `categories.id`
-* Menggunakan:
-
-  ```php
-  onDelete('set null')
-  ```
-
----
-
-## Tabel `media`
-
-Menyesuaikan tipe data `author_id` agar sesuai dengan tabel `users`.
-
-### Perubahan
-
-| Kolom       | Sebelum | Sesudah            |
-| ----------- | ------- | ------------------ |
-| `author_id` | integer | unsignedBigInteger |
-
-### Relasi
-
-* `author_id` → `users.id`
-
----
-
-## Tabel `pages` (Halaman Statis)
-
-Mendukung halaman bertingkat seperti:
-
-```text
-Profil
-└── Visi Misi
-```
-
-### Kolom Relasional
-
-| Kolom               | Relasi           |
-| ------------------- | ---------------- |
-| `parent_id`         | ke tabel `pages` |
-| `author_id`         | ke tabel `users` |
-| `featured_media_id` | ke tabel `media` |
-
----
-
-## Tabel `posts` (Artikel Blog)
-
-### Kolom Relasional
-
-| Kolom               | Relasi           |
-| ------------------- | ---------------- |
-| `author_id`         | ke tabel `users` |
-| `featured_media_id` | ke tabel `media` |
-
----
-
-# 2. Relasi Data dengan Eloquent Models
-
-Untuk memastikan Laravel dan Filament dapat membaca relasi antar tabel dengan baik, seluruh model telah dilengkapi dengan relasi bawaan Eloquent ORM.
-
----
-
-## Model `User`
-
-### Relasi
-
-```php
-hasMany(Post::class)
-hasMany(Page::class)
-hasMany(Media::class)
-```
-
-### Fungsi
-
-* Memiliki banyak postingan
-* Memiliki banyak halaman
-* Memiliki banyak media
-
----
-
-## Model `Category`
-
-### Relasi
-
-```php
-belongsTo(Category::class, 'parent_id')
-hasMany(Category::class, 'parent_id')
-```
-
-### Fungsi
-
-* Relasi ke kategori induk (`parent`)
-* Relasi ke sub-kategori (`children`)
-
----
-
-## Model `Post` & `Page`
-
-### Relasi
-
-```php
-belongsTo(User::class, 'author_id')
-belongsTo(Media::class, 'featured_media_id')
-```
-
-### Tambahan Khusus `Page`
-
-```php
-belongsTo(Page::class, 'parent_id')
-hasMany(Page::class, 'parent_id')
-```
-
-### Fungsi
-
-* Relasi penulis (`author`)
-* Relasi gambar utama (`featuredMedia`)
-* Struktur halaman bertingkat (`parent` dan `children`)
-
----
-
-## Model `Media`
-
-### Relasi
-
-```php
-belongsTo(User::class, 'author_id')
-```
-
-### Fungsi
-
-* Relasi ke pengguna pengunggah media
-
----
-
-# 3. Integrasi Panel Admin (Filament CMS)
-
-Filament digunakan untuk membangun seluruh antarmuka admin (CRUD) secara otomatis tanpa perlu membuat Controller atau Blade manual.
-
----
-
-# Resource yang Tersedia
-
-## A. Category Resource
-
-**URL:** `/admin/categories`
-
-### Fitur Form
-
-* Input nama kategori
-* Auto-generate slug URL
-* Dropdown Parent Category untuk sub-kategori
-
-### Fitur Table
-
-* Menampilkan:
-
-  * Nama kategori
-  * Slug
-  * Parent category
-* Mendukung sorting
-
----
-
-## B. Media Resource
-
-**URL:** `/admin/media`
-
-### Fitur Form
-
-* Upload file langsung
-* Built-in Image Editor
-* `author_id` otomatis diisi:
-
-  ```php
-  auth()->id()
-  ```
-
-### Fitur Table
-
-* Preview gambar
-* Judul media
-* Nama uploader
-
----
-
-## C. Post Resource
-
-**URL:** `/admin/posts`
-
-### Fitur Form
-
-* Judul + auto slug
-* Rich Editor (HTML Content)
-* Status:
-
-  * Draft
-  * Publish
-* Dropdown Featured Media
-* Author otomatis menggunakan user login
-* `published_at` menggunakan DateTime Picker
-
-### Fitur Table
-
-* Badge status berwarna:
-
-  * Hijau/Biru → Publish
-  * Kuning → Draft
-* Menampilkan nama penulis
-
----
-
-## D. Page Resource
-
-**URL:** `/admin/pages`
-
-### Fitur
-
-Mirip dengan `Post Resource`, dengan tambahan:
-
-* Dropdown Parent Page
-* Struktur halaman bertingkat
-
-Contoh:
-
-```text
-Tentang Kami
-├── Visi
-├── Misi
-└── Struktur Organisasi
-```
-
----
-
-## E. User Resource
-
-**URL:** `/admin/users`
-
-### Fitur Form
-
-* Kelola:
-
-  * Nama
-  * Email
-  * Password
-* Password:
-
-  * Wajib saat create user
-  * Otomatis di-hash sebelum disimpan
-
-### Fitur Table
-
-* Global search:
-
-  * Nama
-  * Email
-
----
-
-# Cara Menjalankan Project
-
-## 1. Jalankan Migrasi & Seeder
+Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
 
 ```bash
-php artisan migrate:fresh --seed
+composer require laravel/boost --dev
+
+php artisan boost:install
 ```
 
----
+Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
 
-## 2. Jalankan Local Server
+## Contributing
 
-```bash
-php artisan serve
-```
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
----
+## Code of Conduct
 
-## 3. Akses Panel Admin
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-```text
-http://localhost:8000/admin
-```
+## Security Vulnerabilities
 
----
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-# Akun Login Default
+## License
 
-Gunakan akun bawaan dari seeder berikut:
-
-| Field    | Value              |
-| -------- | ------------------ |
-| Email    | `test@example.com` |
-| Password | `password`         |
-
----
-
-# Struktur Fitur Utama
-
-## CMS Features
-
-* Manajemen Artikel
-* Manajemen Halaman
-* Hierarki Halaman
-* Hierarki Kategori
-* Upload Media
-* Featured Image
-* Multi-user Author
-* Draft & Publish System
-* Scheduled Publish
-* Admin Panel Modern
-* Auto Slug Generator
-
----
-
-# Catatan Pengembangan
-
-Arsitektur proyek dirancang modular dan scalable sehingga mudah dikembangkan untuk fitur tambahan seperti:
-
-* Tags
-* Comment System
-* SEO Metadata
-* Role & Permission
-* API Headless CMS
-* Revision History
-* Menu Builder
-* Theme System
-
----
-
-# Penutup
-
-Proyek CMS ini telah memiliki fondasi yang solid dengan:
-
-* Struktur database relasional
-* Integrasi penuh Laravel Eloquent
-* Panel admin modern berbasis Filament
-* Sistem CRUD lengkap
-* Dukungan hierarki data seperti WordPress
-
-Sehingga siap digunakan sebagai dasar pengembangan website perusahaan, portal berita, blog, maupun sistem informasi lainnya.
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

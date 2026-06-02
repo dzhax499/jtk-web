@@ -8,6 +8,11 @@ class Lecturer extends Model
 {
     protected $guarded = [];
 
+    protected $casts = [
+        'is_active' => 'boolean',
+        'raw_data' => 'array',
+    ];
+
     public function studyProgram()
     {
         return $this->belongsTo(StudyProgram::class);
@@ -26,5 +31,20 @@ class Lecturer extends Model
     public function links()
     {
         return $this->hasMany(LecturerLink::class);
+    }
+
+    public function educations()
+    {
+        return $this->hasMany(LecturerEducation::class)->orderBy('sort_order')->orderByDesc('graduation_year');
+    }
+
+    public function teachingHistories()
+    {
+        return $this->hasMany(LecturerTeachingHistory::class)->orderByDesc('academic_year')->orderBy('course_name');
+    }
+
+    public function publications()
+    {
+        return $this->hasMany(LecturerPublication::class)->orderByDesc('year')->orderByDesc('citation_count');
     }
 }

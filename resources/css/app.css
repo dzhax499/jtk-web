@@ -8,4 +8,20 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+    
+    /* Navy Colors - Based on #00008B */
+    --color-navy-50: #f0f4ff;
+    --color-navy-100: #e6f0ff;
+    --color-navy-200: #cce0ff;
+    --color-navy-300: #99c2ff;
+    --color-navy-400: #6699ff;
+    --color-navy-500: #3366ff;
+    --color-navy-600: #0052cc;
+    --color-navy-700: #003d99;
+    --color-navy-800: #002e73;
+    --color-navy-900: #00008B;
+    
+    /* Sky Accents */
+    --color-sky-light: #4ec9f0;
+    --color-sky-bright: #00d4ff;
 }

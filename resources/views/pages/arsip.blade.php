@@ -19,18 +19,20 @@
             <!-- Filter Arsip Box -->
             <div class="bg-white border border-gray-200 rounded-2xl p-6 lg:p-8 shadow-sm">
                 <div class="flex justify-between items-center border-b border-gray-100 pb-4 mb-6">
-                    <h3 class="text-lg font-bold text-[#00008B] flex items-center space-x-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
-                        </svg>
-                        <span>Filter Arsip</span>
+                    <h3 class="text-lg font-bold text-[#00008B] font-['Poppins']">
+                        Filter Arsip
                     </h3>
+                    <div class="text-gray-400">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     <!-- Dropdown Tahun -->
                     <div>
-                        <label for="filter-year" class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Tahun</label>
+                        <label for="filter-year" class="block text-xs font-bold text-gray-400 mb-2">Tahun</label>
                         <select id="filter-year" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:outline-none focus:border-[#00008B] text-sm text-gray-700 bg-white font-semibold">
                             <option value="0">Semua Tahun</option>
                             <option value="2026">2026</option>
@@ -40,12 +42,22 @@
                             <option value="2022">2022</option>
                             <option value="2021">2021</option>
                             <option value="2020">2020</option>
+                            <option value="2019">2019</option>
+                            <option value="2018">2018</option>
+                            <option value="2017">2017</option>
+                            <option value="2016">2016</option>
+                            <option value="2015">2015</option>
+                            <option value="2014">2014</option>
+                            <option value="2013">2013</option>
+                            <option value="2012">2012</option>
+                            <option value="2011">2011</option>
+                            <option value="2010">2010</option>
                         </select>
                     </div>
 
                     <!-- Dropdown Bulan -->
                     <div>
-                        <label for="filter-month" class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Bulan</label>
+                        <label for="filter-month" class="block text-xs font-bold text-gray-400 mb-2">Bulan</label>
                         <select id="filter-month" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:outline-none focus:border-[#00008B] text-sm text-gray-700 bg-white font-semibold">
                             <option value="0">Semua Bulan</option>
                             <option value="1">Januari</option>
@@ -65,7 +77,7 @@
 
                     <!-- Dropdown Kategori -->
                     <div>
-                        <label for="filter-category" class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Kategori</label>
+                        <label for="filter-category" class="block text-xs font-bold text-gray-400 mb-2">Kategori</label>
                         <select id="filter-category" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:outline-none focus:border-[#00008B] text-sm text-gray-700 bg-white font-semibold">
                             <option value="">Semua Kategori</option>
                             <option value="berita">Berita</option>
@@ -75,7 +87,7 @@
 
                     <!-- Input Kata Kunci -->
                     <div>
-                        <label for="filter-search" class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Kata Kunci</label>
+                        <label for="filter-search" class="block text-xs font-bold text-gray-400 mb-2">Kata Kunci</label>
                         <div class="relative">
                             <input 
                                 id="filter-search"
@@ -182,7 +194,7 @@
                 return `
                     <article class="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md hover:border-gray-200 transition-all duration-300 flex flex-col md:flex-row h-auto md:h-56">
                         <!-- Image Container on the Left -->
-                        <div class="relative w-full md:w-[35%] shrink-0 h-48 md:h-full overflow-hidden">
+                        <div class="relative w-full md:w-[40%] shrink-0 h-48 md:h-full overflow-hidden">
                             <a href="/berita/${encodeURIComponent(slug)}" class="block h-full w-full">
                                 <img src="${escapeHtml(image)}" alt="${escapeHtml(post.title)}" class="w-full h-full object-cover hover:scale-[1.03] transition duration-500" onerror="this.onerror=null;this.src='${placeholder}';">
                             </a>
@@ -195,7 +207,7 @@
                         <div class="flex-1 p-6 flex flex-col justify-between">
                             <div>
                                 <a href="/berita/${encodeURIComponent(slug)}" class="block group">
-                                    <h3 class="text-base font-bold text-gray-800 leading-snug group-hover:text-[#00008B] transition duration-200 line-clamp-2">${escapeHtml(post.title || 'Tanpa Judul')}</h3>
+                                    <h3 class="text-[17px] font-bold text-gray-800 leading-snug group-hover:text-[#00008B] transition duration-200 line-clamp-2">${escapeHtml(post.title || 'Tanpa Judul')}</h3>
                                 </a>
                                 <!-- Meta Block -->
                                 <div class="flex items-center space-x-4 text-xs text-gray-400 font-semibold mt-2.5">

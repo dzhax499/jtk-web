@@ -69,52 +69,12 @@ class PublicController extends Controller
     }
 
     /**
-     * Halaman D3 Teknik Informatika
+     * Halaman Detail Program Studi
      */
-    public function d3TeknikInformatika(): View
+    public function programDetail(string $slug): View
     {
         return view('pages.program-detail', [
-            'program' => [
-                'title' => 'D3 Teknik Informatika',
-                'shortName' => 'D3 Teknik Informatika',
-                'accreditation' => 'UNGGUL',
-                'accreditationDate' => 'Terakreditasi tahun 2023, Berlaku hingga 2028-08-07',
-                'vision' => 'Menjadi Program Studi unggulan dan terdepan dalam program pendidikan Diploma III Teknik Informatika yang diakui baik di tingkat nasional maupun internasional.',
-                'mission' => [
-                    'Menyelenggarakan program pendidikan di bidang Teknik Informatika yang berkualitas dan berorientasi pada kebutuhan industri.',
-                    'Melakukan penelitian terapan yang relevan dengan pengembangan IPTEK.',
-                    'Melaksanakan pengabdian kepada masyarakat melalui kegiatan yang berkelanjutan.',
-                ],
-                'objectives' => [
-                    'Menghasilkan lulusan yang kompeten dalam perancangan dan implementasi perangkat lunak.',
-                    'Menghasilkan lulusan yang mampu menyelesaikan masalah berbasis teknologi informasi.',
-                ],
-            ],
-        ]);
-    }
-
-    /**
-     * Halaman Sarjana Terapan Teknik Informatika
-     */
-    public function sarjanaTerapan(): View
-    {
-        return view('pages.program-detail', [
-            'program' => [
-                'title' => 'Sarjana Terapan Teknik Informatika',
-                'shortName' => 'Sarjana Terapan',
-                'accreditation' => 'UNGGUL',
-                'accreditationDate' => 'Terakreditasi tahun 2025, Berlaku hingga 2030-08-15',
-                'vision' => 'Menjadi program studi sarjana terapan yang unggul dalam bidang sistem dan teknologi informatika.',
-                'mission' => [
-                    'Menyelenggarakan pendidikan di bidang sistem dan teknologi informatika.',
-                    'Melakukan penelitian terapan untuk pengembangan teknologi informatika.',
-                    'Melaksanakan pengabdian kepada masyarakat melalui transfer teknologi.',
-                ],
-                'objectives' => [
-                    'Menghasilkan lulusan yang kompeten, profesional, dan adaptif dalam bidang informatika.',
-                    'Mengembangkan keterampilan praktis dalam merancang, membangun, dan mengelola sistem informasi.',
-                ],
-            ],
+            'slug' => $slug
         ]);
     }
 
@@ -358,7 +318,7 @@ class PublicController extends Controller
      */
     public function arsipBerita(): View
     {
-        return view('pages.berita');
+        return view('pages.arsip-berita');
     }
 
     /**

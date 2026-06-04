@@ -6,8 +6,7 @@ use App\Http\Controllers\PublicController;
 // Public Pages
 Route::get('/', [PublicController::class, 'home'])->name('home');
 Route::get('/program-studi', [PublicController::class, 'programStudi'])->name('program-studi');
-Route::get('/program-studi/d3', [PublicController::class, 'd3TeknikInformatika'])->name('d3');
-Route::get('/program-studi/sarjana', [PublicController::class, 'sarjanaTerapan'])->name('sarjana');
+Route::get('/program-studi/{slug}', [PublicController::class, 'programDetail'])->name('program-detail');
 Route::get('/profil-dosen', [PublicController::class, 'profilDosen'])->name('profil-dosen');
 Route::get('/profil-dosen/{id}', [PublicController::class, 'detailDosen'])->name('detail-dosen');
 

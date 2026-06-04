@@ -314,6 +314,14 @@ class PublicController extends Controller
     }
 
     /**
+     * Halaman Utama Arsip
+     */
+    public function arsip(): View
+    {
+        return view('pages.arsip');
+    }
+
+    /**
      * Halaman Arsip Berita
      */
     public function arsipBerita(): View

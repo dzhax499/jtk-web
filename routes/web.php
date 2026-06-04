@@ -18,6 +18,7 @@ Route::get('/akademik', [PublicController::class, 'akademik'])->name('akademik')
 Route::get('/akreditasi', [PublicController::class, 'akreditasi'])->name('akreditasi');
 Route::get('/visi-misi', [PublicController::class, 'visiMisi'])->name('visi-misi');
 
+Route::get('/arsip', [PublicController::class, 'arsip'])->name('arsip');
 Route::get('/arsip/berita', [PublicController::class, 'arsipBerita'])->name('arsip-berita');
 Route::get('/arsip/prestasi', [PublicController::class, 'arsipPrestasi'])->name('arsip-prestasi');
 

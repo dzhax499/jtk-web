@@ -92,21 +92,107 @@ class PublicController extends Controller
             return view('pages.profil-dosen', [
                 'lecturers' => [],
                 'filters' => $this->emptyLecturerFilters(),
+                'selected' => [
+                    'search' => '',
+                    'program' => [],
+                    'education' => [],
+                    'position' => [],
+                ]
             ]);
         }
 
-        $lecturersData = DB::table('lecturers')
-            ->select([
-                'id',
-                'name',
-                'slug',
-                'gender',
-                'highest_education',
-                'academic_position',
-                'activity_status',
-            ])
-            ->orderBy('name')
+        // Get all unique filter options from DB (without dynamic queries applied, to keep options constant)
+        $allLecturersForFilters = DB::table('lecturers')
+            ->select(['highest_education', 'academic_position'])
             ->get();
+
+        $educationFilters = $allLecturersForFilters
+            ->pluck('highest_education')
+            ->filter(function ($value) {
+                $value = trim($value ?? '');
+                if (empty($value) || $value === '-' || preg_match('/[0-9]{5,}/', $value) || str_contains(strtolower($value), 'oakw') || strlen($value) > 50) {
+                    return false;
+                }
+                return true;
+            })
+            ->unique()
+            ->sort()
+            ->values()
+            ->toArray();
+
+        $positionFilters = $allLecturersForFilters
+            ->pluck('academic_position')
+            ->filter(function ($value) {
+                $value = trim($value ?? '');
+                if (empty($value) || $value === '-' || preg_match('/[0-9]{5,}/', $value) || str_contains(strtolower($value), '90i3') || strlen($value) > 50) {
+                    return false;
+                }
+                return true;
+            })
+            ->unique()
+            ->sort()
+            ->values()
+            ->toArray();
+
+        $programFilters = Schema::hasTable('study_programs')
+            ? DB::table('study_programs')->pluck('name')->filter()->unique()->sort()->values()->toArray()
+            : [];
+
+        // Build the filtered query
+        $query = DB::table('lecturers')
+            ->leftJoin('study_programs', 'lecturers.study_program_id', '=', 'study_programs.id')
+            ->select([
+                'lecturers.id',
+                'lecturers.name',
+                'lecturers.slug',
+                'lecturers.gender',
+                'lecturers.highest_education',
+                'lecturers.academic_position',
+                'lecturers.activity_status',
+                'study_programs.name as study_program_name'
+            ])
+            ->where(function($q) {
+                // Filter out junk lecturers
+                $q->whereNull('lecturers.highest_education')
+                  ->orWhere('lecturers.highest_education', 'not like', '%oakw%');
+            })
+            ->where(function($q) {
+                // Filter out junk lecturers
+                $q->whereNull('lecturers.academic_position')
+                  ->orWhere('lecturers.academic_position', 'not like', '%90i3%');
+            });
+
+        // Search Filter
+        if ($search = request('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('lecturers.name', 'like', '%' . $search . '%')
+                  ->orWhere('lecturers.highest_education', 'like', '%' . $search . '%')
+                  ->orWhere('lecturers.academic_position', 'like', '%' . $search . '%');
+            });
+        }
+
+        // Program Studi Filter
+        if ($selectedPrograms = request('program')) {
+            if (is_array($selectedPrograms) && count($selectedPrograms) > 0) {
+                $query->whereIn('study_programs.name', $selectedPrograms);
+            }
+        }
+
+        // Pendidikan Terakhir Filter
+        if ($selectedEducations = request('education')) {
+            if (is_array($selectedEducations) && count($selectedEducations) > 0) {
+                $query->whereIn('lecturers.highest_education', $selectedEducations);
+            }
+        }
+
+        // Jabatan Fungsional Filter
+        if ($selectedPositions = request('position')) {
+            if (is_array($selectedPositions) && count($selectedPositions) > 0) {
+                $query->whereIn('lecturers.academic_position', $selectedPositions);
+            }
+        }
+
+        $lecturersData = $query->orderBy('lecturers.name')->get();
 
         $lecturers = $lecturersData
             ->map(function ($lecturer) {
@@ -118,39 +204,24 @@ class PublicController extends Controller
                     'position' => $lecturer->highest_education ?? '-',
                     'functional' => $lecturer->academic_position ?? '-',
                     'status' => $lecturer->activity_status ?? '-',
-
-                    // Untuk keamanan merge, bidang keahlian tidak diambil dari relasi dulu.
-                    // Relasi expertise bisa diaktifkan lagi nanti oleh pemegang halaman dosen
-                    // setelah query-nya dibuat eager loading / join yang aman.
                     'expertise' => '-',
                 ];
             })
             ->toArray();
 
-        $educationFilters = $lecturersData
-            ->pluck('highest_education')
-            ->filter()
-            ->unique()
-            ->sort()
-            ->values()
-            ->toArray();
-
-        $positionFilters = $lecturersData
-            ->pluck('academic_position')
-            ->filter()
-            ->unique()
-            ->sort()
-            ->values()
-            ->toArray();
-
         return view('pages.profil-dosen', [
             'lecturers' => $lecturers,
             'filters' => [
-                'program' => ['Semua Program Studi', 'Teknik Informatika'],
-                'field' => ['Semua Bidang Keahlian'],
-                'education' => array_merge(['Semua Pendidikan Terakhir'], $educationFilters),
-                'position' => array_merge(['Semua Jabatan Fungsional'], $positionFilters),
+                'program' => $programFilters,
+                'education' => $educationFilters,
+                'position' => $positionFilters,
             ],
+            'selected' => [
+                'search' => request('search', ''),
+                'program' => (array) request('program', []),
+                'education' => (array) request('education', []),
+                'position' => (array) request('position', []),
+            ]
         ]);
     }
 

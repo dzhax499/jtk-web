@@ -7,71 +7,112 @@
     <x-hero 
         title="Profil Dosen"
         subtitle="Berkenalan dengan para dosen Jurusan Teknik Komputer dan Informatika Politeknik Negeri Bandung"
-        bgImage="https://via.placeholder.com/1920x400?text=Profil+Dosen">
-        <span>Breadcrumb: <a href="/" class="underline">Beranda</a> > <span>Profil Dosen</span></span>
+        bgImage="true">
+        <span class="text-sm opacity-90"><a href="/" class="hover:underline">Beranda</a> &gt; <span class="font-semibold text-sky-light">Profil Dosen</span></span>
     </x-hero>
 
     <!-- Content Section -->
-    <section class="py-16">
+    <section class="py-16 bg-[#FAFAFA]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
                 <!-- Filter Sidebar -->
                 <div class="lg:col-span-1">
-                    <div class="bg-white border border-gray-200 rounded-lg p-6 sticky top-24">
-                        <h3 class="text-lg font-bold text-navy-900 mb-6">Filter Dosen</h3>
+                    <form action="{{ route('profil-dosen') }}" method="GET" class="bg-white border border-gray-200 rounded-2xl p-6 sticky top-24 shadow-sm">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-lg font-bold text-navy-900">Filter Dosen</h3>
+                            <span class="text-xs bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full font-medium">Dinamis</span>
+                        </div>
 
                         <!-- Search -->
                         <div class="mb-6">
-                            <input 
-                                type="text" 
-                                placeholder="Cari Dosen, Bidang Keahlian"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-sky-light"
-                            >
+                            <label class="text-xs font-bold text-navy-900 uppercase tracking-wider block mb-2">Pencarian</label>
+                            <div class="relative">
+                                <input 
+                                    type="text" 
+                                    name="search"
+                                    value="{{ $selected['search'] }}"
+                                    placeholder="Cari dosen, keahlian..."
+                                    class="w-full pl-4 pr-10 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy-900/20 focus:border-navy-900 text-sm transition"
+                                >
+                                <span class="absolute right-3 top-3.5 text-gray-400">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                </span>
+                            </div>
                         </div>
 
                         <!-- Program Filter -->
+                        @if(count($filters['program']) > 0)
                         <div class="mb-6">
-                            <label class="text-sm font-semibold text-navy-900 block mb-3">Program Studi</label>
-                            @foreach($filters['program'] as $program)
-                                <label class="flex items-center space-x-2 mb-2 cursor-pointer">
-                                    <input type="checkbox" class="w-4 h-4 rounded">
-                                    <span class="text-sm text-gray-700">{{ $program }}</span>
-                                </label>
-                            @endforeach
+                            <label class="text-xs font-bold text-navy-900 uppercase tracking-wider block mb-3">Program Studi</label>
+                            <div class="space-y-2 max-h-40 overflow-y-auto pr-1">
+                                @foreach($filters['program'] as $program)
+                                    <label class="flex items-center space-x-3 cursor-pointer group">
+                                        <input 
+                                            type="checkbox" 
+                                            name="program[]" 
+                                            value="{{ $program }}"
+                                            {{ in_array($program, $selected['program']) ? 'checked' : '' }}
+                                            class="w-4 h-4 text-navy-900 border-gray-300 rounded focus:ring-navy-900 focus:ring-2 transition"
+                                        >
+                                        <span class="text-sm text-gray-600 group-hover:text-navy-900 transition">{{ $program }}</span>
+                                    </label>
+                                @endforeach
+                            </div>
                         </div>
+                        @endif
 
                         <!-- Education Filter -->
+                        @if(count($filters['education']) > 0)
                         <div class="mb-6">
-                            <label class="text-sm font-semibold text-navy-900 block mb-3">Pendidikan Terakhir</label>
-                            @foreach($filters['education'] as $edu)
-                                <label class="flex items-center space-x-2 mb-2 cursor-pointer">
-                                    <input type="checkbox" class="w-4 h-4 rounded">
-                                    <span class="text-sm text-gray-700">{{ $edu }}</span>
-                                </label>
-                            @endforeach
+                            <label class="text-xs font-bold text-navy-900 uppercase tracking-wider block mb-3">Pendidikan Terakhir</label>
+                            <div class="space-y-2 max-h-40 overflow-y-auto pr-1">
+                                @foreach($filters['education'] as $edu)
+                                    <label class="flex items-center space-x-3 cursor-pointer group">
+                                        <input 
+                                            type="checkbox" 
+                                            name="education[]" 
+                                            value="{{ $edu }}"
+                                            {{ in_array($edu, $selected['education']) ? 'checked' : '' }}
+                                            class="w-4 h-4 text-navy-900 border-gray-300 rounded focus:ring-navy-900 focus:ring-2 transition"
+                                        >
+                                        <span class="text-sm text-gray-600 group-hover:text-navy-900 transition">{{ $edu }}</span>
+                                    </label>
+                                @endforeach
+                            </div>
                         </div>
+                        @endif
 
                         <!-- Position Filter -->
+                        @if(count($filters['position']) > 0)
                         <div class="mb-6">
-                            <label class="text-sm font-semibold text-navy-900 block mb-3">Jabatan Fungsional</label>
-                            @foreach($filters['position'] as $pos)
-                                <label class="flex items-center space-x-2 mb-2 cursor-pointer">
-                                    <input type="checkbox" class="w-4 h-4 rounded">
-                                    <span class="text-sm text-gray-700">{{ $pos }}</span>
-                                </label>
-                            @endforeach
+                            <label class="text-xs font-bold text-navy-900 uppercase tracking-wider block mb-3">Jabatan Fungsional</label>
+                            <div class="space-y-2 max-h-40 overflow-y-auto pr-1">
+                                @foreach($filters['position'] as $pos)
+                                    <label class="flex items-center space-x-3 cursor-pointer group">
+                                        <input 
+                                            type="checkbox" 
+                                            name="position[]" 
+                                            value="{{ $pos }}"
+                                            {{ in_array($pos, $selected['position']) ? 'checked' : '' }}
+                                            class="w-4 h-4 text-navy-900 border-gray-300 rounded focus:ring-navy-900 focus:ring-2 transition"
+                                        >
+                                        <span class="text-sm text-gray-600 group-hover:text-navy-900 transition">{{ $pos }}</span>
+                                    </label>
+                                @endforeach
+                            </div>
                         </div>
+                        @endif
 
                         <!-- Filter Buttons -->
-                        <div class="space-y-3">
-                            <button class="w-full bg-navy-900 text-white font-semibold py-2 rounded-lg hover:bg-navy-800 transition">
+                        <div class="space-y-3 pt-2">
+                            <button type="submit" class="w-full bg-navy-900 text-white font-semibold py-2.5 rounded-xl hover:bg-navy-800 focus:ring-4 focus:ring-navy-900/20 transition text-sm">
                                 Terapkan Filter
                             </button>
-                            <button class="w-full border-2 border-gray-300 text-navy-900 font-semibold py-2 rounded-lg hover:bg-gray-50 transition">
+                            <a href="{{ route('profil-dosen') }}" class="w-full block text-center border-2 border-gray-200 text-navy-900 font-semibold py-2 rounded-xl hover:bg-gray-50 transition text-sm">
                                 Reset Filter
-                            </button>
+                            </a>
                         </div>
-                    </div>
+                    </form>
                 </div>
 
                 <!-- Lecturer List -->
@@ -79,54 +120,50 @@
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-2xl font-bold text-navy-900">Daftar Dosen</h2>
                         <div class="flex items-center space-x-2">
-                            <label class="text-sm text-gray-600">Urutkan:</label>
-                            <select class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none">
+                            <label class="text-sm text-gray-500 font-medium">Urutkan:</label>
+                            <select class="px-3 py-1.5 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-navy-900/20 text-sm text-gray-700">
                                 <option>Nama A - Z</option>
-                                <option>Nama Z - A</option>
-                                <option>Terbaru</option>
                             </select>
                         </div>
                     </div>
 
-                    <p class="text-gray-600 text-sm mb-6">Menampilkan {{ count($lecturers) }} Dosen</p>
+                    <p class="text-gray-500 text-sm mb-6">Menampilkan <span class="font-semibold text-navy-900">{{ count($lecturers) }}</span> Dosen</p>
 
                     <!-- Table -->
-                    <div class="overflow-x-auto bg-white rounded-lg border border-gray-200">
-                        <table class="w-full">
+                    <div class="overflow-x-auto bg-white rounded-2xl border border-gray-200 shadow-sm">
+                        <table class="w-full border-collapse">
                             <thead>
-                                <tr class="bg-gray-50 border-b">
-                                    <th class="px-6 py-4 text-left text-sm font-semibold text-navy-900">Nama Dosen</th>
-                                    <th class="px-6 py-4 text-left text-sm font-semibold text-navy-900">Jenis Kelamin</th>
-                                    <th class="px-6 py-4 text-left text-sm font-semibold text-navy-900">Pendidikan Terakhir</th>
-                                    <th class="px-6 py-4 text-left text-sm font-semibold text-navy-900">Jabatan Fungsional</th>
-                                    <th class="px-6 py-4 text-left text-sm font-semibold text-navy-900">Aksi</th>
+                                <tr class="bg-gray-50 border-b border-gray-200 text-gray-700">
+                                    <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-navy-900">Nama Dosen</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-navy-900">Jenis Kelamin</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-navy-900">Pendidikan Terakhir</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-navy-900">Jabatan Fungsional</th>
+                                    <th class="px-6 py-4 text-right text-xs font-bold uppercase tracking-wider text-navy-900">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @foreach($lecturers as $lecturer)
-                                    <tr class="border-b hover:bg-gray-50 transition">
-                                        <td class="px-6 py-4 text-sm text-navy-900 font-medium">{{ $lecturer['name'] }}</td>
-                                        <td class="px-6 py-4 text-sm text-gray-600">{{ $lecturer['gender'] }}</td>
+                            <tbody class="divide-y divide-gray-100">
+                                @forelse($lecturers as $lecturer)
+                                    <tr class="hover:bg-gray-50/50 transition">
+                                        <td class="px-6 py-4 text-sm text-navy-900 font-semibold">{{ $lecturer['name'] }}</td>
+                                        <td class="px-6 py-4 text-sm text-gray-600">{{ $lecturer['gender'] == 'L' ? 'Laki-laki' : ($lecturer['gender'] == 'P' ? 'Perempuan' : $lecturer['gender']) }}</td>
                                         <td class="px-6 py-4 text-sm text-gray-600">{{ $lecturer['position'] }}</td>
                                         <td class="px-6 py-4 text-sm text-gray-600">{{ $lecturer['functional'] }}</td>
-                                        <td class="px-6 py-4">
-                                            <a href="/profil-dosen/{{ $lecturer['id'] }}" class="inline-flex items-center text-sky-light hover:text-sky-bright font-semibold">
-                                                Lihat Detail
-                                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                        <td class="px-6 py-4 text-right">
+                                            <a href="/profil-dosen/{{ $lecturer['id'] }}" class="inline-flex items-center text-sky-light hover:text-sky-bright font-bold text-sm transition">
+                                                Lebih Lanjut
+                                                <svg class="w-4 h-4 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                                             </a>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="px-6 py-12 text-center text-gray-500 text-sm">
+                                            Tidak ada data dosen yang sesuai dengan kriteria filter.
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
-                    </div>
-
-                    <!-- Pagination -->
-                    <div class="flex justify-center items-center space-x-2 mt-8">
-                        <button class="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">←</button>
-                        <button class="px-3 py-2 bg-navy-900 text-white rounded-lg">1</button>
-                        <button class="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">2</button>
-                        <button class="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">→</button>
                     </div>
                 </div>
             </div>
@@ -134,16 +171,16 @@
     </section>
 
     <!-- PDDikti Integration -->
-    <section class="bg-blue-50 py-16 border-t border-blue-200">
+    <section class="bg-blue-50/50 py-16 border-t border-blue-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-start space-x-4">
-                <div class="text-3xl">📊</div>
+            <div class="flex items-start space-x-5">
+                <div class="text-4xl bg-blue-100/80 p-3 rounded-2xl shadow-sm">📊</div>
                 <div class="flex-1">
                     <h3 class="text-lg font-bold text-navy-900 mb-2">Data Terintegrasi dengan PDDikti</h3>
-                    <p class="text-gray-700 mb-4">
-                        Informasi dosen gambil langsung dari PDDikti (Pangkalan Data Pendidikan Tinggi)
+                    <p class="text-gray-600 mb-4 max-w-xl leading-relaxed text-sm">
+                        Informasi profil dosen, riwayat mengajar, dan riwayat pendidikan diambil langsung dari PDDikti (Pangkalan Data Pendidikan Tinggi) secara real-time.
                     </p>
-                    <a href="#" class="inline-flex items-center text-sky-light font-semibold hover:text-sky-bright">
+                    <a href="https://pddikti.kemdikbud.go.id" target="_blank" class="inline-flex items-center text-sky-light font-bold hover:text-sky-bright transition text-sm">
                         Kunjungi PDDikti
                         <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </a>

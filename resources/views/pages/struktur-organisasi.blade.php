@@ -102,7 +102,7 @@
                                     <div style="background: #EEEEEE; border: 1px solid rgba(198, 197, 213, 0.2); border-radius: 16px; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.85rem; flex-shrink: 0;">
                                         <svg style="width: 28px; height: 28px; color: #1A1C1C;" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2z"></path><circle cx="12" cy="7" r="4"></circle></svg>
                                     </div>
-                                    <p style="font-family: 'Poppins', sans-serif; font-weight: 600; color: #01018B; font-size: 1rem; margin-bottom: 0.25rem; line-height: 1.4;">${item.name}</p>
+                                    <p style="font-family: 'Poppins', sans-serif; font-weight: 600; color: #01018B; font-size: 16px; margin-bottom: 0.25rem; line-height: 1.4;">${item.name}</p>
                                     ${item.role ? '<p style="font-family: &quot;Poppins&quot;, sans-serif; font-weight: 500; color: #6B7280; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.025em; margin-bottom: 0.25rem; line-height: 1.4;">' + item.role + '</p>' : ''}
                                     <p style="font-family: 'Poppins', sans-serif; font-weight: 400; color: #6B7280; font-size: 0.75rem; margin-top: auto;">${item.nip}</p>
                                 </div>`;
@@ -113,7 +113,7 @@
                         
                         finalHtml += `
                         <details ${isOpen} style="background: #ffffff; border: 1px solid #C6C5D5; border-radius: 2px; overflow: hidden;">
-                            <summary style="background: #F3F3F4; display: flex; cursor: pointer; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; font-family: 'Poppins', sans-serif; font-weight: 700; color: #01018B; font-size: 1.05rem; list-style: none;">
+                            <summary style="background: #F3F3F4; display: flex; cursor: pointer; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; font-family: 'Poppins', sans-serif; font-weight: 700; color: #01018B; font-size: 16px; list-style: none;">
                                 <span>${sec.title}</span>
                                 <svg style="width: 20px; height: 20px; color: #01018B; transition: transform 0.3s;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                             </summary>

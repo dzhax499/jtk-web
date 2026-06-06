@@ -17,13 +17,14 @@
                 <a href="/" class="text-[#00008B] font-bold hover:text-blue-700 transition">Beranda</a>
                 
                 <div class="relative group h-full flex items-center">
-                    <button class="text-[#00008B] font-bold hover:text-blue-700 transition flex items-center space-x-1.5">
+                    <a href="/tentang-jtk" class="text-[#00008B] font-bold hover:text-blue-700 transition flex items-center space-x-1.5">
                         <span>Tentang JTK</span>
                         <svg class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
+                    </a>
                     
                     <div class="absolute left-0 top-full mt-0 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 w-64 z-50">
                         <div class="bg-white rounded-b-2xl rounded-t-none shadow-xl p-3 border-x border-b border-gray-100">
+
                             <a href="/visi-misi" class="block py-2.5 mx-2 text-[#00008B] font-semibold border-b border-[#00008B]/20 hover:text-blue-600 transition">Visi dan Misi</a>
                             <a href="/riwayat-singkat" class="block py-2.5 mx-2 text-[#00008B] font-semibold border-b border-[#00008B]/20 hover:text-blue-600 transition">Riwayat Singkat</a>
                             <a href="/struktur-organisasi" class="block py-2.5 mx-2 text-[#00008B] font-semibold border-b border-[#00008B]/20 hover:text-blue-600 transition">Struktur Organisasi</a>

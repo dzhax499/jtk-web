@@ -3,6 +3,7 @@
 @section('title', 'Hasil Penelitian - JTK POLBAN')
 
 @section('content')
+<div class="font-['Poppins']">
     <!-- Hero Section -->
     <x-hero 
         title="Hasil Penelitian"
@@ -17,11 +18,11 @@
             <!-- Main Tabs: Hasil Penelitian | Kegiatan PkM -->
             <div class="flex gap-8 mb-8 items-end">
                 <button id="tab-penelitian" onclick="switchMainTab('penelitian')"
-                    class="main-tab text-3xl md:text-4xl font-bold text-navy-900 pb-2 border-b-4 border-navy-900 transition-all duration-300 cursor-pointer">
+                    class="main-tab text-xl md:text-3xl font-extrabold text-navy-900 pb-2 border-b-4 border-navy-900 transition-all duration-300 cursor-pointer">
                     Hasil Penelitian
                 </button>
                 <button id="tab-pkm" onclick="switchMainTab('pkm')"
-                    class="main-tab text-3xl md:text-4xl font-bold text-gray-400 pb-2 border-b-4 border-transparent hover:text-navy-700 transition-all duration-300 cursor-pointer">
+                    class="main-tab text-xl md:text-3xl font-extrabold text-gray-400 pb-2 border-b-4 border-transparent hover:text-navy-700 transition-all duration-300 cursor-pointer">
                     Kegiatan PkM
                 </button>
             </div>
@@ -80,6 +81,7 @@
             </div>
         </div>
     </section>
+</div>
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
@@ -234,11 +236,11 @@
             function renderResearchCard(item) {
                 return `
                     <div class="flex flex-col h-full border border-gray-200 rounded-xl p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 bg-white">
-                        <h3 class="font-bold text-[#01018B] text-lg leading-snug mb-3">${escapeHtml(item.title || item.raw)}</h3>
-                        ${item.author ? `<p class="text-sm text-[#00008B] mb-6 leading-relaxed">${escapeHtml(item.author)}</p>` : ''}
+                        <h3 class="text-[17px] font-semibold text-[#01018B] leading-snug mb-3">${escapeHtml(item.title || item.raw)}</h3>
+                        ${item.author ? `<p class="text-xs text-[#00008B] mb-6 leading-relaxed">${escapeHtml(item.author)}</p>` : ''}
                         <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-200 gap-4">
-                            ${item.year ? `<span class="text-sm font-semibold text-[#00008B] whitespace-nowrap">${escapeHtml(item.year)}</span>` : '<span></span>'}
-                            ${item.source ? `<span class="text-xs font-medium text-[#00008B] bg-navy-50 px-3 py-1.5 rounded text-right leading-tight break-words max-w-[75%]">${escapeHtml(item.source)}</span>` : ''}
+                            ${item.year ? `<span class="text-xs font-extrabold text-[#00008B] whitespace-nowrap">${escapeHtml(item.year)}</span>` : '<span></span>'}
+                            ${item.source ? `<span class="text-xs font-bold text-[#00008B] bg-navy-50 px-3 py-1.5 rounded text-right leading-tight break-words max-w-[75%]">${escapeHtml(item.source)}</span>` : ''}
                         </div>
                     </div>
                 `;
@@ -247,11 +249,11 @@
             function renderPkmCard(item) {
                 return `
                     <div class="flex flex-col h-full border border-gray-200 rounded-xl p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 bg-white">
-                        <h3 class="font-bold text-[#01018B] text-lg leading-snug mb-3">${escapeHtml(item.title || item.raw)}</h3>
-                        ${item.dosen ? `<p class="text-sm text-[#00008B] mb-6 leading-relaxed">${escapeHtml(item.dosen)}</p>` : ''}
+                        <h3 class="text-[17px] font-semibold text-[#01018B] leading-snug mb-3">${escapeHtml(item.title || item.raw)}</h3>
+                        ${item.dosen ? `<p class="text-xs text-[#00008B] mb-6 leading-relaxed">${escapeHtml(item.dosen)}</p>` : ''}
                         <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-200 gap-4">
-                            ${item.year ? `<span class="text-sm font-semibold text-[#00008B] whitespace-nowrap">${escapeHtml(item.year)}</span>` : '<span></span>'}
-                            ${item.pendanaan ? `<span class="text-xs font-medium text-[#00008B] bg-navy-50 px-3 py-1.5 rounded text-right leading-tight break-words max-w-[75%]">${escapeHtml(item.pendanaan)}</span>` : ''}
+                            ${item.year ? `<span class="text-xs font-extrabold text-[#00008B] whitespace-nowrap">${escapeHtml(item.year)}</span>` : '<span></span>'}
+                            ${item.pendanaan ? `<span class="text-xs font-bold text-[#00008B] bg-navy-50 px-3 py-1.5 rounded text-right leading-tight break-words max-w-[75%]">${escapeHtml(item.pendanaan)}</span>` : ''}
                         </div>
                     </div>
                 `;

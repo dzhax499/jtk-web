@@ -3,6 +3,7 @@
 @section('title', 'Produk - JTK POLBAN')
 
 @section('content')
+<div class="font-['Poppins']">
     <!-- Hero Section -->
     <x-hero 
         title="Produk"
@@ -14,7 +15,7 @@
     <section class="py-16">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Section Title -->
-            <h2 id="produk-title" class="text-3xl md:text-4xl font-bold text-[#00008B] mb-10">Produk</h2>
+            <h2 id="produk-title" class="text-xl md:text-3xl font-extrabold text-[#00008B] mb-10">Produk</h2>
 
             <!-- Loading Skeleton -->
             <div id="produk-loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -39,6 +40,7 @@
             </div>
         </div>
     </section>
+</div>
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
@@ -100,7 +102,7 @@
                         <div class="w-14 h-14 rounded-lg bg-navy-50 flex items-center justify-center group-hover:bg-navy-100 transition-colors duration-300">
                             ${product.icon}
                         </div>
-                        <h3 class="font-bold text-[#00008B] text-sm leading-relaxed mt-2">${product.title}</h3>
+                        <h3 class="text-[17px] font-semibold text-[#00008B] leading-relaxed mt-2">${product.title}</h3>
                     </div>
                 `;
             }

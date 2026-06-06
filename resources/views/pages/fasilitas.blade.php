@@ -3,6 +3,7 @@
 @section('title', 'Fasilitas - JTK POLBAN')
 
 @section('content')
+<div class="font-['Poppins']">
     <!-- Hero Section -->
     <x-hero 
         title="Fasilitas"
@@ -14,10 +15,10 @@
     <section class="py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Section Title -->
-            <h2 id="fasilitas-title" class="text-3xl md:text-4xl font-bold text-[#01018B] mb-4">Fasilitas</h2>
+            <h2 id="fasilitas-title" class="text-xl md:text-3xl font-extrabold text-[#01018B] mb-4">Fasilitas</h2>
 
             <!-- Description -->
-            <p id="fasilitas-description" class="text-[#00008B] mb-12 max-w-4xl">
+            <p id="fasilitas-description" class="text-[15px] text-[#00008B] mb-12 max-w-[800px] leading-relaxed">
                 Fasilitas yang tersedia mencakup: Gedung, Ruang Kelas, Laboratorium Komputer, Ruang Serbaguna, Lapangan Olahraga, Taman, dan lainnya.
             </p>
 
@@ -40,6 +41,7 @@
             </div>
         </div>
     </section>
+</div>
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
@@ -89,7 +91,7 @@
                              loading="lazy"
                              onerror="this.src='https://via.placeholder.com/400x300?text=${encodeURIComponent(facility.title)}'">
                         <div class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-300 flex items-end">
-                            <span class="text-white font-bold text-lg px-4 pb-4 drop-shadow-lg">${facility.title}</span>
+                            <span class="text-white font-extrabold text-[17px] px-4 pb-4 drop-shadow-lg">${facility.title}</span>
                         </div>
                     </div>
                 `;

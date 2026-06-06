@@ -3,6 +3,7 @@
 @section('title', 'Tenaga Kependidikan - JTK POLBAN')
 
 @section('content')
+<div class="font-['Poppins']">
     <!-- Hero Section -->
     <x-hero 
         title="Tenaga Kependidikan"
@@ -11,49 +12,129 @@
         <span>Beranda</span> > <span>Tenaga Kependidikan</span>
     </x-hero>
 
-    <section class="py-16">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Accordion -->
-            <div class="space-y-4">
-                <details class="bg-white border border-gray-300 rounded-lg group">
-                    <summary class="flex cursor-pointer items-center justify-between bg-gray-50 px-6 py-4 text-navy-900 font-bold group-open:bg-navy-900 group-open:text-white transition">
-                        <span>A. Tenaga Administrasi</span>
-                        <span class="text-2xl group-open:rotate-180 transition">+</span>
-                    </summary>
-                    <div class="px-6 py-6 border-t border-gray-200">
-                        <div class="grid grid-cols-2 gap-6">
-                            <div class="text-center p-4 border border-gray-200 rounded-lg">
-                                <div class="text-3xl mb-3">👤</div>
-                                <h3 class="font-bold text-navy-900 text-sm">Lia Rahmawati</h3>
-                            </div>
-                            <div class="text-center p-4 border border-gray-200 rounded-lg">
-                                <div class="text-3xl mb-3">👤</div>
-                                <h3 class="font-bold text-navy-900 text-sm">Pulut Priyanto</h3>
-                            </div>
-                        </div>
-                    </div>
-                </details>
+    <section class="py-12">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12 xl:px-16">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-[#01018B] mb-8">Tenaga Kependidikan</h2>
+            
+            <!-- Hidden Raw Content from DB -->
+            <div id="raw-content" class="hidden">
+                {!! $pageContent ?? '' !!}
+            </div>
 
-                <details class="bg-white border border-gray-300 rounded-lg group">
-                    <summary class="flex cursor-pointer items-center justify-between bg-gray-50 px-6 py-4 text-navy-900 font-bold group-open:bg-navy-900 group-open:text-white transition">
-                        <span>B. Teknisi</span>
-                        <span class="text-2xl group-open:rotate-180 transition">+</span>
-                    </summary>
-                    <div class="px-6 py-4 border-t border-gray-200">
-                        <p class="text-gray-700 text-sm">Daftar tenaga teknisi pendukung</p>
-                    </div>
-                </details>
-
-                <details class="bg-white border border-gray-300 rounded-lg group">
-                    <summary class="flex cursor-pointer items-center justify-between bg-gray-50 px-6 py-4 text-navy-900 font-bold group-open:bg-navy-900 group-open:text-white transition">
-                        <span>C. Pramukantor</span>
-                        <span class="text-2xl group-open:rotate-180 transition">+</span>
-                    </summary>
-                    <div class="px-6 py-4 border-t border-gray-200">
-                        <p class="text-gray-700 text-sm">Daftar pramukantor dan staff pendukung</p>
-                    </div>
-                </details>
+            <!-- Dynamic Accordion Container -->
+            <div id="accordion-container" class="space-y-4 font-['Poppins']">
+                <!-- Loading State -->
+                <div class="animate-pulse space-y-4">
+                    <div class="h-14 bg-gray-200 rounded-lg w-full"></div>
+                    <div class="h-14 bg-gray-200 rounded-lg w-full"></div>
+                    <div class="h-14 bg-gray-200 rounded-lg w-full"></div>
+                </div>
             </div>
         </div>
     </section>
+
+    <!-- Script to Fetch, Parse and Render Accordions -->
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const container = document.getElementById('accordion-container');
+
+            try {
+                // Fetch from API dynamically
+                const res = await fetch('/api/pages/tenaga-kependidikan');
+                if (!res.ok) throw new Error('Gagal memuat API Tenaga Kependidikan');
+                const json = await res.json();
+                const page = json.data || json;
+                
+                const htmlContent = page.content || page.excerpt || '';
+                
+                // Parse HTML
+                const div = document.createElement('div');
+                div.innerHTML = htmlContent;
+
+                const ps = div.querySelectorAll('p');
+                let categories = [];
+
+                ps.forEach((p) => {
+                    const strong = p.querySelector('strong');
+                    if (strong) {
+                        const categoryName = strong.textContent.trim();
+                        // Find the corresponding list (ul or ol)
+                        let nextEl = p.nextElementSibling;
+                        let people = [];
+                        
+                        // Sometimes WordPress injects empty paragraphs between p and ol
+                        while(nextEl && nextEl.tagName !== 'OL' && nextEl.tagName !== 'UL') {
+                            nextEl = nextEl.nextElementSibling;
+                        }
+
+                        if (nextEl && (nextEl.tagName === 'OL' || nextEl.tagName === 'UL')) {
+                            const lis = nextEl.querySelectorAll('li');
+                            lis.forEach(li => {
+                                people.push(li.textContent.trim());
+                            });
+                        }
+
+                        if (people.length > 0) {
+                            categories.push({ name: categoryName, people: people });
+                        }
+                    }
+                });
+
+                if (categories.length === 0) {
+                    container.innerHTML = '<div class="text-center text-red-500 font-bold p-4 border border-red-500 bg-red-50 rounded">Tidak ada data tenaga kependidikan yang ditemukan di database. Pastikan data menggunakan huruf tebal (bold) untuk kategori dan list untuk daftar nama.</div>';
+                    return;
+                }
+
+                container.innerHTML = '';
+                const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+                categories.forEach((cat, index) => {
+                    const prefix = alphabet[index] + ". ";
+                    // Default to closed state for all categories
+                    const isOpen = '';
+
+                    const cardsHtml = cat.people.map(person => `
+                        <div class="text-center p-4 border border-gray-200 rounded-sm shadow-sm flex flex-col items-center justify-center min-h-[120px] bg-white transition-all hover:shadow-md">
+                            <div class="w-12 h-12 bg-[#EEEEEE] rounded-lg flex items-center justify-center mb-3">
+                                <svg class="w-4 h-4 text-[#333333]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                    <path d="M3 21v-1a6 6 0 0 1 6-6h6a6 6 0 0 1 6 6v1z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="font-bold text-[#01018B] text-base">${person}</h3>
+                        </div>
+                    `).join('');
+
+                    const accordionHtml = `
+                        <details class="bg-white border border-gray-300 rounded-sm group" ${isOpen}>
+                            <summary class="flex cursor-pointer items-center justify-between bg-[#F3F3F4] px-6 py-4 text-[#01018B] font-bold transition list-none group-open:border-b group-open:border-gray-200">
+                                <span class="text-base">${prefix}${cat.name}</span>
+                                <span class="transform group-open:rotate-180 transition-transform duration-200 text-[#01018B]">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </span>
+                            </summary>
+                            <div class="px-6 py-6 bg-white">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                    ${cardsHtml}
+                                </div>
+                            </div>
+                        </details>
+                    `;
+                    container.insertAdjacentHTML('beforeend', accordionHtml);
+                });
+
+                // Add CSS to hide default details marker (safari/chrome)
+                const style = document.createElement('style');
+                style.innerHTML = 'details > summary::-webkit-details-marker { display: none; } details > summary { list-style: none; }';
+                document.head.appendChild(style);
+
+            } catch (error) {
+                console.error(error);
+                container.innerHTML = '<div class="text-center text-red-500 font-bold p-4 border border-red-500 bg-red-50 rounded">Gagal memuat data dari API. Silakan periksa koneksi atau coba lagi nanti.</div>';
+            }
+        });
+    </script>
+    </div>
 @endsection

@@ -3,6 +3,12 @@
 @section('title', 'Visi Misi - JTK POLBAN')
 
 @section('content')
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+    </style>
+    <div style="font-family: 'Poppins', sans-serif;">
+        
+    <!-- Hero Section -->
     <x-hero 
         title="Visi dan Misi"
         subtitle="Visi, misi, dan tujuan Jurusan Teknik Komputer dan Informatika Politeknik Negeri Bandung"
@@ -104,7 +110,7 @@
                             cardsHtml += `
                             <div style="background: #ffffff; border: 1px solid #BFDBFE; border-radius: 8px; padding: 1.5rem 1rem; text-align: center; display: flex; flex-direction: column; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
                                 <div style="margin-bottom: 0.75rem;">${icons[idx] || icons[0]}</div>
-                                <h3 style="font-family: 'Poppins', sans-serif; font-size: 1.1rem; font-weight: 800; color: #01018B; margin-bottom: 0.5rem;">${name}</h3>
+                                <h3 style="font-size: 1.1rem; font-weight: 800; color: #01018B; margin-bottom: 0.5rem;">${name}</h3>
                                 <p style="font-size: 0.75rem; color: #00008B; line-height: 1.5;">${desc}</p>
                             </div>`;
                         });
@@ -112,7 +118,7 @@
 
                         finalHtml += `
                         <div style="margin-bottom: 3.5rem; margin-top: 3.5rem; text-align: center;">
-                            <h2 style="font-family: 'Poppins', sans-serif; font-size: 1.75rem; font-weight: 800; color: #01018B; margin-bottom: 1rem;">${sec.title}</h2>
+                            <h2 style="font-size: 1.75rem; font-weight: 800; color: #01018B; margin-bottom: 1rem;">${sec.title}</h2>
                             <p style="font-size: 0.95rem; color: #00008B; max-width: 800px; margin: 0 auto 2.5rem auto; line-height: 1.6;">${sec.content.join('<br>')}</p>
                             ${cardsHtml}
                         </div>`;
@@ -120,17 +126,17 @@
                         // Visi, Tujuan, Strategi Umum
                         let contentHtml = '';
                         if (sec.content.length > 0) {
-                            contentHtml += '<div style="color: #00008B; font-family: \'Poppins\', sans-serif; font-weight: 400; line-height: 1.7; font-size: 16px;">' + sec.content.join('<br>') + '</div>';
+                            contentHtml += '<div style="color: #00008B; font-weight: 400; line-height: 1.7; font-size: 16px;">' + sec.content.join('<br>') + '</div>';
                         }
                         if (sec.listItems.length > 0) {
-                            contentHtml += '<ol style="padding-left: 1.25rem; list-style-type: decimal; color: #00008B; font-family: \'Poppins\', sans-serif; font-weight: 400; line-height: 1.7; font-size: 16px; margin-top: 1rem;">';
+                            contentHtml += '<ol style="padding-left: 1.25rem; list-style-type: decimal; color: #00008B; font-weight: 400; line-height: 1.7; font-size: 16px; margin-top: 1rem;">';
                             sec.listItems.forEach(li => { contentHtml += '<li style="margin-bottom: 0.5rem;">' + li + '</li>'; });
                             contentHtml += '</ol>';
                         }
 
                         finalHtml += `
                         <div style="background: #F8FAFC; border: 1px solid #BFDBFE; border-radius: 8px; padding: 2rem; margin-bottom: 2.5rem;">
-                            <h2 style="font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 800; color: #01018B; margin-bottom: 1rem;">${sec.title}</h2>
+                            <h2 style="font-size: 1.5rem; font-weight: 800; color: #01018B; margin-bottom: 1rem;">${sec.title}</h2>
                             ${contentHtml}
                         </div>`;
                     }
@@ -147,4 +153,5 @@
             }
         });
     </script>
+    </div>
 @endsection

@@ -3,6 +3,12 @@
 @section('title', 'Riwayat Singkat - JTK POLBAN')
 
 @section('content')
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+    </style>
+    <div style="font-family: 'Poppins', sans-serif;">
+
+    <!-- Hero Section -->
     <x-hero 
         title="Riwayat Singkat"
         subtitle="Informasi terbaru seputar Riwayat Singkat"
@@ -14,7 +20,7 @@
         <div style="max-width: 72rem; margin: 0 auto; padding: 0 1.5rem;">
             
             <div style="text-align: center; margin-bottom: 3rem;">
-                <h2 style="font-family: 'Poppins', sans-serif; font-size: 2rem; font-weight: 800; color: #01018B;">Riwayat Singkat</h2>
+                <h2 style="font-size: 2rem; font-weight: 800; color: #01018B;">Riwayat Singkat</h2>
             </div>
 
             <!-- Loading state -->
@@ -91,10 +97,10 @@
                     items.forEach(item => {
                         cardsHtml += `
                         <div style="background: #ffffff; border: 1px solid #E5E7EB; border-left: 4px solid #01018B; padding: 1.5rem; display: flex; flex-direction: column; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                            <div style="background: rgba(0, 0, 78, 0.1); color: #00004E; font-family: 'Poppins', sans-serif; font-size: 0.75rem; font-weight: 700; padding: 0.35rem 0.75rem; border-radius: 4px; align-self: flex-start; margin-bottom: 1rem;">
+                            <div style="background: rgba(0, 0, 78, 0.1); color: #00004E; font-size: 0.75rem; font-weight: 700; padding: 0.35rem 0.75rem; border-radius: 4px; align-self: flex-start; margin-bottom: 1rem;">
                                 ${item.year}
                             </div>
-                            <p style="font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 400; color: #01018B; line-height: 1.6; margin: 0;">
+                            <p style="font-size: 15px; font-weight: 400; color: #01018B; line-height: 1.6; margin: 0;">
                                 ${item.text}
                             </p>
                         </div>`;
@@ -115,4 +121,5 @@
             }
         });
     </script>
+    </div>
 @endsection

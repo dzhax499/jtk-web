@@ -3,6 +3,11 @@
 @section('title', 'Tentang JTK - JTK POLBAN')
 
 @section('content')
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+    </style>
+    <div style="font-family: 'Poppins', sans-serif;">
+        
     <!-- Hero Section -->
     <x-hero 
         title="Tentang JTK"
@@ -15,12 +20,12 @@
     <section style="padding: 3rem 0; background-color: #ffffff;">
         <div style="max-width: 72rem; margin: 0 auto; padding: 0 2rem;">
             <div style="background: #F5F7FD; border: 1px solid #799DD6; border-radius: 8px; padding: 2.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-                <h2 id="page-title" style="font-family: 'Poppins', sans-serif; font-size: 32px; font-weight: 700; color: #01018B; margin-bottom: 1.25rem;">Tentang JTK</h2>
+                <h2 id="page-title" style="font-size: 32px; font-weight: 700; color: #01018B; margin-bottom: 1.25rem;">Tentang JTK</h2>
 
                 <!-- Client-side loaded content: will fetch /api/pages/tentang-jtk -->
                 <div id="page-loading" style="color: #00008B; font-weight: 600; margin-bottom: 1rem;">Memuat informasi Tentang JTK...</div>
 
-                <div id="page-content" style="display: none; color: #00008B; font-weight: 400; line-height: 1.7; font-size: 16px; font-family: 'Poppins', sans-serif;">
+                <div id="page-content" style="display: none; color: #00008B; font-weight: 400; line-height: 1.7; font-size: 16px; ">
                     <div id="page-body" style="display: flex; flex-direction: column; gap: 1rem;"></div>
                 </div>
 
@@ -58,4 +63,5 @@
             </div>
         </div>
     </section>
+    </div>
 @endsection

@@ -5,7 +5,7 @@
 @section('content')
 <div class="font-['Poppins']">
     <!-- Hero Section -->
-    <x-hero 
+    <x-hero
         title="Tenaga Kependidikan"
         subtitle="Informasi terbaru seputar Tenaga Kependidikan"
         bgImage="https://via.placeholder.com/1920x400?text=Tenaga+Kependidikan">

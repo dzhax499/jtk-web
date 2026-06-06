@@ -5,7 +5,7 @@
 @section('content')
 <div class="font-['Poppins']">
     <!-- Hero Section -->
-    <x-hero 
+    <x-hero
         title="Reputasi"
         subtitle="Bukti nyata dedikasi dan kualitas institusi melalui pencapaian serta pengakuan Jurusan Teknik Komputer dan Informatika Politeknik Negeri Bandung"
         bgImage="https://via.placeholder.com/1920x400?text=Reputasi">

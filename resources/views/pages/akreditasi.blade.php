@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="font-['Poppins']">
-    <x-hero 
+    <x-hero
         title="Akreditasi"
         subtitle="Informasi akreditasi program studi Jurusan Teknik Komputer dan Informatika"
         bgImage="https://via.placeholder.com/1920x400?text=Akreditasi">
@@ -22,7 +22,7 @@
 
             <!-- Fallback Container if Parsing Fails -->
             <div id="page-content" class="hidden bg-white border border-gray-100 rounded-xl shadow-sm p-8 mb-16">
-                <h2 id="page-title" class="text-2xl font-bold text-navy-900 mb-4 border-b pb-2"></h2>
+                <h2 id="page-title" class="text-2xl font-bold text-navy-900 mb-4 border-b pb-2">Akreditasi</h2>
                 <div id="page-body" class="prose max-w-none text-gray-700"></div>
             </div>
 
@@ -102,7 +102,7 @@
                 const rawHtml = safeHtml(page.content || page.excerpt || '');
                 if (rawHtml.trim() === '') {
                     loading.classList.add('hidden');
-                    return; 
+                    return;
                 }
 
                 // Ekstrak data dari HTML API untuk dimasukkan ke Card Statis
@@ -140,12 +140,13 @@
                 if (d3Info && strInfo && d3Info.sk && strInfo.sk) {
                     // Berhasil parsing, masukkan ke Card
                     document.getElementById('d3-status').textContent = d3Info.status;
-                    document.getElementById('d3-dates').innerHTML = d3Info.dates.replace(/hingga /i, 'hingga <br class="hidden sm:block"><span class="font-bold">').replace(/\./g, '.</span>'); 
+                    
+                    // Gunakan Regex yang menangkap "hingga" beserta spasi setelahnya agar tidak ada leading space
+                    document.getElementById('d3-dates').innerHTML = d3Info.dates.replace(/hingga\s+/i, 'hingga<br><span class="font-bold">').replace(/\./g, '.</span>');
                     if(document.getElementById('d3-dates').innerHTML.indexOf('<br') === -1) {
-                         // Simple fallback formatting if replace fails
-                         const parts = d3Info.dates.split('hingga');
+                         const parts = d3Info.dates.split(/hingga/i);
                          if(parts.length > 1) {
-                             document.getElementById('d3-dates').innerHTML = parts[0] + 'hingga <br class="hidden sm:block"><span class="font-bold">' + parts[1] + '</span>';
+                             document.getElementById('d3-dates').innerHTML = parts[0] + 'hingga<br><span class="font-bold">' + parts[1].trim() + '</span>';
                          } else {
                              document.getElementById('d3-dates').textContent = d3Info.dates;
                          }
@@ -153,11 +154,15 @@
                     document.getElementById('d3-sk').textContent = d3Info.sk;
 
                     document.getElementById('str-status').textContent = strInfo.status;
-                    const partsStr = strInfo.dates.split('hingga');
-                    if(partsStr.length > 1) {
-                         document.getElementById('str-dates').innerHTML = partsStr[0] + 'hingga <br class="hidden sm:block"><span class="font-bold">' + partsStr[1] + '</span>';
-                    } else {
-                         document.getElementById('str-dates').textContent = strInfo.dates;
+                    
+                    document.getElementById('str-dates').innerHTML = strInfo.dates.replace(/hingga\s+/i, 'hingga<br><span class="font-bold">').replace(/\./g, '.</span>');
+                    if(document.getElementById('str-dates').innerHTML.indexOf('<br') === -1) {
+                         const partsStr = strInfo.dates.split(/hingga/i);
+                         if(partsStr.length > 1) {
+                              document.getElementById('str-dates').innerHTML = partsStr[0] + 'hingga<br><span class="font-bold">' + partsStr[1].trim() + '</span>';
+                         } else {
+                              document.getElementById('str-dates').textContent = strInfo.dates;
+                         }
                     }
                     document.getElementById('str-sk').textContent = strInfo.sk;
 

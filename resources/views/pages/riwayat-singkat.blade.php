@@ -3,10 +3,7 @@
 @section('title', 'Riwayat Singkat - JTK POLBAN')
 
 @section('content')
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
-    </style>
-    <div style="font-family: 'Poppins', sans-serif;">
+    <div class="font-['Poppins']">
 
     <!-- Hero Section -->
     <x-hero 
@@ -20,7 +17,7 @@
         <div style="max-width: 72rem; margin: 0 auto; padding: 0 1.5rem;">
             
             <div style="text-align: center; margin-bottom: 3rem;">
-                <h2 style="font-size: 2rem; font-weight: 800; color: #01018B;">Riwayat Singkat</h2>
+                <h2 class="text-2xl md:text-[40px] font-extrabold text-[#01018B]">Riwayat Singkat</h2>
             </div>
 
             <!-- Loading state -->
@@ -96,11 +93,11 @@
                     
                     items.forEach(item => {
                         cardsHtml += `
-                        <div style="background: #ffffff; border: 1px solid #E5E7EB; border-left: 4px solid #01018B; padding: 1.5rem; display: flex; flex-direction: column; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                            <div style="background: rgba(0, 0, 78, 0.1); color: #00004E; font-size: 0.75rem; font-weight: 700; padding: 0.35rem 0.75rem; border-radius: 4px; align-self: flex-start; margin-bottom: 1rem;">
+                        <div class="bg-white border border-gray-200 border-l-4 border-l-[#01018B] p-6 flex flex-col shadow-sm">
+                            <div class="bg-[#00004E]/10 text-[#00004E] text-xs font-bold py-1.5 px-3 rounded self-start mb-4">
                                 ${item.year}
                             </div>
-                            <p style="font-size: 15px; font-weight: 400; color: #01018B; line-height: 1.6; margin: 0;">
+                            <p class="text-[15px] font-normal text-[#01018B] leading-relaxed m-0">
                                 ${item.text}
                             </p>
                         </div>`;

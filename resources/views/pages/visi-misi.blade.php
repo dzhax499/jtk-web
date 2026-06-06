@@ -3,10 +3,7 @@
 @section('title', 'Visi Misi - JTK POLBAN')
 
 @section('content')
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
-    </style>
-    <div style="font-family: 'Poppins', sans-serif;">
+    <div class="font-['Poppins']">
         
     <!-- Hero Section -->
     <x-hero 
@@ -16,8 +13,8 @@
         <span>Breadcrumb: <a href="/" class="underline">Beranda</a> &gt; <span>Visi dan Misi</span></span>
     </x-hero>
 
-    <section style="padding: 4rem 0; background-color: #ffffff;">
-        <div style="max-width: 64rem; margin: 0 auto; padding: 0 1.5rem;">
+    <section class="py-16 bg-white">
+        <div class="max-w-5xl mx-auto px-6">
             
             <div id="page-loading" style="display: grid; gap: 1.5rem; margin-bottom: 2rem;">
                 <div style="height: 150px; background: #F1F5F9; border-radius: 8px;"></div>
@@ -110,33 +107,33 @@
                             cardsHtml += `
                             <div style="background: #ffffff; border: 1px solid #BFDBFE; border-radius: 8px; padding: 1.5rem 1rem; text-align: center; display: flex; flex-direction: column; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
                                 <div style="margin-bottom: 0.75rem;">${icons[idx] || icons[0]}</div>
-                                <h3 style="font-size: 1.1rem; font-weight: 800; color: #01018B; margin-bottom: 0.5rem;">${name}</h3>
-                                <p style="font-size: 0.75rem; color: #00008B; line-height: 1.5;">${desc}</p>
+                                <h3 class="text-[17px] font-extrabold text-[#01018B] mb-2">${name}</h3>
+                                <p class="text-xs text-[#00008B] leading-relaxed">${desc}</p>
                             </div>`;
                         });
                         cardsHtml += '</div>';
 
                         finalHtml += `
                         <div style="margin-bottom: 3.5rem; margin-top: 3.5rem; text-align: center;">
-                            <h2 style="font-size: 1.75rem; font-weight: 800; color: #01018B; margin-bottom: 1rem;">${sec.title}</h2>
-                            <p style="font-size: 0.95rem; color: #00008B; max-width: 800px; margin: 0 auto 2.5rem auto; line-height: 1.6;">${sec.content.join('<br>')}</p>
+                            <h2 class="text-xl md:text-3xl font-extrabold text-[#01018B] mb-4">${sec.title}</h2>
+                            <p class="text-[15px] text-[#00008B] max-w-[800px] mx-auto mb-10 leading-relaxed">${sec.content.join('<br>')}</p>
                             ${cardsHtml}
                         </div>`;
                     } else {
                         // Visi, Tujuan, Strategi Umum
                         let contentHtml = '';
                         if (sec.content.length > 0) {
-                            contentHtml += '<div style="color: #00008B; font-weight: 400; line-height: 1.7; font-size: 16px;">' + sec.content.join('<br>') + '</div>';
+                            contentHtml += '<div class="text-[#00008B] font-normal leading-relaxed text-base">' + sec.content.join('<br>') + '</div>';
                         }
                         if (sec.listItems.length > 0) {
-                            contentHtml += '<ol style="padding-left: 1.25rem; list-style-type: decimal; color: #00008B; font-weight: 400; line-height: 1.7; font-size: 16px; margin-top: 1rem;">';
+                            contentHtml += '<ol class="pl-5 list-decimal text-[#00008B] font-normal leading-relaxed text-base mt-4">';
                             sec.listItems.forEach(li => { contentHtml += '<li style="margin-bottom: 0.5rem;">' + li + '</li>'; });
                             contentHtml += '</ol>';
                         }
 
                         finalHtml += `
                         <div style="background: #F8FAFC; border: 1px solid #BFDBFE; border-radius: 8px; padding: 2rem; margin-bottom: 2.5rem;">
-                            <h2 style="font-size: 1.5rem; font-weight: 800; color: #01018B; margin-bottom: 1rem;">${sec.title}</h2>
+                            <h2 class="text-lg md:text-2xl font-extrabold text-[#01018B] mb-4">${sec.title}</h2>
                             ${contentHtml}
                         </div>`;
                     }

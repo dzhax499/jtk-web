@@ -3,10 +3,7 @@
 @section('title', 'Struktur Organisasi - JTK POLBAN')
 
 @section('content')
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
-    </style>
-    <div style="font-family: 'Poppins', sans-serif;">
+    <div class="font-['Poppins']">
         
     <!-- Hero Section -->
     <x-hero 
@@ -16,8 +13,8 @@
         <span>Beranda</span> > <span>Struktur Organisasi</span>
     </x-hero>
 
-    <section style="padding: 3rem 0; background-color: #ffffff;">
-        <div style="max-width: 56rem; margin: 0 auto; padding: 0 1.5rem;">
+    <section class="py-12 bg-white">
+        <div class="max-w-4xl mx-auto px-6">
             
             <!-- Loading State -->
             <div id="page-loading" style="display: grid; gap: 0.75rem; margin-bottom: 1.5rem;">
@@ -100,16 +97,16 @@
                             
                         sec.items.forEach(item => {
                             if (item.raw) {
-                                itemsHtml += '<div style="width: 100%;"><p style="color: #01018B; font-size: 0.95rem; line-height: 1.6;">' + item.raw + '</p></div>';
+                                itemsHtml += '<div class="w-full"><p class="text-[#01018B] text-[15px] leading-relaxed">' + item.raw + '</p></div>';
                             } else {
                                 itemsHtml += `
                                 <div style="background: #F9F9F9; border: 1px solid #C6C5D5; border-radius: 2px; padding: 20px 16px; text-align: center; display: flex; flex-direction: column; align-items: center; height: 100%;">
                                     <div style="background: #EEEEEE; border: 1px solid rgba(198, 197, 213, 0.2); border-radius: 16px; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.85rem; flex-shrink: 0;">
                                         <svg style="width: 28px; height: 28px; color: #1A1C1C;" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2z"></path><circle cx="12" cy="7" r="4"></circle></svg>
                                     </div>
-                                    <p style="font-weight: 600; color: #01018B; font-size: 16px; margin-bottom: 0.25rem; line-height: 1.4;">${item.name}</p>
-                                    ${item.role ? '<p style="font-weight: 500; color: #6B7280; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.025em; margin-bottom: 0.25rem; line-height: 1.4;">' + item.role + '</p>' : ''}
-                                    <p style="font-weight: 400; color: #6B7280; font-size: 0.75rem; margin-top: auto;">${item.nip}</p>
+                                    <p class="font-semibold text-[#01018B] text-base mb-1 leading-snug">${item.name}</p>
+                                    ${item.role ? '<p class="font-medium text-gray-500 text-xs uppercase tracking-wide mb-1 leading-snug">' + item.role + '</p>' : ''}
+                                    <p class="font-normal text-gray-500 text-xs mt-auto">${item.nip}</p>
                                 </div>`;
                             }
                         });

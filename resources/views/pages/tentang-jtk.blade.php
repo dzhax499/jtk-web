@@ -3,10 +3,7 @@
 @section('title', 'Tentang JTK - JTK POLBAN')
 
 @section('content')
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
-    </style>
-    <div style="font-family: 'Poppins', sans-serif;">
+    <div class="font-['Poppins']">
         
     <!-- Hero Section -->
     <x-hero 
@@ -17,16 +14,16 @@
     </x-hero>
 
     <!-- Content Section -->
-    <section style="padding: 3rem 0; background-color: #ffffff;">
-        <div style="max-width: 72rem; margin: 0 auto; padding: 0 2rem;">
-            <div style="background: #F5F7FD; border: 1px solid #799DD6; border-radius: 8px; padding: 2.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-                <h2 id="page-title" style="font-size: 32px; font-weight: 700; color: #01018B; margin-bottom: 1.25rem;">Tentang JTK</h2>
+    <section class="py-12 bg-white">
+        <div class="max-w-6xl mx-auto px-8">
+            <div class="bg-[#F5F7FD] border border-[#799DD6] rounded-lg p-10 shadow-sm">
+                <h2 id="page-title" class="text-2xl md:text-4xl font-extrabold text-[#01018B] mb-5">Tentang JTK</h2>
 
                 <!-- Client-side loaded content: will fetch /api/pages/tentang-jtk -->
-                <div id="page-loading" style="color: #00008B; font-weight: 600; margin-bottom: 1rem;">Memuat informasi Tentang JTK...</div>
+                <div id="page-loading" class="text-[#00008B] font-semibold mb-4">Memuat informasi Tentang JTK...</div>
 
-                <div id="page-content" style="display: none; color: #00008B; font-weight: 400; line-height: 1.7; font-size: 16px; ">
-                    <div id="page-body" style="display: flex; flex-direction: column; gap: 1rem;"></div>
+                <div id="page-content" style="display: none;" class="text-[#00008B] font-normal leading-relaxed text-base">
+                    <div id="page-body" class="flex flex-col gap-4"></div>
                 </div>
 
                 <script>

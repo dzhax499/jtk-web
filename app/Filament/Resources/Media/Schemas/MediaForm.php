@@ -14,13 +14,16 @@ class MediaForm
             ->components([
                 TextInput::make('title')
                     ->required()
+                    ->label('Judul Media')
                     ->live(onBlur: true)
                     ->afterStateUpdated(fn (string $operation, $state, callable $set) => $operation === 'create' ? $set('slug', \Illuminate\Support\Str::slug($state)) : null),
                 TextInput::make('slug')
+                    ->label('Slug')
                     ->required()
                     ->unique(ignoreRecord: true),
                 \Filament\Forms\Components\FileUpload::make('source_url')
                     ->directory('media')
+                    ->label('File Gambar')
                     ->image()
                     ->imageEditor()
                     ->columnSpanFull(),

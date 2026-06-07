@@ -17,7 +17,7 @@ class LecturerForm
 
                 // --- Identitas Utama ---
                 TextInput::make('name')
-                    ->label('Nama Lengkap (beserta Gelar)')
+                    ->label('Nama Lengkap')
                     ->required()
                     ->maxLength(255),
 

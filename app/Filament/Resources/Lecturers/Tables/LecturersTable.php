@@ -20,7 +20,9 @@ class LecturersTable
                     ->label('Nama Lengkap')
                     ->searchable()
                     ->sortable()
-                    ->weight('bold'),
+                    ->weight('bold')
+                    ->limit(15)
+                    ->tooltip(fn ($record) => $record->name),
                 
                 TextColumn::make('nidn')
                     ->label('NIDN')

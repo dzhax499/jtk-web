@@ -94,7 +94,6 @@ class PublicController extends Controller
                 'filters' => $this->emptyLecturerFilters(),
                 'selected' => [
                     'search' => '',
-                    'program' => [],
                     'education' => [],
                     'position' => [],
                 ]
@@ -134,13 +133,8 @@ class PublicController extends Controller
             ->values()
             ->toArray();
 
-        $programFilters = Schema::hasTable('study_programs')
-            ? DB::table('study_programs')->pluck('name')->filter()->unique()->sort()->values()->toArray()
-            : [];
-
         // Build the filtered query
         $query = DB::table('lecturers')
-            ->leftJoin('study_programs', 'lecturers.study_program_id', '=', 'study_programs.id')
             ->select([
                 'lecturers.id',
                 'lecturers.name',
@@ -148,8 +142,7 @@ class PublicController extends Controller
                 'lecturers.gender',
                 'lecturers.highest_education',
                 'lecturers.academic_position',
-                'lecturers.activity_status',
-                'study_programs.name as study_program_name'
+                'lecturers.activity_status'
             ])
             ->where(function($q) {
                 // Filter out junk lecturers
@@ -169,13 +162,6 @@ class PublicController extends Controller
                 ->orWhere('lecturers.highest_education', 'ilike', '%' . $search . '%')
                 ->orWhere('lecturers.academic_position', 'ilike', '%' . $search . '%');
             });
-        }
-
-        // Program Studi Filter
-        if ($selectedPrograms = request('program')) {
-            if (is_array($selectedPrograms) && count($selectedPrograms) > 0) {
-                $query->whereIn('study_programs.name', $selectedPrograms);
-            }
         }
 
         // Pendidikan Terakhir Filter
@@ -212,13 +198,11 @@ class PublicController extends Controller
         return view('pages.profil-dosen', [
             'lecturers' => $lecturers,
             'filters' => [
-                'program' => $programFilters,
                 'education' => $educationFilters,
                 'position' => $positionFilters,
             ],
             'selected' => [
                 'search' => request('search', ''),
-                'program' => (array) request('program', []),
                 'education' => (array) request('education', []),
                 'position' => (array) request('position', []),
             ]
@@ -625,7 +609,6 @@ class PublicController extends Controller
     private function emptyLecturerFilters(): array
     {
         return [
-            'program' => ['Semua Program Studi'],
             'field' => ['Semua Bidang Keahlian'],
             'education' => ['Semua Pendidikan Terakhir'],
             'position' => ['Semua Jabatan Fungsional'],

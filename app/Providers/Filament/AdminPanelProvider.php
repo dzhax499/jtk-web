@@ -33,7 +33,7 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => '#00008B',
             ])
-
+            ->font('Poppins')
             ->brandLogo(fn () => view('filament.logo'))
             ->brandLogoHeight('3rem')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')

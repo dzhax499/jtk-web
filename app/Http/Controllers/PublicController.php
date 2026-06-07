@@ -165,9 +165,9 @@ class PublicController extends Controller
         // Search Filter
         if ($search = request('search')) {
             $query->where(function ($q) use ($search) {
-                $q->where('lecturers.name', 'like', '%' . $search . '%')
-                  ->orWhere('lecturers.highest_education', 'like', '%' . $search . '%')
-                  ->orWhere('lecturers.academic_position', 'like', '%' . $search . '%');
+                $q->where('lecturers.name', 'ilike', '%' . $search . '%')
+                ->orWhere('lecturers.highest_education', 'ilike', '%' . $search . '%')
+                ->orWhere('lecturers.academic_position', 'ilike', '%' . $search . '%');
             });
         }
 

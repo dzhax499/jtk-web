@@ -15,17 +15,26 @@ class CategoriesTable
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label('Nama') 
                     ->searchable(),
+                    
                 TextColumn::make('slug')
+                    ->label('Slug')
                     ->searchable(),
+                    
                 TextColumn::make('parent_id')
+                    ->label('ID Induk')
                     ->numeric()
                     ->sortable(),
+                    
                 TextColumn::make('created_at')
+                    ->label('Dibuat pada') 
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                    
                 TextColumn::make('updated_at')
+                    ->label('Diperbarui pada') 
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

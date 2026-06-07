@@ -1,117 +1,148 @@
 @extends('layouts.app')
 
-@section('title', 'Berita - JTK POLBAN')
+@section('title', 'Arsip - JTK POLBAN')
 
 @section('content')
     <x-hero 
-        title="Berita"
-        subtitle="Informasi terbaru seputar kegiatan, prestasi, dan informasi Jurusan Teknik Komputer dan Informatika Politeknik Negeri Bandung"
+        title="Arsip"
+        subtitle="Jelajahi rekam jejak, dokumen resmi, dan memori perjalanan kelembagaan Jurusan Teknik Komputer dan Informatika"
         bgImage="true">
         <span>
             <a href="/" class="underline hover:text-white transition">Beranda</a> > 
-            <span class="text-gray-300">Berita</span>
+            <span class="text-gray-300">Arsip</span>
         </span>
     </x-hero>
 
     <section class="py-16 bg-[#FAFAFA] font-['Poppins']">
-        <div class="max-w-[1440px] mx-auto px-6 lg:px-12 xl:px-16">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12 xl:px-16 space-y-12">
             
-            <!-- Category and Search Row -->
-            <div class="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-6 mb-10">
-                <!-- Categories Pills -->
-                <div id="category-filter" class="flex flex-wrap gap-2.5">
-                    <button type="button" data-category="" class="category-btn px-5 py-2.5 bg-[#00008B] text-white rounded-full font-bold text-sm shadow-sm transition hover:bg-blue-900">
-                        Semua Berita
-                    </button>
-                    <button type="button" data-category="prestasi" class="category-btn px-5 py-2.5 border border-gray-300 bg-white text-gray-700 rounded-full font-bold text-sm hover:border-[#00008B] hover:text-[#00008B] transition">
-                        Prestasi
-                    </button>
-                </div>
-
-                <!-- Search Box -->
-                <div class="relative w-full md:w-80 shrink-0">
-                    <input 
-                        id="news-search"
-                        type="text" 
-                        placeholder="Cari Berita..."
-                        class="w-full px-5 py-2.5 pr-12 border border-gray-300 bg-white rounded-full focus:outline-none focus:border-[#00008B] text-sm text-gray-700 font-medium"
-                    >
-                    <div class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400">
+            <!-- Filter Arsip Box -->
+            <div class="bg-white border border-gray-200 rounded-2xl p-6 lg:p-8 shadow-sm">
+                <div class="flex justify-between items-center border-b border-gray-100 pb-4 mb-6">
+                    <h3 class="text-lg font-bold text-[#00008B] font-['Poppins']">
+                        Filter Arsip
+                    </h3>
+                    <div class="text-gray-400">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
                     </div>
                 </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Dropdown Tahun -->
+                    <div>
+                        <label for="filter-year" class="block text-xs font-bold text-gray-400 mb-2">Tahun</label>
+                        <select id="filter-year" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:outline-none focus:border-[#00008B] text-sm text-gray-700 bg-white font-semibold">
+                            <option value="0">Semua Tahun</option>
+                            <option value="2026">2026</option>
+                            <option value="2025">2025</option>
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                            <option value="2022">2022</option>
+                            <option value="2021">2021</option>
+                            <option value="2020">2020</option>
+                            <option value="2019">2019</option>
+                            <option value="2018">2018</option>
+                            <option value="2017">2017</option>
+                            <option value="2016">2016</option>
+                            <option value="2015">2015</option>
+                            <option value="2014">2014</option>
+                            <option value="2013">2013</option>
+                            <option value="2012">2012</option>
+                            <option value="2011">2011</option>
+                            <option value="2010">2010</option>
+                        </select>
+                    </div>
+
+                    <!-- Dropdown Bulan -->
+                    <div>
+                        <label for="filter-month" class="block text-xs font-bold text-gray-400 mb-2">Bulan</label>
+                        <select id="filter-month" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:outline-none focus:border-[#00008B] text-sm text-gray-700 bg-white font-semibold">
+                            <option value="0">Semua Bulan</option>
+                            <option value="1">Januari</option>
+                            <option value="2">Februari</option>
+                            <option value="3">Maret</option>
+                            <option value="4">April</option>
+                            <option value="5">Mei</option>
+                            <option value="6">Juni</option>
+                            <option value="7">Juli</option>
+                            <option value="8">Agustus</option>
+                            <option value="9">September</option>
+                            <option value="10">Oktober</option>
+                            <option value="11">November</option>
+                            <option value="12">Desember</option>
+                        </select>
+                    </div>
+
+                    <!-- Dropdown Kategori -->
+                    <div>
+                        <label for="filter-category" class="block text-xs font-bold text-gray-400 mb-2">Kategori</label>
+                        <select id="filter-category" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:outline-none focus:border-[#00008B] text-sm text-gray-700 bg-white font-semibold">
+                            <option value="">Semua Kategori</option>
+                            <option value="berita">Berita</option>
+                            <option value="prestasi">Prestasi Mahasiswa</option>
+                        </select>
+                    </div>
+
+                    <!-- Input Kata Kunci -->
+                    <div>
+                        <label for="filter-search" class="block text-xs font-bold text-gray-400 mb-2">Kata Kunci</label>
+                        <div class="relative">
+                            <input 
+                                id="filter-search"
+                                type="text" 
+                                placeholder="Cari arsip..."
+                                class="w-full px-4 py-2.5 pr-10 border border-gray-300 bg-white rounded-xl focus:outline-none focus:border-[#00008B] text-sm text-gray-700 font-semibold"
+                            >
+                            <div class="absolute right-3.5 top-1/2 transform -translate-y-1/2 text-gray-400">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Two-Column Layout -->
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-10">
-                <!-- Left Column: News List (75%) -->
-                <div class="lg:col-span-3 space-y-8">
-                    
-                    <!-- Loading Shimmer -->
-                    <div id="news-loading" class="space-y-6">
-                        @for($i = 0; $i < 3; $i++)
-                            <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm flex flex-col md:flex-row h-auto md:h-56 animate-pulse">
-                                <div class="w-full md:w-[40%] bg-gray-200 h-48 md:h-full"></div>
-                                <div class="w-full md:w-[60%] p-6 space-y-4 flex flex-col justify-center">
-                                    <div class="h-4 bg-gray-200 rounded w-1/4"></div>
-                                    <div class="h-6 bg-gray-200 rounded w-3/4"></div>
-                                    <div class="h-4 bg-gray-200 rounded w-5/6"></div>
-                                </div>
+            <!-- Daftar Arsip Box -->
+            <div class="bg-white border border-gray-200 rounded-2xl p-6 lg:p-8 shadow-sm space-y-6">
+                <h3 class="text-xl font-bold text-gray-800 border-b border-gray-100 pb-4">Daftar Arsip Terbaru</h3>
+                
+                <!-- Loading Shimmer -->
+                <div id="archive-loading" class="space-y-6">
+                    @for($i = 0; $i < 3; $i++)
+                        <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm flex flex-col md:flex-row h-auto md:h-56 animate-pulse">
+                            <div class="w-full md:w-[40%] bg-gray-200 h-48 md:h-full"></div>
+                            <div class="w-full md:w-[60%] p-6 space-y-4 flex flex-col justify-center">
+                                <div class="h-4 bg-gray-200 rounded w-1/4"></div>
+                                <div class="h-6 bg-gray-200 rounded w-3/4"></div>
+                                <div class="h-4 bg-gray-200 rounded w-5/6"></div>
                             </div>
-                        @endfor
-                    </div>
-
-                    <!-- News List Container -->
-                    <div id="news-grid" class="space-y-6 hidden">
-                        <!-- Items via JS -->
-                    </div>
-
-                    <!-- Empty State -->
-                    <div id="news-empty" class="hidden text-center py-16 bg-white rounded-2xl border border-gray-100 shadow-sm">
-                        <p class="text-xl font-bold text-navy-900 mb-2">Data berita belum ditemukan</p>
-                        <p class="text-gray-500 font-medium">Coba ubah kata kunci pencarian atau kategori.</p>
-                    </div>
-
-                    <!-- Error State -->
-                    <div id="news-error" class="hidden text-center py-16 bg-red-50 rounded-2xl border border-red-100 shadow-sm">
-                        <p class="text-xl font-bold text-red-700 mb-2">Gagal mengambil data berita</p>
-                        <p class="text-red-500 font-medium">Pastikan koneksi internet stabil atau hubungi admin.</p>
-                    </div>
-
-                    <!-- Pagination Container -->
-                    <div id="news-pagination" class="flex justify-center items-center gap-2 pt-6">
-                        <!-- Pagination via JS -->
-                    </div>
-
+                        </div>
+                    @endfor
                 </div>
 
-                <!-- Right Column: Sidebar (25%) -->
-                <div class="lg:col-span-1 space-y-8">
-                    <!-- Berita Terkini Box -->
-                    <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
-                        <div class="bg-[#00008B] text-white px-5 py-4 font-bold text-sm tracking-wide flex items-center space-x-2.5">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 4a2 2 0 00-2-2v3m2 3V10m0 0a2 2 0 01-2-2h3m-3 2h3m-3 3h3M9 8h2m-2 3h2m-2 3h2m-3-6h.01M6 11h.01M6 14h.01"></path>
-                            </svg>
-                            <span>Berita Terkini</span>
-                        </div>
-                        <div id="recent-news-list" class="p-5 space-y-4">
-                            <!-- Loading Shimmer Sidebar -->
-                            <div class="space-y-4">
-                                @for($i = 0; $i < 4; $i++)
-                                    <div class="flex items-center space-x-3.5 animate-pulse">
-                                        <div class="w-20 h-14 bg-gray-200 rounded-lg shrink-0"></div>
-                                        <div class="flex-1 space-y-2">
-                                            <div class="h-3.5 bg-gray-200 rounded w-full"></div>
-                                            <div class="h-3 bg-gray-200 rounded w-1/2"></div>
-                                        </div>
-                                    </div>
-                                @endfor
-                            </div>
-                        </div>
-                    </div>
+                <!-- Archive Items Container -->
+                <div id="archive-grid" class="space-y-6 hidden">
+                    <!-- Items via JS -->
+                </div>
+
+                <!-- Empty State -->
+                <div id="archive-empty" class="hidden text-center py-16 bg-white rounded-2xl border border-gray-100 shadow-sm">
+                    <p class="text-xl font-bold text-navy-900 mb-2">Data arsip tidak ditemukan</p>
+                    <p class="text-gray-500 font-medium">Coba ubah parameter filter atau kata kunci pencarian Anda.</p>
+                </div>
+
+                <!-- Error State -->
+                <div id="archive-error" class="hidden text-center py-16 bg-red-50 rounded-2xl border border-red-100 shadow-sm">
+                    <p class="text-xl font-bold text-red-700 mb-2">Gagal mengambil data arsip</p>
+                    <p class="text-red-500 font-medium">Koneksi terputus atau terjadi kesalahan sistem.</p>
+                </div>
+
+                <!-- Pagination Container -->
+                <div id="archive-pagination" class="flex justify-center items-center gap-2 pt-6">
+                    <!-- Pagination via JS -->
                 </div>
             </div>
 
@@ -120,15 +151,19 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const state = { category: '', search: '', page: 1 };
+            const state = { year: 0, month: 0, category: '', search: '', page: 1 };
             const placeholder = 'https://placehold.co/600x400?text=JTK+POLBAN';
 
-            const grid = document.getElementById('news-grid');
-            const loading = document.getElementById('news-loading');
-            const empty = document.getElementById('news-empty');
-            const error = document.getElementById('news-error');
-            const searchInput = document.getElementById('news-search');
-            const paginationContainer = document.getElementById('news-pagination');
+            const grid = document.getElementById('archive-grid');
+            const loading = document.getElementById('archive-loading');
+            const empty = document.getElementById('archive-empty');
+            const error = document.getElementById('archive-error');
+            const paginationContainer = document.getElementById('archive-pagination');
+
+            const filterYear = document.getElementById('filter-year');
+            const filterMonth = document.getElementById('filter-month');
+            const filterCategory = document.getElementById('filter-category');
+            const filterSearch = document.getElementById('filter-search');
 
             const escapeHtml = (value) => String(value ?? '')
                 .replaceAll('&', '&amp;')
@@ -149,7 +184,6 @@
                 const image = post.image_url || post.featured_media?.url || placeholder;
                 const slug = post.slug || post.id;
                 
-                // Show category badge
                 let categoryLabel = 'Berita';
                 if (post.category) {
                     categoryLabel = post.category;
@@ -160,7 +194,7 @@
                 return `
                     <article class="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md hover:border-gray-200 transition-all duration-300 flex flex-col md:flex-row h-auto md:h-56">
                         <!-- Image Container on the Left -->
-                        <div class="relative w-full md:w-[38%] shrink-0 h-48 md:h-full overflow-hidden">
+                        <div class="relative w-full md:w-[40%] shrink-0 h-48 md:h-full overflow-hidden">
                             <a href="/berita/${encodeURIComponent(slug)}" class="block h-full w-full">
                                 <img src="${escapeHtml(image)}" alt="${escapeHtml(post.title)}" class="w-full h-full object-cover hover:scale-[1.03] transition duration-500" onerror="this.onerror=null;this.src='${placeholder}';">
                             </a>
@@ -204,14 +238,21 @@
             };
 
             const buildUrl = () => {
-                const params = new URLSearchParams({ per_page: '6' });
+                const params = new URLSearchParams({ per_page: '8' });
 
                 if (state.page) {
                     params.set('page', state.page);
                 }
-
+                if (state.year > 0) {
+                    params.set('year', state.year);
+                }
+                if (state.month > 0) {
+                    params.set('month', state.month);
+                }
                 if (state.category === 'prestasi') {
                     params.set('type', 'prestasi');
+                } else if (state.category === 'berita') {
+                    params.set('type', 'berita');
                 }
 
                 if (state.search.trim()) {
@@ -325,67 +366,36 @@
                 }
             };
 
-            const loadRecentPosts = async () => {
-                try {
-                    const response = await fetch('/api/posts?per_page=5');
-                    if (!response.ok) return;
-                    const json = await response.json();
-                    const recentPosts = json.data || [];
-                    const sidebarList = document.getElementById('recent-news-list');
-                    if (!sidebarList) return;
-                    
-                    sidebarList.innerHTML = recentPosts.map(post => {
-                        const image = post.image_url || post.featured_media?.url || placeholder;
-                        const slug = post.slug || post.id;
-                        return `
-                            <a href="/berita/${encodeURIComponent(slug)}" class="flex items-start space-x-3.5 group border-b border-gray-100 pb-3 last:border-0 last:pb-0">
-                                <img src="${escapeHtml(image)}" alt="${escapeHtml(post.title)}" class="w-20 h-14 object-cover rounded-lg shrink-0 group-hover:opacity-85 transition" onerror="this.onerror=null;this.src='${placeholder}';">
-                                <div class="flex-1 min-w-0">
-                                    <h4 class="font-bold text-gray-800 text-[13px] line-clamp-2 leading-snug group-hover:text-[#00008B] transition">${escapeHtml(post.title)}</h4>
-                                    <span class="text-xs text-gray-400 mt-1 block">📅 ${escapeHtml(post.date_label || '-')}</span>
-                                </div>
-                            </a>
-                        `;
-                    }).join('');
-                } catch (e) {
-                    console.error('Failed to load recent posts', e);
-                }
-            };
+            // Setup filter listeners
+            filterYear.addEventListener('change', () => {
+                state.year = parseInt(filterYear.value);
+                state.page = 1;
+                loadPosts();
+            });
 
-            // Setup category filter click handlers
-            const setupCategoryFilters = () => {
-                const buttons = document.querySelectorAll('.category-btn');
-                buttons.forEach(button => {
-                    button.addEventListener('click', () => {
-                        const category = button.dataset.category || '';
-                        state.category = category;
-                        state.page = 1; // Reset to page 1
+            filterMonth.addEventListener('change', () => {
+                state.month = parseInt(filterMonth.value);
+                state.page = 1;
+                loadPosts();
+            });
 
-                        // Toggle active button style
-                        buttons.forEach(btn => {
-                            btn.className = 'category-btn px-5 py-2.5 border border-gray-300 bg-white text-gray-700 rounded-full font-bold text-sm hover:border-[#00008B] hover:text-[#00008B] transition';
-                        });
-                        button.className = 'category-btn px-5 py-2.5 bg-[#00008B] text-white rounded-full font-bold text-sm shadow-sm transition hover:bg-blue-900';
-                        
-                        loadPosts();
-                    });
-                });
-            };
+            filterCategory.addEventListener('change', () => {
+                state.category = filterCategory.value;
+                state.page = 1;
+                loadPosts();
+            });
 
-            // Search input logic (with debounce)
             let searchTimeout;
-            searchInput.addEventListener('input', () => {
+            filterSearch.addEventListener('input', () => {
                 clearTimeout(searchTimeout);
                 searchTimeout = setTimeout(() => {
-                    state.search = searchInput.value;
-                    state.page = 1; // Reset to page 1
+                    state.search = filterSearch.value;
+                    state.page = 1;
                     loadPosts();
                 }, 350);
             });
 
-            setupCategoryFilters();
             loadPosts();
-            loadRecentPosts();
         });
     </script>
 @endsection

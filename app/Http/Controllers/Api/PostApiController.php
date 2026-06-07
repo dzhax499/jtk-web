@@ -30,6 +30,8 @@ class PostApiController extends Controller
         $status = Str::lower((string) $request->query('status', 'publish'));
         $type = Str::lower((string) ($request->query('type') ?: $request->query('category')));
         $search = trim((string) $request->query('search', ''));
+        $year = $request->integer('year');
+        $month = $request->integer('month');
 
         $posts = Post::query()
             ->with(['author', 'featuredMedia'])
@@ -58,6 +60,12 @@ class PostApiController extends Controller
                         ->whereRaw('LOWER(COALESCE(title, ?)) NOT LIKE ?', ['', '%prestasi%'])
                         ->whereRaw('LOWER(COALESCE(slug, ?)) NOT LIKE ?', ['', '%prestasi%']);
                 });
+            })
+            ->when($year > 0, function ($query) use ($year) {
+                $query->whereYear('published_at', $year);
+            })
+            ->when($month > 0, function ($query) use ($month) {
+                $query->whereMonth('published_at', $month);
             })
             ->orderByDesc('published_at')
             ->orderByDesc('created_at')

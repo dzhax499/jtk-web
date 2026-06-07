@@ -69,14 +69,23 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
                     </button>
                     <div id="program-dropdown" class="hidden absolute left-0 mt-2 w-56 bg-white rounded-lg shadow-lg py-3 z-50" role="menu">
-                        <a href="/program-studi/d3" class="block px-4 py-2 text-navy-900 hover:bg-gray-50 transition flex items-center space-x-2">
-                            <span class="text-sky-light">✦</span>
-                            <span>D3 Teknik Informatika</span>
-                        </a>
-                        <a href="/program-studi/sarjana" class="block px-4 py-2 text-navy-900 hover:bg-gray-50 transition flex items-center space-x-2">
-                            <span class="text-sky-light">✦</span>
-                            <span>Sarjana Terapan Teknik Informatika</span>
-                        </a>
+                        @if(isset($programs) && count($programs) > 0)
+                            @foreach($programs as $program)
+                            <a href="/program-studi/{{ $program['slug'] ?? '' }}" class="block px-4 py-2 text-navy-900 hover:bg-gray-50 transition flex items-center space-x-2">
+                                <span class="text-sky-light">✦</span>
+                                <span>{{ $program['title'] }}</span>
+                            </a>
+                            @endforeach
+                        @else
+                            <a href="/program-studi/d3" class="block px-4 py-2 text-navy-900 hover:bg-gray-50 transition flex items-center space-x-2">
+                                <span class="text-sky-light">✦</span>
+                                <span>D3 Teknik Informatika</span>
+                            </a>
+                            <a href="/program-studi/sarjana" class="block px-4 py-2 text-navy-900 hover:bg-gray-50 transition flex items-center space-x-2">
+                                <span class="text-sky-light">✦</span>
+                                <span>Sarjana Terapan Teknik Informatika</span>
+                            </a>
+                        @endif
                     </div>
                 </div>
 
@@ -87,14 +96,28 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
                     </button>
                     <div id="berita-dropdown" class="hidden absolute left-0 mt-2 w-56 bg-white rounded-lg shadow-lg py-3 z-50" role="menu">
-                        <a href="/berita" class="block px-4 py-2 text-navy-900 hover:bg-gray-50 transition flex items-center space-x-2">
-                            <span class="text-sky-light">✦</span>
-                            <span>Berita</span>
-                        </a>
-                        <a href="/prestasi" class="block px-4 py-2 text-navy-900 hover:bg-gray-50 transition flex items-center space-x-2">
-                            <span class="text-sky-light">✦</span>
-                            <span>Prestasi Mahasiswa</span>
-                        </a>
+                        @if(isset($latestNews) && count($latestNews) > 0)
+                            @foreach(array_slice($latestNews, 0, 3) as $news)
+                            <a href="/berita/{{ $news['slug'] ?? $news['id'] }}" class="block px-4 py-2 text-navy-900 hover:bg-gray-50 transition flex items-center space-x-2">
+                                <span class="text-sky-light">✦</span>
+                                <span class="truncate" title="{{ $news['title'] }}">{{ $news['title'] }}</span>
+                            </a>
+                            @endforeach
+                            <div class="border-t border-gray-100 my-1"></div>
+                            <a href="/berita" class="block px-4 py-2 text-navy-900 hover:bg-gray-50 transition flex items-center space-x-2">
+                                <span class="text-sky-light">→</span>
+                                <span>Lihat Semua Berita</span>
+                            </a>
+                        @else
+                            <a href="/berita" class="block px-4 py-2 text-navy-900 hover:bg-gray-50 transition flex items-center space-x-2">
+                                <span class="text-sky-light">✦</span>
+                                <span>Berita</span>
+                            </a>
+                            <a href="/prestasi" class="block px-4 py-2 text-navy-900 hover:bg-gray-50 transition flex items-center space-x-2">
+                                <span class="text-sky-light">✦</span>
+                                <span>Prestasi Mahasiswa</span>
+                            </a>
+                        @endif
                     </div>
                 </div>
                 <a href="/profil-dosen" class="text-navy-900 font-medium hover:text-navy-600 transition">Profil Dosen</a>

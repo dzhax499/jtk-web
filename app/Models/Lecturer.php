@@ -11,6 +11,7 @@ class Lecturer extends Model
     protected $casts = [
         'is_active' => 'boolean',
         'raw_data' => 'array',
+        'extra_attributes' => 'array',
     ];
 
     public function studyProgram()

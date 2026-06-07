@@ -22,12 +22,16 @@ class LecturerEducationResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return LecturerEducationForm::configure($schema);
+        $schema = LecturerEducationForm::configure($schema);
+        $components = array_merge($schema->getComponents() ?? [], \App\Helpers\DynamicFieldsHelper::getFormComponents(self::$model));
+        return $schema->components($components);
     }
 
     public static function table(Table $table): Table
     {
-        return LecturerEducationTable::configure($table);
+        $table = LecturerEducationTable::configure($table);
+        $columns = array_merge($table->getColumns() ?? [], \App\Helpers\DynamicFieldsHelper::getTableColumns(self::$model));
+        return $table->columns($columns);
     }
 
     public static function getRelations(): array

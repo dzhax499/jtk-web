@@ -17,7 +17,7 @@ class ImportPosts extends Command
         $json = File::get(storage_path('app/data_wp/posts.json'));
         $posts = json_decode($json, true);
 
-        $this->withProgressBar($posts, function ($post) {
+        $this->withProgressBar($posts, function (array $post) {
             DB::table('posts')->updateOrInsert(
                 ['id' => $post['id']],
                 [

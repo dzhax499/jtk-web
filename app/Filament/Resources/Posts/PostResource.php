@@ -22,12 +22,16 @@ class PostResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return PostForm::configure($schema);
+        $schema = PostForm::configure($schema);
+        $components = array_merge($schema->getComponents() ?? [], \App\Helpers\DynamicFieldsHelper::getFormComponents(self::$model));
+        return $schema->components($components);
     }
 
     public static function table(Table $table): Table
     {
-        return PostsTable::configure($table);
+        $table = PostsTable::configure($table);
+        $columns = array_merge($table->getColumns() ?? [], \App\Helpers\DynamicFieldsHelper::getTableColumns(self::$model));
+        return $table->columns($columns);
     }
 
     public static function getRelations(): array

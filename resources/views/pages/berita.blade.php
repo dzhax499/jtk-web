@@ -5,7 +5,7 @@
 @section('content')
     <x-hero 
         title="Berita"
-        subtitle="Informasi terbaru seputar kegiatan, prestasi, dan pengumuman Jurusan Teknik Komputer dan Informatika Politeknik Negeri Bandung"
+        subtitle="Informasi terbaru seputar kegiatan, prestasi, dan informasi Jurusan Teknik Komputer dan Informatika Politeknik Negeri Bandung"
         bgImage="true">
         <span>
             <a href="/" class="underline hover:text-white transition">Beranda</a> > 
@@ -23,17 +23,8 @@
                     <button type="button" data-category="" class="category-btn px-5 py-2.5 bg-[#00008B] text-white rounded-full font-bold text-sm shadow-sm transition hover:bg-blue-900">
                         Semua Berita
                     </button>
-                    <button type="button" data-category="kegiatan" class="category-btn px-5 py-2.5 border border-gray-300 bg-white text-gray-700 rounded-full font-bold text-sm hover:border-[#00008B] hover:text-[#00008B] transition">
-                        Kegiatan
-                    </button>
                     <button type="button" data-category="prestasi" class="category-btn px-5 py-2.5 border border-gray-300 bg-white text-gray-700 rounded-full font-bold text-sm hover:border-[#00008B] hover:text-[#00008B] transition">
                         Prestasi
-                    </button>
-                    <button type="button" data-category="pengumuman" class="category-btn px-5 py-2.5 border border-gray-300 bg-white text-gray-700 rounded-full font-bold text-sm hover:border-[#00008B] hover:text-[#00008B] transition">
-                        Pengumuman
-                    </button>
-                    <button type="button" data-category="akademik" class="category-btn px-5 py-2.5 border border-gray-300 bg-white text-gray-700 rounded-full font-bold text-sm hover:border-[#00008B] hover:text-[#00008B] transition">
-                        Akademik
                     </button>
                 </div>
 
@@ -221,18 +212,10 @@
 
                 if (state.category === 'prestasi') {
                     params.set('type', 'prestasi');
-                    if (state.search.trim()) {
-                        params.set('search', state.search.trim());
-                    }
-                } else if (state.category) {
-                    const searchTerm = state.search.trim() 
-                        ? `${state.category} ${state.search.trim()}`
-                        : state.category;
-                    params.set('search', searchTerm);
-                } else {
-                    if (state.search.trim()) {
-                        params.set('search', state.search.trim());
-                    }
+                }
+
+                if (state.search.trim()) {
+                    params.set('search', state.search.trim());
                 }
 
                 return `/api/posts?${params.toString()}`;

@@ -40,27 +40,6 @@
                             </div>
                         </div>
 
-                        <!-- Program Filter -->
-                        @if(count($filters['program']) > 0)
-                        <div class="mb-6">
-                            <label class="text-xs font-bold text-navy-900 uppercase tracking-wider block mb-3">Program Studi</label>
-                            <div class="space-y-2 max-h-40 overflow-y-auto pr-1">
-                                @foreach($filters['program'] as $program)
-                                    <label class="flex items-center space-x-3 cursor-pointer group">
-                                        <input 
-                                            type="checkbox" 
-                                            name="program[]" 
-                                            value="{{ $program }}"
-                                            {{ in_array($program, $selected['program']) ? 'checked' : '' }}
-                                            class="w-4 h-4 text-navy-900 border-gray-300 rounded focus:ring-navy-900 focus:ring-2 transition"
-                                        >
-                                        <span class="text-sm text-gray-600 group-hover:text-navy-900 transition">{{ $program }}</span>
-                                    </label>
-                                @endforeach
-                            </div>
-                        </div>
-                        @endif
-
                         <!-- Education Filter -->
                         @if(count($filters['education']) > 0)
                         <div class="mb-6">

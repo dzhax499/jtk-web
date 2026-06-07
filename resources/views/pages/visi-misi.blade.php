@@ -8,9 +8,9 @@
     <!-- Hero Section -->
     <x-hero 
         title="Visi dan Misi"
-        subtitle="Visi, misi, dan tujuan Jurusan Teknik Komputer dan Informatika Politeknik Negeri Bandung"
+        subtitle="Informasi terbaru seputar Visi, Misi, Tujuan, Nilai-Nilai Utama dan Strategi Umum Jurusan Teknik Komputer dan Informatika Politeknik Negeri Bandung"
         bgImage="https://via.placeholder.com/1920x400?text=Visi+Misi">
-        <span>Breadcrumb: <a href="/" class="underline">Beranda</a> &gt; <span>Visi dan Misi</span></span>
+        <span><a href="/" class="underline">Beranda</a> &gt; <span>Visi dan Misi</span></span>
     </x-hero>
 
     <section class="py-16 bg-white">

@@ -6,7 +6,7 @@
     <!-- Hero Section -->
     <x-hero 
         title="Arsip Berita"
-        subtitle="Telusuri informasi, kegiatan, dan pengumuman yang telah dipublikasikan"
+        subtitle="Jelajahi rekam jejak, dokumen resmi, dan memori perjalanan kelembagaan Jurusan Teknik Konputer dan Informatika"
         bgImage="https://via.placeholder.com/1920x400?text=Arsip">
         <span><a href="/" class="underline">Beranda</a> > <span>Arsip</span></span>
     </x-hero>

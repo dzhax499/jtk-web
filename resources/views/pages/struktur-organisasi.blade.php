@@ -8,9 +8,9 @@
     <!-- Hero Section -->
     <x-hero 
         title="Struktur Organisasi"
-        subtitle="Informasi terbaru seputar Struktur Organisasi"
+        subtitle="Mengenal susunan kepemimpinan dan tata kelola Jurusan Teknik Komputer dan Informatika Politeknik Negeri Bandung"
         bgImage="https://via.placeholder.com/1920x400?text=Struktur+Organisasi">
-        <span>Beranda</span> > <span>Struktur Organisasi</span>
+        <span><a href="/" class="underline">Beranda</a> &gt; <span>Struktur Organisasi</span>
     </x-hero>
 
     <section class="py-12 bg-white">

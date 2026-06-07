@@ -7,9 +7,9 @@
     <!-- Hero Section -->
     <x-hero 
         title="Produk"
-        subtitle="Informasi terbaru seputar Kompetensi Produk"
+        subtitle="Karya nyata dan solusi teknologi terapan hasil inovasi sivitas akademika Jurusan Teknik Komputer dan Informatika Politeknik Negeri Bandung"
         bgImage="https://via.placeholder.com/1920x400?text=Produk">
-        <span>Beranda</span> > <span>Produk</span>
+        <span><a href="/" class="underline">Beranda</a> &gt; <span>Produk</span>
     </x-hero>
 
     <section class="py-16">

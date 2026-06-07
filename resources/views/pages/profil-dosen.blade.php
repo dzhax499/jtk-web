@@ -8,7 +8,7 @@
         title="Profil Dosen"
         subtitle="Berkenalan dengan para dosen Jurusan Teknik Komputer dan Informatika Politeknik Negeri Bandung"
         bgImage="true">
-        <span class="text-sm opacity-90"><a href="/" class="hover:underline">Beranda</a> &gt; <span class="font-semibold text-sky-light">Profil Dosen</span></span>
+        <span><a href="/" class="underline">Beranda</a> &gt; <span>Profil Dosen</span>
     </x-hero>
 
     <!-- Content Section -->

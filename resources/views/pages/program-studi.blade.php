@@ -9,8 +9,8 @@
         subtitle="Jurusan Teknik Komputer dan Informatika Politeknik Negeri Bandung"
         bgImage="true">
         <span>
-            <a href="/" class="underline hover:text-white transition">Beranda</a> > 
-            <span class="text-gray-300">Program Studi</span>
+            <a href="/" class="underline">Beranda</a> > 
+            <span>Program Studi</span>
         </span>
     </x-hero>
 

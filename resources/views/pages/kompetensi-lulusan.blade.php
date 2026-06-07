@@ -7,9 +7,9 @@
     <!-- Hero Section -->
     <x-hero 
         title="Kompetensi Lulusan"
-        subtitle="Informasi terbaru seputar Kompetensi Lulusan"
+        subtitle="Profil keahlian komprehensif yang membekali setiap lulusan Jurusan Teknik Komputer dan Informatika Politeknik Negeri Bandung"
         bgImage="https://via.placeholder.com/1920x400?text=Kompetensi+Lulusan">
-        <span>Beranda</span> > <span>Kompetensi Lulusan</span>
+        <span><a href="/" class="underline">Beranda</a> &gt; <span>Kompetensi Lulusan</span>
     </x-hero>
 
     <section class="py-16">

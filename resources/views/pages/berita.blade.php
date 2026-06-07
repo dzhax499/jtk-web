@@ -8,8 +8,8 @@
         subtitle="Informasi terbaru seputar kegiatan, prestasi, dan informasi Jurusan Teknik Komputer dan Informatika Politeknik Negeri Bandung"
         bgImage="true">
         <span>
-            <a href="/" class="underline hover:text-white transition">Beranda</a> > 
-            <span class="text-gray-300">Berita</span>
+            <a href="/" class="underline">Beranda</a> > 
+            <span>Berita</span>
         </span>
     </x-hero>
 

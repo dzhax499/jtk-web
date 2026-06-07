@@ -8,9 +8,9 @@
     <!-- Hero Section -->
     <x-hero 
         title="Riwayat Singkat"
-        subtitle="Informasi terbaru seputar Riwayat Singkat"
+        subtitle="Menelusuri sejarah, akar pendirian, dan transformasi berkelanjutan Jurusan Teknik Komputer dan Informatika Politeknik Negeri Bandung"
         bgImage="https://via.placeholder.com/1920x400?text=Riwayat+Singkat">
-        <span>Beranda</span> > <span>Riwayat Singkat</span>
+        <span><a href="/" class="underline">Beranda</a> &gt; <span>Riwayat Singkat</span>
     </x-hero>
 
     <section style="padding: 4rem 0; background-color: #ffffff;">

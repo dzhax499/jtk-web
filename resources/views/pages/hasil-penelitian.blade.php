@@ -7,9 +7,9 @@
     <!-- Hero Section -->
     <x-hero 
         title="Hasil Penelitian"
-        subtitle="Informasi terbaru seputar Hasil Penelitian"
+        subtitle="Sumbangsih pemikiran dan temuan riset sivitas akademika Jurusan Teknik Komputer dan Informatika Politeknik Negeri Bandung"
         bgImage="https://via.placeholder.com/1920x400?text=Hasil+Penelitian">
-        <span>Beranda</span> > <span>Hasil Penelitian</span>
+        <span><a href="/" class="underline">Beranda</a> &gt; <span>Hasil Penelitian</span>
     </x-hero>
 
     <section class="py-16">

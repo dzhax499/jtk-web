@@ -9,7 +9,7 @@
         title="Reputasi"
         subtitle="Bukti nyata dedikasi dan kualitas institusi melalui pencapaian serta pengakuan Jurusan Teknik Komputer dan Informatika Politeknik Negeri Bandung"
         bgImage="https://via.placeholder.com/1920x400?text=Reputasi">
-        <span>Beranda</span> > <span>Reputasi</span>
+        <span><a href="/" class="underline">Beranda</a> &gt; <span>Reputasi</span>
     </x-hero>
 
     <section class="py-16 bg-gray-50/30 flex-grow">

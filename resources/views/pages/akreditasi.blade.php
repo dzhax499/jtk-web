@@ -8,7 +8,7 @@
         title="Akreditasi"
         subtitle="Informasi akreditasi program studi Jurusan Teknik Komputer dan Informatika"
         bgImage="https://via.placeholder.com/1920x400?text=Akreditasi">
-        <span>Breadcrumb: <a href="/" class="underline">Beranda</a> &gt; <span>Akreditasi</span></span>
+        <span><a href="/" class="underline">Beranda</a> &gt; <span>Akreditasi</span></span>
     </x-hero>
 
     <section class="py-16 bg-gray-50/50 flex-grow flex flex-col justify-center">

@@ -8,9 +8,9 @@
     <!-- Hero Section -->
     <x-hero 
         title="Tentang JTK"
-        subtitle="Informasi terbaru seputar JTK"
+        subtitle="Mengenal lebih dekat dedikasi dan kontribusi kami dalam mencetak talenta digital unggul Jurusan Teknik Komputer dan Informatika "
         bgImage="https://via.placeholder.com/1920x400?text=Tentang+JTK">
-        <span>Beranda</span> > <span>Tentang JTK</span>
+        <span><a href="/" class="underline">Beranda</a> &gt; <span>Tentang JTK</span>
     </x-hero>
 
     <!-- Content Section -->

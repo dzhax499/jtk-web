@@ -4,23 +4,25 @@
 
 @section('content')
     <!-- Hero Section with Profile -->
-    <div class="bg-gradient-to-r from-navy-900 to-navy-950 text-white pt-24 pb-12 shadow-sm">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-6">
-                <div class="w-24 h-24 bg-white text-navy-900 rounded-full flex items-center justify-center shadow-lg font-extrabold text-3xl select-none">
-                    {{ $lecturer['initials'] }}
+    <div class="relative w-full h-[380px] md:h-[300px] overflow-hidden group font-['Poppins']">
+        <div class="bg-gradient-to-r from-[#00008B] to-navy-950 text-white pt-24 pb-12 shadow-sm">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-6">
+                    <div class="w-24 h-24 bg-white text-navy-900 rounded-full flex items-center justify-center shadow-lg font-extrabold text-3xl select-none">
+                        {{ $lecturer['initials'] }}
+                    </div>
+                    <div>
+                        <h1 class="text-3xl font-extrabold mb-1 tracking-tight">{{ $lecturer['name'] }}</h1>
+                        <p class="text-blue-200 text-sm font-medium">{{ $lecturer['position'] }}</p>
+                    </div>
                 </div>
-                <div>
-                    <h1 class="text-3xl font-extrabold mb-1 tracking-tight">{{ $lecturer['name'] }}</h1>
-                    <p class="text-blue-200 text-sm font-medium">{{ $lecturer['position'] }}</p>
+                <div class="mt-8 pt-4 text-xs md:text-sm text-gray-300 flex items-center space-x-2">
+                    <a href="/" class="underline">Beranda</a> 
+                    <span>&gt;</span>
+                    <a href="/profil-dosen" class="underline">Profil Dosen</a> 
+                    <span>&gt;</span>
+                    <span class="text-white font-medium">{{ $lecturer['name'] }}</span>
                 </div>
-            </div>
-            <div class="mt-8 pt-4 border-t border-white/10 text-xs text-blue-200/85 flex items-center space-x-2">
-                <a href="/" class="hover:text-white transition">Beranda</a> 
-                <span>&gt;</span>
-                <a href="/profil-dosen" class="hover:text-white transition">Profil Dosen</a> 
-                <span>&gt;</span>
-                <span class="text-white font-medium">{{ $lecturer['name'] }}</span>
             </div>
         </div>
     </div>

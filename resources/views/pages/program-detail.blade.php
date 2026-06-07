@@ -12,7 +12,7 @@
         <!-- Hero Section -->
         <x-hero 
             title="D3 Teknik Informatika"
-            subtitle=""
+            subtitle=" rogram Diploma 3 Teknik Informatika yang menghasilkan lulusan kompeten, siap kerja, dan berdaya saing nasional maupun internasional"
             bgImage="true">
             <span>
                 <a href="/" class="underline hover:text-white transition">Beranda</a> > 

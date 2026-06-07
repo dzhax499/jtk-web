@@ -7,9 +7,9 @@
     <!-- Hero Section -->
     <x-hero
         title="Tenaga Kependidikan"
-        subtitle="Informasi terbaru seputar Tenaga Kependidikan"
+        subtitle="Profil para akademisi dan praktisi ahli yang berdedikasi di Jurusan Teknik Komputer dan Informatika Politeknik Negeri Bandung"
         bgImage="https://via.placeholder.com/1920x400?text=Tenaga+Kependidikan">
-        <span>Beranda</span> > <span>Tenaga Kependidikan</span>
+        <span><a href="/" class="underline">Beranda</a> &gt; <span>Tenaga Kependidikan</span></span>
     </x-hero>
 
     <section class="py-12">

@@ -7,9 +7,9 @@
     <!-- Hero Section -->
     <x-hero 
         title="Fasilitas"
-        subtitle="Informasi terbaru seputar Fasilitas"
+        subtitle="Dukungan infrastruktur dan laboratorium untuk mendukung pembelajaran di Jurusan Teknik Komputer dan Informatika Politeknik Negeri Bandung"
         bgImage="https://via.placeholder.com/1920x400?text=Fasilitas">
-        <span>Beranda</span> > <span>Fasilitas</span>
+        <span><a href="/" class="underline">Beranda</a> &gt; <span>Fasilitas</span>
     </x-hero>
 
     <section class="py-16">

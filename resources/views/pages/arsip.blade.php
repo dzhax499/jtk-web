@@ -8,8 +8,8 @@
         subtitle="Jelajahi rekam jejak, dokumen resmi, dan memori perjalanan kelembagaan Jurusan Teknik Komputer dan Informatika"
         bgImage="true">
         <span>
-            <a href="/" class="underline hover:text-white transition">Beranda</a> > 
-            <span class="text-gray-300">Arsip</span>
+            <a href="/" class="underline">Beranda</a> > 
+            <span">Arsip</span>
         </span>
     </x-hero>
 

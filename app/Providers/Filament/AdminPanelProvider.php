@@ -71,7 +71,6 @@ class AdminPanelProvider extends PanelProvider
     public function boot(): void
     {
         FilamentIcon::register([
-            // Mengubah panah pelipat sidebar menjadi hamburger
             'panels::sidebar.collapse-button' => 'heroicon-o-bars-3',
             'panels::sidebar.expand-button' => 'heroicon-o-bars-3',
         ]);

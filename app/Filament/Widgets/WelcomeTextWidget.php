@@ -10,6 +10,5 @@ class WelcomeTextWidget extends Widget
     
     protected int | string | array $columnSpan = 'full';
     
-    // Angka minus memaksa widget ini selalu antre di nomor 1 paling atas
     protected static ?int $sort = -2; 
 }

@@ -12,19 +12,16 @@ class ListCategories extends ListRecords
 {
     protected static string $resource = CategoryResource::class;
 
-    // 2. Mengubah Judul Halaman Menjadi Biru
     public function getHeading(): string | Htmlable
     {
         return new HtmlString('<span style="color: #00008B; font-size: 2.25rem;" class="font-extrabold tracking-tight">Kategori</span>');
     }
 
-    // 3. Menghilangkan Breadcrumbs (tulisan Categories > List)
     public function getBreadcrumbs(): array
     {
         return [];
     }
 
-    // 4. Mengubah Teks & Warna Tombol
     protected function getHeaderActions(): array
     {
         return [

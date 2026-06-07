@@ -21,14 +21,12 @@ class DashboardStats extends BaseWidget
                 ->chart([7, 2, 10, 3, 15, 4, 17])
                 ->color('primary'),
 
-            // Warnanya diubah jadi 'warning' (kuning/amber)
             Stat::make('Total Berita & Artikel', Post::count())
                 ->description('Postingan aktif di web')
                 ->descriptionIcon('heroicon-m-document-text')
                 ->chart([3, 12, 4, 10, 15, 8, 20])
                 ->color('warning'), 
 
-            // Ditambahkan chart array agar muncul gelombang
             Stat::make('Program Studi', StudyProgram::count())
                 ->description('Program Studi JTK POLBAN')
                 ->descriptionIcon('heroicon-m-academic-cap')

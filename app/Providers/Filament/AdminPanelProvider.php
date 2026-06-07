@@ -19,6 +19,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use App\Filament\Auth\CustomLogin;
+use Filament\Support\Facades\FilamentIcon;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -34,6 +35,7 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => '#00008B',
             ])
             ->font('Poppins')
+            ->sidebarFullyCollapsibleOnDesktop()
             ->brandLogo(fn () => view('filament.logo'))
             ->brandLogoHeight('3rem')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
@@ -62,5 +64,14 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ]);
+    }
+
+    public function boot(): void
+    {
+        FilamentIcon::register([
+            // Mengubah panah pelipat sidebar menjadi hamburger
+            'panels::sidebar.collapse-button' => 'heroicon-o-bars-3',
+            'panels::sidebar.expand-button' => 'heroicon-o-bars-3',
+        ]);
     }
 }

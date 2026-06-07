@@ -19,10 +19,11 @@ use Filament\Tables\Table;
 class LecturerResource extends Resource
 {
     protected static ?string $model = Lecturer::class;
-
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUsers;
     protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $navigationLabel = 'Dosen';
+    protected static ?string $pluralModelLabel = 'Dosen';
+    protected static ?string $modelLabel = 'Dosen';
 
     public static function form(Schema $schema): Schema
     {

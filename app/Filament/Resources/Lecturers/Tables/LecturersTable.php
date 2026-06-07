@@ -16,55 +16,81 @@ class LecturersTable
     {
         return $table
             ->columns([
-                TextColumn::make('studyProgram.name')
-                    ->label('Study Program')
-                    ->numeric()
-                    ->sortable(),
                 TextColumn::make('name')
-                    ->searchable(),
-                TextColumn::make('slug')
-                    ->searchable(),
-                TextColumn::make('nip')
-                    ->searchable(),
+                    ->label('Nama Lengkap')
+                    ->searchable()
+                    ->sortable()
+                    ->weight('bold'),
+                
                 TextColumn::make('nidn')
-                    ->searchable(),
-                TextColumn::make('email')
-                    ->label('Email address')
-                    ->searchable(),
-                TextColumn::make('photo_url')
-                    ->searchable(),
+                    ->label('NIDN')
+                    ->searchable()
+                    ->copyable()
+                    ->tooltip('Klik untuk menyalin NIDN'),
+
+                TextColumn::make('studyProgram.name')
+                    ->label('Program Studi')
+                    ->sortable(),
+
                 TextColumn::make('academic_position')
+                    ->label('Jabatan Fungsional')
                     ->searchable(),
+
+                TextColumn::make('highest_education')
+                    ->label('Pendidikan')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false),
+
+                TextColumn::make('gender')
+                    ->label('L/P')
+                    ->formatStateUsing(fn (string $state): string => $state === 'L' ? 'Laki-laki' : 'Perempuan')
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('employment_status')
+                    ->label('Status Ikatan')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
                 IconColumn::make('is_active')
-                    ->boolean(),
+                    ->label('Aktif')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-check-circle')
+                    ->falseIcon('heroicon-o-x-circle')
+                    ->trueColor('success')
+                    ->falseColor('danger'),
+
+                TextColumn::make('slug')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('nip')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('email')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('activity_status')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
+                    ->label('Ditambahkan Pada')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label('Terakhir Diubah')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('gender')
-                    ->searchable(),
-                TextColumn::make('employment_status')
-                    ->searchable(),
-                TextColumn::make('activity_status')
-                    ->searchable(),
-                TextColumn::make('highest_education')
-                    ->searchable(),
             ])
             ->filters([
-                //
+                // Tambahkan filter jika diperlukan, misalnya berdasarkan program studi atau status keaktifan
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
+                ViewAction::make()->label('Lihat'),
+                EditAction::make()->label('Ubah'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()->label('Hapus Terpilih'),
                 ]),
-            ]);
+            ])
+            ->emptyStateHeading('Belum Ada Data Dosen')
+            ->emptyStateDescription('Silakan tambah data dosen baru melalui tombol di kanan atas.');
     }
 }

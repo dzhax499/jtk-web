@@ -17,8 +17,11 @@ use Filament\Tables\Table;
 class PageResource extends Resource
 {
     protected static ?string $model = Page::class;
-
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedNewspaper;
+    protected static ?string $recordTitleAttribute = 'title';
+    protected static ?string $navigationLabel = 'Halaman';
+    protected static ?string $pluralModelLabel = 'Halaman';
+    protected static ?string $modelLabel = 'Halaman';
 
     public static function form(Schema $schema): Schema
     {

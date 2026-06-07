@@ -14,44 +14,91 @@ class LecturerForm
     {
         return $schema
             ->components([
-                Select::make('study_program_id')
-                    ->relationship('studyProgram', 'name')
-                    ->label('Study Program')
-                    ->searchable()
-                    ->preload(),
+
+                // --- Identitas Utama ---
                 TextInput::make('name')
+                    ->label('Nama Lengkap')
                     ->required()
                     ->maxLength(255),
+
                 TextInput::make('slug')
+                    ->label('URL Slug')
                     ->required()
                     ->maxLength(255),
-                TextInput::make('nip'),
-                TextInput::make('nidn'),
-                TextInput::make('email')
-                    ->label('Email address')
-                    ->email(),
-                TextInput::make('photo_url')
-                    ->url(),
-                TextInput::make('academic_position'),
-                Textarea::make('bio')
-                    ->columnSpanFull(),
-                Toggle::make('is_active')
-                    ->required()
-                    ->default(true),
+
                 Select::make('gender')
+                    ->label('Jenis Kelamin')
                     ->options([
                         'L' => 'Laki-laki',
                         'P' => 'Perempuan',
-                    ]),
-                TextInput::make('employment_status'),
-                TextInput::make('activity_status'),
-                TextInput::make('highest_education'),
-                TextInput::make('raw_data'),
+                    ])
+                    ->native(false),
+
+                TextInput::make('email')
+                    ->label('Alamat Email')
+                    ->email()
+                    ->maxLength(255),
+
+                TextInput::make('photo_url')
+                    ->label('URL Foto Profil')
+                    ->url()
+                    ->maxLength(255),
+
+                Textarea::make('bio')
+                    ->label('Biografi Singkat')
+                    ->rows(4)
+                    ->columnSpanFull(),
+
+                // --- Data Kepegawaian ---
+                TextInput::make('nip')
+                    ->label('NIP / NIP CPNS')
+                    ->maxLength(50),
+
+                TextInput::make('nidn')
+                    ->label('NIDN')
+                    ->maxLength(20),
+
+                TextInput::make('employment_status')
+                    ->label('Status Ikatan')
+                    ->placeholder('cth: Dosen Tetap')
+                    ->maxLength(100),
+
+                TextInput::make('activity_status')
+                    ->label('Status Kegiatan')
+                    ->placeholder('cth: Aktif Mengajar')
+                    ->maxLength(100),
+
+                Toggle::make('is_active')
+                    ->label('Dosen Aktif (Tampil di Publik)')
+                    ->default(true)
+                    ->required(),
+
+                // --- Data Akademik ---
+                Select::make('study_program_id')
+                    ->relationship('studyProgram', 'name')
+                    ->label('Program Studi')
+                    ->searchable()
+                    ->preload()
+                    ->native(false),
+
+                TextInput::make('academic_position')
+                    ->label('Jabatan Fungsional')
+                    ->placeholder('cth: Lektor')
+                    ->maxLength(100),
+
+                TextInput::make('highest_education')
+                    ->label('Pendidikan Terakhir')
+                    ->placeholder('cth: S3')
+                    ->maxLength(10),
+
                 Select::make('expertiseAreas')
                     ->relationship('expertiseAreas', 'name')
+                    ->label('Bidang Keahlian')
                     ->multiple()
                     ->searchable()
-                    ->preload(),
+                    ->preload()
+                    ->native(false),
+
             ]);
     }
 }

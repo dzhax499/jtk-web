@@ -1,150 +1,82 @@
-<nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-20">
-            <!-- Logo -->
-            <div class="flex items-center space-x-2">
-                <div class="w-10 h-10 bg-gradient-to-br from-orange-400 to-orange-600 rounded-lg flex items-center justify-center">
-                    <span class="text-white font-bold text-lg">J</span>
-                </div>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<nav class="bg-white sticky top-0 z-50 font-['Poppins']">
+    <div class="max-w-[1600px] mx-auto px-6 lg:px-12 xl:px-16">
+        <div class="flex justify-between items-center h-24">
+            
+            <div class="flex items-center space-x-4 shrink-0">
+                <img src="/img/logopolban.png" alt="Logo POLBAN" class="h-16 w-auto object-contain">
                 <div class="hidden sm:block">
-                    <div class="text-navy-900 font-bold text-sm">JTK POLBAN</div>
-                    <div class="text-navy-700 text-xs leading-tight">Jurusan Teknik Komputer<br>dan Informatika</div>
+                    <div class="text-[#00008B] font-extrabold text-xl tracking-wide whitespace-nowrap">JTK POLBAN</div>
+                    <div class="text-[#00008B] font-medium text-[15px] leading-snug mt-0.5 whitespace-nowrap">Jurusan Teknik Komputer<br>dan Informatika</div>
                 </div>
             </div>
 
-            <!-- Desktop Menu -->
-            <div class="hidden lg:flex items-center space-x-8">
-                <a href="/" class="text-navy-900 font-medium hover:text-navy-600 transition">Beranda</a>
+            <div class="hidden lg:flex items-center space-x-8 xl:space-x-10 h-full">
+                <a href="/" class="text-[#00008B] font-bold hover:text-blue-700 transition whitespace-nowrap">Beranda</a>
                 
-                <!-- Tentang JTK Dropdown -->
-                <div class="relative group">
-                    <button class="text-navy-900 font-medium hover:text-navy-600 transition flex items-center space-x-1" data-dropdown-toggle="tentang-dropdown">
+                <div class="relative group h-full flex items-center">
+                    <a href="/tentang-jtk" class="text-[#00008B] font-bold hover:text-blue-700 transition flex items-center space-x-1.5 whitespace-nowrap">
                         <span>Tentang JTK</span>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
-                    </button>
-                    <div id="tentang-dropdown" class="hidden absolute left-0 mt-2 w-56 bg-white rounded-lg shadow-lg py-3 z-50" role="menu">
-                        <a href="/visi-misi" class="block px-4 py-2 text-navy-900 hover:bg-gray-50 transition flex items-center space-x-2">
-                            <span class="text-sky-light">✦</span>
-                            <span>Visi dan Misi</span>
-                        </a>
-                        <a href="/riwayat-singkat" class="block px-4 py-2 text-navy-900 hover:bg-gray-50 transition flex items-center space-x-2">
-                            <span class="text-sky-light">✦</span>
-                            <span>Riwayat Singkat</span>
-                        </a>
-                        <a href="/struktur-organisasi" class="block px-4 py-2 text-navy-900 hover:bg-gray-50 transition flex items-center space-x-2">
-                            <span class="text-sky-light">✦</span>
-                            <span>Struktur Organisasi</span>
-                        </a>
-                        <a href="/fasilitas" class="block px-4 py-2 text-navy-900 hover:bg-gray-50 transition flex items-center space-x-2">
-                            <span class="text-sky-light">✦</span>
-                            <span>Fasilitas</span>
-                        </a>
-                        <a href="/reputasi" class="block px-4 py-2 text-navy-900 hover:bg-gray-50 transition flex items-center space-x-2">
-                            <span class="text-sky-light">✦</span>
-                            <span>Reputasi</span>
-                        </a>
-                        <a href="/kompetensi-lulusan" class="block px-4 py-2 text-navy-900 hover:bg-gray-50 transition flex items-center space-x-2">
-                            <span class="text-sky-light">✦</span>
-                            <span>Kompetensi Lulusan</span>
-                        </a>
-                        <a href="/produk" class="block px-4 py-2 text-navy-900 hover:bg-gray-50 transition flex items-center space-x-2">
-                            <span class="text-sky-light">✦</span>
-                            <span>Produk</span>
-                        </a>
-                        <a href="/hasil-penelitian" class="block px-4 py-2 text-navy-900 hover:bg-gray-50 transition flex items-center space-x-2">
-                            <span class="text-sky-light">✦</span>
-                            <span>Hasil Penelitian</span>
-                        </a>
-                        <a href="/tenaga-kependidikan" class="block px-4 py-2 text-navy-900 hover:bg-gray-50 transition flex items-center space-x-2">
-                            <span class="text-sky-light">✦</span>
-                            <span>Tenaga Kependidikan</span>
-                        </a>
+                        <svg class="w-4 h-4 mt-0.5 transform -rotate-90 transition-transform duration-300 group-hover:rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+                    </a>
+                    
+                    <div class="absolute left-0 top-full mt-0 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 w-64 z-50">
+                        <div class="bg-white rounded-b-2xl rounded-t-none shadow-xl p-3 border-x border-b border-gray-100">
+                            <a href="/visi-misi" class="block py-2.5 mx-2 text-[#00008B] font-semibold border-b border-[#00008B]/20 hover:text-blue-600 transition">Visi dan Misi</a>
+                            <a href="/riwayat-singkat" class="block py-2.5 mx-2 text-[#00008B] font-semibold border-b border-[#00008B]/20 hover:text-blue-600 transition">Riwayat Singkat</a>
+                            <a href="/struktur-organisasi" class="block py-2.5 mx-2 text-[#00008B] font-semibold border-b border-[#00008B]/20 hover:text-blue-600 transition">Struktur Organisasi</a>
+                            <a href="/fasilitas" class="block py-2.5 mx-2 text-[#00008B] font-semibold border-b border-[#00008B]/20 hover:text-blue-600 transition">Fasilitas</a>
+                            <a href="/reputasi" class="block py-2.5 mx-2 text-[#00008B] font-semibold border-b border-[#00008B]/20 hover:text-blue-600 transition">Reputasi</a>
+                            <a href="/kompetensi-lulusan" class="block py-2.5 mx-2 text-[#00008B] font-semibold border-b border-[#00008B]/20 hover:text-blue-600 transition">Kompetensi Lulusan</a>
+                            <a href="/produk" class="block py-2.5 mx-2 text-[#00008B] font-semibold border-b border-[#00008B]/20 hover:text-blue-600 transition">Produk</a>
+                            <a href="/hasil-penelitian" class="block py-2.5 mx-2 text-[#00008B] font-semibold border-b border-[#00008B]/20 hover:text-blue-600 transition">Hasil Penelitian</a>
+                            <a href="/tenaga-kependidikan" class="block py-2.5 mx-2 text-[#00008B] font-semibold border-b border-[#00008B]/20 hover:text-blue-600 transition">Tenaga Kependidikan</a>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Program Studi Dropdown -->
-                <div class="relative group">
-                    <button class="text-navy-900 font-medium hover:text-navy-600 transition flex items-center space-x-1" data-dropdown-toggle="program-dropdown">
+                <div class="relative group h-full flex items-center">
+                    <a href="/program-studi" class="text-[#00008B] font-bold hover:text-blue-700 transition flex items-center space-x-1.5 whitespace-nowrap">
                         <span>Program Studi</span>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
-                    </button>
-                    <div id="program-dropdown" class="hidden absolute left-0 mt-2 w-56 bg-white rounded-lg shadow-lg py-3 z-50" role="menu">
-                        @if(isset($programs) && count($programs) > 0)
-                            @foreach($programs as $program)
-                            <a href="/program-studi/{{ $program['slug'] ?? '' }}" class="block px-4 py-2 text-navy-900 hover:bg-gray-50 transition flex items-center space-x-2">
-                                <span class="text-sky-light">✦</span>
-                                <span>{{ $program['title'] }}</span>
-                            </a>
-                            @endforeach
-                        @else
-                            <a href="/program-studi/d3" class="block px-4 py-2 text-navy-900 hover:bg-gray-50 transition flex items-center space-x-2">
-                                <span class="text-sky-light">✦</span>
-                                <span>D3 Teknik Informatika</span>
-                            </a>
-                            <a href="/program-studi/sarjana" class="block px-4 py-2 text-navy-900 hover:bg-gray-50 transition flex items-center space-x-2">
-                                <span class="text-sky-light">✦</span>
-                                <span>Sarjana Terapan Teknik Informatika</span>
-                            </a>
-                        @endif
+                        <svg class="w-4 h-4 mt-0.5 transform -rotate-90 transition-transform duration-300 group-hover:rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+                    </a>
+                    
+                    <div class="absolute left-0 top-full mt-0 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 w-[17rem] z-50">
+                        <div class="bg-white rounded-b-2xl rounded-t-none shadow-xl p-3 border-x border-b border-gray-100">
+                            <a href="/program-studi/d3" class="block py-3 mx-2 text-[#00008B] font-semibold border-b border-[#00008B]/20 hover:text-blue-600 transition">D3 Teknik Informatika</a>
+                            <a href="/program-studi/sarjana" class="block py-3 mx-2 text-[#00008B] font-semibold border-b border-[#00008B]/20 hover:text-blue-600 transition leading-snug">Sarjana Terapan Teknik Informatika</a>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Berita Dropdown -->
-                <div class="relative group">
-                    <button class="text-navy-900 font-medium hover:text-navy-600 transition flex items-center space-x-1" data-dropdown-toggle="berita-dropdown">
-                        <span>Berita</span>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
-                    </button>
-                    <div id="berita-dropdown" class="hidden absolute left-0 mt-2 w-56 bg-white rounded-lg shadow-lg py-3 z-50" role="menu">
-                        @if(isset($latestNews) && count($latestNews) > 0)
-                            @foreach(array_slice($latestNews, 0, 3) as $news)
-                            <a href="/berita/{{ $news['slug'] ?? $news['id'] }}" class="block px-4 py-2 text-navy-900 hover:bg-gray-50 transition flex items-center space-x-2">
-                                <span class="text-sky-light">✦</span>
-                                <span class="truncate" title="{{ $news['title'] }}">{{ $news['title'] }}</span>
-                            </a>
-                            @endforeach
-                            <div class="border-t border-gray-100 my-1"></div>
-                            <a href="/berita" class="block px-4 py-2 text-navy-900 hover:bg-gray-50 transition flex items-center space-x-2">
-                                <span class="text-sky-light">→</span>
-                                <span>Lihat Semua Berita</span>
-                            </a>
-                        @else
-                            <a href="/berita" class="block px-4 py-2 text-navy-900 hover:bg-gray-50 transition flex items-center space-x-2">
-                                <span class="text-sky-light">✦</span>
-                                <span>Berita</span>
-                            </a>
-                            <a href="/prestasi" class="block px-4 py-2 text-navy-900 hover:bg-gray-50 transition flex items-center space-x-2">
-                                <span class="text-sky-light">✦</span>
-                                <span>Prestasi Mahasiswa</span>
-                            </a>
-                        @endif
-                    </div>
-                </div>
-                <a href="/profil-dosen" class="text-navy-900 font-medium hover:text-navy-600 transition">Profil Dosen</a>
-                <a href="/akademik" class="text-navy-900 font-medium hover:text-navy-600 transition">Akademik</a>
-                <a href="/akreditasi" class="text-navy-900 font-medium hover:text-navy-600 transition">Akreditasi</a>
-                <a href="/arsip/berita" class="text-navy-900 font-medium hover:text-navy-600 transition">Arsip</a>
+                <a href="/berita" class="text-[#00008B] font-bold hover:text-blue-700 transition whitespace-nowrap">Berita</a>
+                <a href="/akademik" class="text-[#00008B] font-bold hover:text-blue-700 transition whitespace-nowrap">Akademik</a>
+                <a href="/profil-dosen" class="text-[#00008B] font-bold hover:text-blue-700 transition whitespace-nowrap">Profil Dosen</a>
+                <a href="/akreditasi" class="text-[#00008B] font-bold hover:text-blue-700 transition whitespace-nowrap">Akreditasi</a>
+                <a href="/arsip" class="text-[#00008B] font-bold hover:text-blue-700 transition whitespace-nowrap">Arsip</a>
             </div>
 
-            <!-- Mobile menu button -->
-            <button id="mobile-menu-btn" class="lg:hidden text-navy-900">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            <button id="mobile-menu-btn" class="lg:hidden text-[#00008B]">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
             </button>
         </div>
     </div>
 
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-gray-200">
-        <div class="px-4 pt-2 pb-3 space-y-1">
-            <a href="/" class="block px-3 py-2 rounded-md text-navy-900 font-medium">Beranda</a>
-            <a href="/tentang-jtk" class="block px-3 py-2 rounded-md text-navy-900 font-medium">Tentang JTK</a>
-            <a href="/program-studi" class="block px-3 py-2 rounded-md text-navy-900 font-medium">Program Studi</a>
-            <a href="/berita" class="block px-3 py-2 rounded-md text-navy-900 font-medium">Berita</a>
-            <a href="/profil-dosen" class="block px-3 py-2 rounded-md text-navy-900 font-medium">Profil Dosen</a>
-            <a href="/akreditasi" class="block px-3 py-2 rounded-md text-navy-900 font-medium">Akreditasi</a>
-            <a href="/arsip/berita" class="block px-3 py-2 rounded-md text-navy-900 font-medium">Arsip</a>
+    <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-gray-200 shadow-lg">
+        <div class="px-4 pt-2 pb-4 space-y-1">
+            <a href="/" class="block px-3 py-2.5 rounded-md text-[#00008B] font-bold">Beranda</a>
+            <a href="/tentang-jtk" class="block px-3 py-2.5 rounded-md text-[#00008B] font-bold">Tentang JTK</a>
+            <a href="/program-studi" class="block px-3 py-2.5 rounded-md text-[#00008B] font-bold">Program Studi</a>
+            <a href="/berita" class="block px-3 py-2.5 rounded-md text-[#00008B] font-bold">Berita</a>
+            <a href="/akademik" class="block px-3 py-2.5 rounded-md text-[#00008B] font-bold">Akademik</a>
+            <a href="/profil-dosen" class="block px-3 py-2.5 rounded-md text-[#00008B] font-bold">Profil Dosen</a>
+            <a href="/akreditasi" class="block px-3 py-2.5 rounded-md text-[#00008B] font-bold">Akreditasi</a>
+            <a href="/arsip" class="block px-3 py-2.5 rounded-md text-[#00008B] font-bold">Arsip</a>
         </div>
     </div>
 </nav>

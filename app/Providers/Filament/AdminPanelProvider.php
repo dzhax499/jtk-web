@@ -31,8 +31,13 @@ class AdminPanelProvider extends PanelProvider
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->login(\App\Filament\Auth\CustomLogin::class)
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => '#00008B',
             ])
+
+            ->brandLogo(fn () => view('filament.logo'))
+            ->brandLogoHeight('3rem')
+            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
+
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([

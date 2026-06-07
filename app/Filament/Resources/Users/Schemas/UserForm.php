@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Users\Schemas;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Hash;
 
 class UserForm
 {
@@ -12,18 +13,37 @@ class UserForm
     {
         return $schema
             ->components([
+
+                // --- Identitas ---
                 TextInput::make('name')
-                    ->required(),
+                    ->label('Nama Lengkap')
+                    ->required()
+                    ->maxLength(255),
+
                 TextInput::make('email')
-                    ->label('Email address')
+                    ->label('Alamat Email')
                     ->email()
-                    ->required(),
-                DateTimePicker::make('email_verified_at'),
+                    ->required()
+                    ->unique(ignoreRecord: true)
+                    ->maxLength(255)
+                    ->autocomplete('off'),
+
+                // --- Keamanan ---
                 TextInput::make('password')
+                    ->label('Kata Sandi')
                     ->password()
                     ->required(fn (string $operation): bool => $operation === 'create')
-                    ->dehydrateStateUsing(fn ($state) => \Illuminate\Support\Facades\Hash::make($state))
-                    ->dehydrated(fn ($state) => filled($state)),
+                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                    ->dehydrated(fn ($state) => filled($state))
+                    ->maxLength(255)
+                    ->autocomplete('new-password'),
+
+                // --- Sistem ---
+                DateTimePicker::make('email_verified_at')
+                    ->label('Email Diverifikasi Pada')
+                    ->native(false)
+                    ->placeholder('Belum diverifikasi'),
+
             ]);
     }
 }

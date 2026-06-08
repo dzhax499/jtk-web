@@ -17,6 +17,9 @@ use Filament\Tables\Table;
 class LecturerEducationResource extends Resource
 {
     protected static ?string $model = LecturerEducation::class;
+    protected static ?string $modelLabel = 'Riwayat Pendidikan Dosen';
+    protected static ?string $pluralModelLabel = 'Riwayat Pendidikan Dosen';
+    protected static ?string $navigationLabel = 'Pendidikan Dosen';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 

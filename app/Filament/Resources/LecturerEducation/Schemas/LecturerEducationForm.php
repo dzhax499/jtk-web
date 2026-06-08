@@ -14,24 +14,34 @@ class LecturerEducationForm
             ->components([
                 Select::make('lecturer_id')
                     ->relationship('lecturer', 'name')
-                    ->label('Lecturer')
+                    ->label('Dosen')
                     ->searchable()
                     ->required(),
-                TextInput::make('nidn'),
-                TextInput::make('degree_level'),
-                TextInput::make('institution_name'),
-                TextInput::make('study_program'),
+                TextInput::make('nidn')
+                    ->label('NIDN'),
+                TextInput::make('degree_level')
+                    ->label('Jenjang Pendidikan'),
+                TextInput::make('institution_name')
+                    ->label('Perguruan Tinggi'),
+                TextInput::make('study_program')
+                    ->label('Program Studi'),
                 TextInput::make('start_year')
+                    ->label('Tahun Mulai')
                     ->numeric(),
                 TextInput::make('graduation_year')
+                    ->label('Tahun Lulus')
                     ->numeric(),
-                TextInput::make('academic_degree'),
-                TextInput::make('degree_abbreviation'),
+                TextInput::make('academic_degree')
+                    ->label('Gelar Akademik'),
+                TextInput::make('degree_abbreviation')
+                    ->label('Singkatan Gelar'),
                 TextInput::make('sort_order')
+                    ->label('Urutan')
                     ->required()
                     ->numeric()
                     ->default(0),
-                TextInput::make('raw_data'),
+                TextInput::make('raw_data')
+                    ->label('Data Mentah'),
             ]);
     }
 }

@@ -7,121 +7,83 @@
     <x-hero 
         title="Program Studi"
         subtitle="Jurusan Teknik Komputer dan Informatika Politeknik Negeri Bandung"
-        bgImage="https://via.placeholder.com/1920x400?text=Program+Studi">
-        <span>Breadcrumb: <a href="/" class="underline hover:text-sky-light">Beranda</a> > <span class="text-current">Program Studi</span></span>
+        bgImage="true">
+        <span>
+            <a href="/" class="underline">Beranda</a> > 
+            <span>Program Studi</span>
+        </span>
     </x-hero>
 
-    <!-- Program Cards -->
-    <section class="py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <x-section-title 
-                title="PROGRAM STUDI"
-                subtitle="JTK POLBAN menawarkan dua program studi dengan akreditasi unggulan"
-            />
+    <!-- Program Cards Section -->
+    <section class="py-20 bg-white font-['Poppins']">
+        <div class="max-w-5xl mx-auto px-6 sm:px-8">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-black text-[#00008B] tracking-wider mb-5">PROGRAM STUDI</h2>
+                <p class="text-gray-700 max-w-3xl mx-auto leading-relaxed font-semibold text-[15px] md:text-[16px]">
+                    Jurusan Teknik Komputer dan Informatika memiliki dua program studi yang dirancang untuk menghasilkan lulusan yang kompeten dan siap bersaing di industri
+                </p>
+            </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- D3 Card -->
-                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-8 border-2 border-navy-200 hover:shadow-card-hover transition">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-2xl font-bold text-navy-900">D3 Teknik Informatika</h3>
-                        <span class="text-4xl">💻</span>
-                    </div>
-                    <p class="text-sm text-blue-600 font-semibold mb-4">Akreditasi: UNGGUL</p>
-                    <p class="text-gray-700 mb-6 leading-relaxed">
-                        Program Diploma 3 yang dirancang untuk menghasilkan lulusan kompeten dalam bidang teknik informatika dengan durasi pendidikan 3 tahun.
-                    </p>
-                    <ul class="space-y-2 text-sm text-gray-600 mb-6">
-                        <li class="flex items-center"><span class="mr-2">✓</span> Kurikulum industri terkini</li>
-                        <li class="flex items-center"><span class="mr-2">✓</span> Praktek langsung dengan teknologi terbaru</li>
-                        <li class="flex items-center"><span class="mr-2">✓</span> Karir global yang terbuka lebar</li>
-                    </ul>
-                    <x-button href="/program-studi/d3" type="primary" class="w-full">
-                        Lihat Detail →
-                    </x-button>
-                </div>
+            <!-- Loading State -->
+            <div id="program-loading" class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                @for($i = 0; $i < 2; $i++)
+                    <div class="animate-pulse bg-gray-100 border border-gray-200 rounded-2xl h-56"></div>
+                @endfor
+            </div>
 
-                <!-- D4 Card -->
-                <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-8 border-2 border-orange-200 hover:shadow-card-hover transition">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-2xl font-bold text-navy-900">Sarjana Terapan Teknik Informatika</h3>
-                        <span class="text-4xl">🎓</span>
-                    </div>
-                    <p class="text-sm text-orange-600 font-semibold mb-4">Akreditasi: UNGGUL</p>
-                    <p class="text-gray-700 mb-6 leading-relaxed">
-                        Program Sarjana Terapan (D4) yang menghasilkan engineer profesional dengan kompetensi tinggi dalam sistem dan teknologi informatika.
-                    </p>
-                    <ul class="space-y-2 text-sm text-gray-600 mb-6">
-                        <li class="flex items-center"><span class="mr-2">✓</span> Fokus pada aplikasi praktis</li>
-                        <li class="flex items-center"><span class="mr-2">✓</span> Penelitian terapan berkualitas</li>
-                        <li class="flex items-center"><span class="mr-2">✓</span> Sertifikasi internasional</li>
-                    </ul>
-                    <x-button href="/program-studi/sarjana" type="primary" class="w-full bg-orange-600 hover:bg-orange-700">
-                        Lihat Detail →
-                    </x-button>
-                </div>
+            <!-- Program Container -->
+            <div id="program-container" class="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-4xl mx-auto hidden">
+                <!-- Data from API will be rendered here -->
             </div>
         </div>
     </section>
 
-    <!-- Comparison Section -->
-    <section class="bg-gray-50 py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <x-section-title 
-                title="Perbandingan Program Studi"
-                centered="true"
-            />
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('program-container');
+            const loading = document.getElementById('program-loading');
 
-            <div class="overflow-x-auto">
-                <table class="w-full border-collapse">
-                    <thead>
-                        <tr class="bg-navy-900 text-white">
-                            <th class="px-6 py-4 text-left">Aspek</th>
-                            <th class="px-6 py-4 text-left">D3 Teknik Informatika</th>
-                            <th class="px-6 py-4 text-left">Sarjana Terapan TI</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-b hover:bg-gray-100">
-                            <td class="px-6 py-4 font-semibold">Durasi</td>
-                            <td class="px-6 py-4">3 Tahun</td>
-                            <td class="px-6 py-4">4 Tahun</td>
-                        </tr>
-                        <tr class="border-b hover:bg-gray-100 bg-gray-50">
-                            <td class="px-6 py-4 font-semibold">Jenjang</td>
-                            <td class="px-6 py-4">Diploma III</td>
-                            <td class="px-6 py-4">Sarjana (S1)</td>
-                        </tr>
-                        <tr class="border-b hover:bg-gray-100">
-                            <td class="px-6 py-4 font-semibold">Akreditasi</td>
-                            <td class="px-6 py-4">UNGGUL</td>
-                            <td class="px-6 py-4">UNGGUL</td>
-                        </tr>
-                        <tr class="border-b hover:bg-gray-100 bg-gray-50">
-                            <td class="px-6 py-4 font-semibold">Fokus</td>
-                            <td class="px-6 py-4">Teknik Praktis</td>
-                            <td class="px-6 py-4">Teknik Terapan</td>
-                        </tr>
-                        <tr class="border-b hover:bg-gray-100">
-                            <td class="px-6 py-4 font-semibold">Prospek Karir</td>
-                            <td class="px-6 py-4">Operator, Programmer, Drafter</td>
-                            <td class="px-6 py-4">Engineer, Team Lead, Analyst</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
+            fetch('/api/study-programs')
+                .then(response => response.json())
+                .then(response => {
+                    const programs = response.data;
+                    loading.classList.add('hidden');
+                    container.classList.remove('hidden');
 
-    <!-- CTA Section -->
-    <section class="bg-navy-900 text-white py-16">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl font-bold mb-4">Pilih Program Studi Sesuai Impian Mu</h2>
-            <p class="text-lg text-gray-200 mb-8">
-                Bergabunglah dengan ribuan alumni kami yang sukses berkarir di berbagai industri teknologi global.
-            </p>
-            <x-button href="#" type="primary" class="bg-sky-light text-navy-900 hover:bg-sky-bright">
-                Daftar Sekarang →
-            </x-button>
-        </div>
-    </section>
+                    if (programs.length === 0) {
+                        container.innerHTML = '<p class="text-center col-span-2 text-gray-500 font-semibold">Data program studi belum tersedia.</p>';
+                        return;
+                    }
+
+                    // Render cards according to Mockup
+                    container.innerHTML = programs
+                        .filter(program => program.degree === 'D3' || program.degree === 'D4')
+                        .map(program => {
+                            const isD4 = program.degree === 'D4' || program.name.toLowerCase().includes('sarjana');
+                            const displayName = isD4 ? 'D4 Teknik Informatika' : 'D3 Teknik Informatika';
+                            
+                            let detailUrl = `/program-studi/${program.slug}`;
+                            if (program.slug === 'd3-teknik-informatika') {
+                                detailUrl = '/program-studi/d3';
+                            } else if (program.slug === 'sarjana-terapan-teknik-informatika') {
+                                detailUrl = '/program-studi/sarjana';
+                            }
+
+                            return `
+                                <div class="bg-white border border-gray-200 rounded-2xl p-10 md:p-12 shadow-sm hover:shadow-md hover:border-blue-200 transition duration-300 flex flex-col items-center justify-center text-center">
+                                    <h3 class="text-xl md:text-2xl font-black text-[#00008B] mb-8 leading-snug">${displayName}</h3>
+                                    <a href="${detailUrl}" class="inline-block text-center px-10 py-3 bg-[#00008B] text-white font-bold rounded-xl hover:bg-blue-900 transition duration-300 text-sm tracking-wide shadow-md shadow-blue-900/10">
+                                        Selengkapnya
+                                    </a>
+                                </div>
+                            `;
+                        }).join('');
+                })
+                .catch(error => {
+                    console.error('Error fetching programs:', error);
+                    loading.innerHTML = '<p class="text-red-500 font-bold text-center col-span-2">Gagal mengambil data dari API.</p>';
+                });
+        });
+    </script>
 @endsection

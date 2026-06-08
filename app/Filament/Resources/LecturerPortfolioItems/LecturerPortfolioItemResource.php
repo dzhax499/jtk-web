@@ -20,13 +20,17 @@ class LecturerPortfolioItemResource extends Resource
 {
     protected static ?string $model = LecturerPortfolioItem::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentDuplicate;
+
+    protected static ?string $navigationLabel = 'Daftar Portofolio Dosen';
 
     protected static ?string $recordTitleAttribute = 'title';
 
     public static function form(Schema $schema): Schema
     {
-        return LecturerPortfolioItemForm::configure($schema);
+        $schema = LecturerPortfolioItemForm::configure($schema);
+        $components = array_merge($schema->getComponents() ?? [], \App\Helpers\DynamicFieldsHelper::getFormComponents(self::$model));
+        return $schema->components($components);
     }
 
     public static function infolist(Schema $schema): Schema
@@ -36,7 +40,9 @@ class LecturerPortfolioItemResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return LecturerPortfolioItemsTable::configure($table);
+        $table = LecturerPortfolioItemsTable::configure($table);
+        $columns = array_merge($table->getColumns() ?? [], \App\Helpers\DynamicFieldsHelper::getTableColumns(self::$model));
+        return $table->columns($columns);
     }
 
     public static function getRelations(): array

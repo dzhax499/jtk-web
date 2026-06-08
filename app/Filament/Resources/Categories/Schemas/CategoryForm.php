@@ -12,10 +12,15 @@ class CategoryForm
         return $schema
             ->components([
                 TextInput::make('name')
+                    ->label('Nama')
                     ->required(),
+                    
                 TextInput::make('slug')
+                    ->label('Slug')
                     ->required(),
+                    
                 TextInput::make('parent_id')
+                    ->label('ID Induk')
                     ->numeric(),
             ]);
     }

@@ -19,14 +19,19 @@ use Filament\Tables\Table;
 class ExpertiseAreaResource extends Resource
 {
     protected static ?string $model = ExpertiseArea::class;
+    protected static ?string $modelLabel = 'Bidang Keahlian';
+    protected static ?string $pluralModelLabel = 'Bidang Keahlian';
+    protected static ?string $navigationLabel = 'Bidang Keahlian';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedLightBulb;
 
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Schema $schema): Schema
     {
-        return ExpertiseAreaForm::configure($schema);
+        $schema = ExpertiseAreaForm::configure($schema);
+        $components = array_merge($schema->getComponents() ?? [], \App\Helpers\DynamicFieldsHelper::getFormComponents(self::$model));
+        return $schema->components($components);
     }
 
     public static function infolist(Schema $schema): Schema
@@ -36,7 +41,9 @@ class ExpertiseAreaResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return ExpertiseAreasTable::configure($table);
+        $table = ExpertiseAreasTable::configure($table);
+        $columns = array_merge($table->getColumns() ?? [], \App\Helpers\DynamicFieldsHelper::getTableColumns(self::$model));
+        return $table->columns($columns);
     }
 
     public static function getRelations(): array

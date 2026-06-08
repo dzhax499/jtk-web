@@ -20,13 +20,17 @@ class LecturerTeachingHistoryResource extends Resource
 {
     protected static ?string $model = LecturerTeachingHistory::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedArrowPath;
+
+    protected static ?string $navigationLabel = 'Riwayat Mengajar Dosen';
 
     protected static ?string $recordTitleAttribute = 'course_name';
 
     public static function form(Schema $schema): Schema
     {
-        return LecturerTeachingHistoryForm::configure($schema);
+        $schema = LecturerTeachingHistoryForm::configure($schema);
+        $components = array_merge($schema->getComponents() ?? [], \App\Helpers\DynamicFieldsHelper::getFormComponents(self::$model));
+        return $schema->components($components);
     }
 
     public static function infolist(Schema $schema): Schema
@@ -36,7 +40,9 @@ class LecturerTeachingHistoryResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return LecturerTeachingHistoriesTable::configure($table);
+        $table = LecturerTeachingHistoriesTable::configure($table);
+        $columns = array_merge($table->getColumns() ?? [], \App\Helpers\DynamicFieldsHelper::getTableColumns(self::$model));
+        return $table->columns($columns);
     }
 
     public static function getRelations(): array

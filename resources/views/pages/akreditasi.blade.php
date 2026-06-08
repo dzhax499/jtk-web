@@ -3,71 +3,78 @@
 @section('title', 'Akreditasi - JTK POLBAN')
 
 @section('content')
-    <x-hero 
+<div class="font-['Poppins']">
+    <x-hero
         title="Akreditasi"
         subtitle="Informasi akreditasi program studi Jurusan Teknik Komputer dan Informatika"
         bgImage="https://via.placeholder.com/1920x400?text=Akreditasi">
-        <span>Breadcrumb: <a href="/" class="underline">Beranda</a> &gt; <span>Akreditasi</span></span>
+        <span><a href="/" class="underline">Beranda</a> &gt; <span>Akreditasi</span></span>
     </x-hero>
 
-    <section class="py-16">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="mb-8 rounded-lg border border-sky-light/30 bg-sky-light/10 px-5 py-4 text-sm text-gray-700">
-                Konten ringkasan halaman ini diambil menggunakan <strong>fetch REST API</strong> dari endpoint <code>/api/pages/akreditasi</code>.
-            </div>
-
+    <section class="py-16 bg-gray-50/50 flex-grow flex flex-col justify-center">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            
             <div id="page-loading" class="animate-pulse space-y-4 mb-10">
                 <div class="h-7 bg-gray-200 rounded w-1/2"></div>
                 <div class="h-4 bg-gray-200 rounded"></div>
                 <div class="h-4 bg-gray-200 rounded"></div>
             </div>
 
-            <div id="page-content" class="hidden bg-white border border-gray-200 rounded-xl shadow-card p-8 mb-12">
-                <h2 id="page-title" class="text-3xl font-bold text-navy-900 mb-6"></h2>
+            <!-- Fallback Container if Parsing Fails -->
+            <div id="page-content" class="hidden bg-white border border-gray-100 rounded-xl shadow-sm p-8 mb-16">
+                <h2 id="page-title" class="text-2xl font-bold text-navy-900 mb-4 border-b pb-2">Akreditasi</h2>
                 <div id="page-body" class="prose max-w-none text-gray-700"></div>
             </div>
 
-            <div id="page-fallback" class="hidden bg-yellow-50 border border-yellow-200 rounded-xl p-6 mb-12 text-yellow-900">
-                Data halaman akreditasi belum tersedia di API. Informasi akreditasi default tetap ditampilkan di bawah.
-            </div>
-
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-navy-900 mb-3">Akreditasi Program Studi</h2>
-                <p class="text-gray-600 max-w-3xl mx-auto">Informasi akreditasi program studi di Jurusan Teknik Komputer dan Informatika.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-white rounded-xl border border-gray-200 p-8 shadow-card">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-2xl font-bold text-navy-900">D3 Teknik Informatika</h3>
-                        <span class="px-4 py-2 bg-green-100 text-green-700 rounded-full font-bold">UNGGUL</span>
-                    </div>
-                    <p class="text-gray-600 mb-3">Terakreditasi tahun 2023, berlaku hingga 2028-08-07.</p>
-                    <p class="text-gray-600 mb-6">No. SK: 073/SK/LAM-INFOKOM/Ak/D3/VIII/2023.</p>
-                    <div class="space-y-3">
-                        <a href="https://www.polban.ac.id/wp-content/uploads/2024/01/24.-Sertifikat-Akreditasi-D3-Teknik-Informatika_073-2023-2028.pdf" target="_blank" rel="noopener noreferrer" class="block w-full text-center px-6 py-3 bg-navy-900 text-white rounded-lg font-semibold hover:bg-navy-800 transition">
-                            Unduh Sertifikat
-                        </a>
-                        <a href="https://laminfokom.or.id/official/data-akreditasi-1.html" target="_blank" rel="noopener noreferrer" class="block w-full text-center px-6 py-3 border-2 border-navy-900 text-navy-900 rounded-lg font-semibold hover:bg-navy-50 transition">
-                            Kunjungi LAM INFOKOM
-                        </a>
-                    </div>
+            <!-- Beautiful Cards Section (Dinamis Diisi dari JS) -->
+            <div id="cards-section" class="hidden font-['Poppins']">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-[#01018B] tracking-wide mb-3 uppercase">AKREDITASI PROGRAM STUDI</h2>
                 </div>
 
-                <div class="bg-white rounded-xl border border-gray-200 p-8 shadow-card">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-2xl font-bold text-navy-900">Sarjana Terapan Teknik Informatika</h3>
-                        <span class="px-4 py-2 bg-green-100 text-green-700 rounded-full font-bold">UNGGUL</span>
+                <div class="flex flex-col md:flex-row justify-center items-stretch gap-8">
+                    <!-- Card D3 -->
+                    <div class="bg-white rounded-xl border border-[#01018B]/20 p-10 flex flex-col items-center text-center w-full max-w-md shadow-sm hover:shadow-md transition-shadow">
+                        <h3 class="text-base font-bold text-[#01018B] mb-6">D3 Teknik Informatika</h3>
+                        
+                        <div class="mb-4">
+                            <p class="text-xs font-bold tracking-[0.2em] text-[#01018B]/70 uppercase mb-2">Status Akreditasi</p>
+                            <div id="d3-status" class="text-[64px] font-black text-[#01018B] tracking-wider mb-8 uppercase leading-none">...</div>
+                        </div>
+                        
+                        <p id="d3-dates" class="text-base text-[#01018B] mb-2 leading-relaxed">Memuat data...</p>
+                        <p id="d3-sk" class="text-xs text-[#01018B]/70 mt-4 mb-10"></p>
+                        
+                        <div class="mt-auto w-full">
+                            <a href="https://www.polban.ac.id/wp-content/uploads/2024/01/24.-Sertifikat-Akreditasi-D3-Teknik-Informatika_073-2023-2028.pdf" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-8 py-3 bg-[#01018B] text-white text-base font-semibold rounded hover:bg-[#000055] transition-colors w-full sm:w-auto">
+                                <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                                </svg>
+                                Lihat Sertifikat
+                            </a>
+                        </div>
                     </div>
-                    <p class="text-gray-600 mb-3">Terakreditasi tahun 2025, berlaku hingga 2030-08-15.</p>
-                    <p class="text-gray-600 mb-6">No. SK: 146/SK/LAM-INFOKOM/Ak/STr/VIII/2025.</p>
-                    <div class="space-y-3">
-                        <a href="https://www.polban.ac.id/wp-content/uploads/2025/08/file_sertifikat_25051520395200500455301_1755423415.pdf" target="_blank" rel="noopener noreferrer" class="block w-full text-center px-6 py-3 bg-navy-900 text-white rounded-lg font-semibold hover:bg-navy-800 transition">
-                            Unduh Sertifikat
-                        </a>
-                        <a href="https://laminfokom.or.id/official/data-akreditasi-1.html" target="_blank" rel="noopener noreferrer" class="block w-full text-center px-6 py-3 border-2 border-navy-900 text-navy-900 rounded-lg font-semibold hover:bg-navy-50 transition">
-                            Kunjungi LAM INFOKOM
-                        </a>
+
+                    <!-- Card STr -->
+                    <div class="bg-white rounded-xl border border-[#01018B]/20 p-10 flex flex-col items-center text-center w-full max-w-md shadow-sm hover:shadow-md transition-shadow">
+                        <h3 class="text-base font-bold text-[#01018B] mb-6">Sarjana Terapan Teknik Informatika</h3>
+                        
+                        <div class="mb-4">
+                            <p class="text-xs font-bold tracking-[0.2em] text-[#01018B]/70 uppercase mb-2">Status Akreditasi</p>
+                            <div id="str-status" class="text-[64px] font-black text-[#01018B] tracking-wider mb-8 uppercase leading-none">...</div>
+                        </div>
+                        
+                        <p id="str-dates" class="text-base text-[#01018B] mb-2 leading-relaxed">Memuat data...</p>
+                        <p id="str-sk" class="text-xs text-[#01018B]/70 mt-4 mb-10"></p>
+                        
+                        <div class="mt-auto w-full">
+                            <a href="https://www.polban.ac.id/wp-content/uploads/2025/08/file_sertifikat_25051520395200500455301_1755423415.pdf" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-8 py-3 bg-[#01018B] text-white text-base font-semibold rounded hover:bg-[#000055] transition-colors w-full sm:w-auto">
+                                <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                                </svg>
+                                Lihat Sertifikat
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -77,8 +84,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const loading = document.getElementById('page-loading');
-            const content = document.getElementById('page-content');
-            const fallback = document.getElementById('page-fallback');
+            const pageContentDiv = document.getElementById('page-content');
+            const cardsSection = document.getElementById('cards-section');
 
             const safeHtml = (html) => String(html || '')
                 .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '')
@@ -92,15 +99,89 @@
                 const json = await response.json();
                 const page = json.data || json;
 
-                document.getElementById('page-title').textContent = page.title || 'Akreditasi';
-                document.getElementById('page-body').innerHTML = safeHtml(page.content || page.excerpt || '<p>Konten akreditasi belum tersedia.</p>');
+                const rawHtml = safeHtml(page.content || page.excerpt || '');
+                if (rawHtml.trim() === '') {
+                    loading.classList.add('hidden');
+                    return;
+                }
 
-                loading.classList.add('hidden');
-                content.classList.remove('hidden');
+                // Ekstrak data dari HTML API untuk dimasukkan ke Card Statis
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = rawHtml;
+
+                const extractInfo = (programKeyword) => {
+                    const headings = Array.from(tempDiv.querySelectorAll('h3, h4, h2'));
+                    const heading = headings.find(h => h.textContent.toLowerCase().includes(programKeyword.toLowerCase()));
+                    if (!heading) return null;
+                    
+                    let current = heading.nextElementSibling;
+                    let status = 'UNGGUL'; // Fallback
+                    let dates = '';
+                    let sk = '';
+                    
+                    while (current && (current.tagName === 'P' || current.tagName === 'DIV')) {
+                        const text = current.textContent;
+                        if (text.toLowerCase().includes('status akreditasi')) {
+                            const strong = current.querySelector('strong');
+                            if (strong) status = strong.textContent.trim();
+                        } else if (text.toLowerCase().includes('terakreditasi tahun')) {
+                            dates = current.innerHTML; // get innerHTML to preserve any bold formatting if exists
+                        } else if (text.toLowerCase().includes('no. sk')) {
+                            sk = text;
+                        }
+                        current = current.nextElementSibling;
+                    }
+                    return { status, dates: dates || text, sk: sk || text }; // Simplified fallback
+                };
+
+                const d3Info = extractInfo('D3 Teknik Informatika');
+                const strInfo = extractInfo('Sarjana Terapan');
+
+                if (d3Info && strInfo && d3Info.sk && strInfo.sk) {
+                    // Berhasil parsing, masukkan ke Card
+                    document.getElementById('d3-status').textContent = d3Info.status;
+                    
+                    // Gunakan Regex yang menangkap "hingga" beserta spasi setelahnya agar tidak ada leading space
+                    document.getElementById('d3-dates').innerHTML = d3Info.dates.replace(/hingga\s+/i, 'hingga<br><span class="font-bold">').replace(/\./g, '.</span>');
+                    if(document.getElementById('d3-dates').innerHTML.indexOf('<br') === -1) {
+                         const parts = d3Info.dates.split(/hingga/i);
+                         if(parts.length > 1) {
+                             document.getElementById('d3-dates').innerHTML = parts[0] + 'hingga<br><span class="font-bold">' + parts[1].trim() + '</span>';
+                         } else {
+                             document.getElementById('d3-dates').textContent = d3Info.dates;
+                         }
+                    }
+                    document.getElementById('d3-sk').textContent = d3Info.sk;
+
+                    document.getElementById('str-status').textContent = strInfo.status;
+                    
+                    document.getElementById('str-dates').innerHTML = strInfo.dates.replace(/hingga\s+/i, 'hingga<br><span class="font-bold">').replace(/\./g, '.</span>');
+                    if(document.getElementById('str-dates').innerHTML.indexOf('<br') === -1) {
+                         const partsStr = strInfo.dates.split(/hingga/i);
+                         if(partsStr.length > 1) {
+                              document.getElementById('str-dates').innerHTML = partsStr[0] + 'hingga<br><span class="font-bold">' + partsStr[1].trim() + '</span>';
+                         } else {
+                              document.getElementById('str-dates').textContent = strInfo.dates;
+                         }
+                    }
+                    document.getElementById('str-sk').textContent = strInfo.sk;
+
+                    loading.classList.add('hidden');
+                    cardsSection.classList.remove('hidden');
+                } else {
+                    // Jika parsing gagal karena struktur berubah, tampilkan HTML mentah saja
+                    document.getElementById('page-title').textContent = page.title || 'Akreditasi';
+                    document.getElementById('page-body').innerHTML = rawHtml;
+                    
+                    loading.classList.add('hidden');
+                    pageContentDiv.classList.remove('hidden');
+                }
+
             } catch (e) {
                 loading.classList.add('hidden');
-                fallback.classList.remove('hidden');
+                console.error(e);
             }
         });
     </script>
+    </div>
 @endsection

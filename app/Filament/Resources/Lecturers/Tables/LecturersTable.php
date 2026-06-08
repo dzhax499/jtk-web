@@ -16,55 +16,55 @@ class LecturersTable
     {
         return $table
             ->columns([
-                TextColumn::make('studyProgram.name')
-                    ->label('Study Program')
-                    ->numeric()
-                    ->sortable(),
                 TextColumn::make('name')
-                    ->searchable(),
-                TextColumn::make('slug')
-                    ->searchable(),
-                TextColumn::make('nip')
-                    ->searchable(),
+                    ->label('Nama Lengkap')
+                    ->searchable()
+                    ->sortable()
+                    ->weight('bold')
+                    ->limit(30)
+                    ->tooltip(fn ($record) => $record->name),
+                
                 TextColumn::make('nidn')
-                    ->searchable(),
-                TextColumn::make('email')
-                    ->label('Email address')
-                    ->searchable(),
-                TextColumn::make('photo_url')
-                    ->searchable(),
+                    ->label('NIDN')
+                    ->searchable()
+                    ->copyable()
+                    ->tooltip('Klik untuk menyalin NIDN'),
+
+                TextColumn::make('studyProgram.name')
+                    ->label('Program Studi')
+                    ->sortable(),
+
                 TextColumn::make('academic_position')
+                    ->label('Jabatan Fungsional')
                     ->searchable(),
+
                 IconColumn::make('is_active')
-                    ->boolean(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('gender')
-                    ->searchable(),
-                TextColumn::make('employment_status')
-                    ->searchable(),
-                TextColumn::make('activity_status')
-                    ->searchable(),
-                TextColumn::make('highest_education')
-                    ->searchable(),
+                    ->label('Aktif')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-check-circle')
+                    ->falseIcon('heroicon-o-x-circle')
+                    ->trueColor('success')
+                    ->falseColor('danger'),
+
+                // Kolom teknis
+                TextColumn::make('slug')->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('nip')->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('email')->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('created_at')->label('Dibuat')->dateTime()->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                // Filter tambahan bisa di sini
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
+                ViewAction::make()->label('Lihat'),
+                EditAction::make()->label('Ubah'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()->label('Hapus Terpilih'),
                 ]),
-            ]);
+            ])
+            ->emptyStateHeading('Belum Ada Data Dosen')
+            ->emptyStateDescription('Silakan tambah data dosen baru melalui tombol di kanan atas.');
     }
 }

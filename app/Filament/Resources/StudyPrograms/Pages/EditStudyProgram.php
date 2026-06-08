@@ -10,6 +10,11 @@ class EditStudyProgram extends EditRecord
 {
     protected static string $resource = StudyProgramResource::class;
 
+    public function getBreadcrumbs(): array
+    {
+        return [];
+    }
+
     protected function getHeaderActions(): array
     {
         return [

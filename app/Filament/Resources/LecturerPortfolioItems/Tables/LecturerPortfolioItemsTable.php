@@ -16,23 +16,28 @@ class LecturerPortfolioItemsTable
         return $table
             ->columns([
                 TextColumn::make('lecturer.name')
-                    ->label('Lecturer')
+                    ->label('Dosen')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('type')
+                    ->label('Tipe')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('title')
+                    ->label('Judul')
                     ->limit(50)
                     ->searchable(),
                 TextColumn::make('year')
+                    ->label('Tahun')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('category')
+                    ->label('Kategori')
                     ->sortable()
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('source')
+                    ->label('Sumber')
                     ->sortable()
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),

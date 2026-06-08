@@ -11,6 +11,11 @@ class EditLecturerTeachingHistory extends EditRecord
 {
     protected static string $resource = LecturerTeachingHistoryResource::class;
 
+    public function getBreadcrumbs(): array
+    {
+        return [];
+    }
+
     protected function getHeaderActions(): array
     {
         return [

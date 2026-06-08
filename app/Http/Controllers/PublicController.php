@@ -15,9 +15,45 @@ class PublicController extends Controller
      */
     public function home(): View
     {
+        try {
+            $programsRequest = request()->duplicate();
+            $programsResponse = app(\App\Http\Controllers\Api\StudyProgramApiController::class)->index($programsRequest);
+            $programsData = $programsResponse->resolve();
+            $programs = collect($programsData)->map(function ($program) {
+                return [
+                    'title' => $program['name'] ?? 'Program Studi',
+                    'slug' => $program['slug'] ?? '#',
+                    'icon' => str_contains(strtolower($program['degree'] ?? ''), 'd3') ? '💻' : '🎓',
+                    'accreditation' => 'UNGGUL',
+                    'description' => $program['description'] ?? 'Program studi unggulan yang menghasilkan lulusan kompeten.',
+                ];
+            })->toArray();
+        } catch (\Throwable $e) {
+            $programs = $this->getStaticPrograms();
+        }
+
+        try {
+            $newsRequest = request()->duplicate(['type' => 'berita', 'per_page' => 5]);
+            $newsResponse = app(\App\Http\Controllers\Api\PostApiController::class)->index($newsRequest);
+            $latestNewsData = $newsResponse->resolve();
+            $latestNews = collect($latestNewsData)->map(function ($news) {
+                return [
+                    'id' => $news['slug'] ?? $news['id'],
+                    'title' => $news['title'],
+                    'date' => $news['date_label'] ?? '-',
+                    'views' => $news['views'] ?? '0',
+                    'image' => $news['image_url'] ?? 'https://via.placeholder.com/400x250?text=Berita',
+                    'excerpt' => $news['excerpt'],
+                    'slug' => $news['slug'] ?? $news['id'],
+                ];
+            })->toArray();
+        } catch (\Throwable $e) {
+            $latestNews = $this->getStaticLatestNews();
+        }
+
         return view('pages.home', [
-            'latestNews' => $this->getStaticLatestNews(),
-            'programs' => $this->getStaticPrograms(),
+            'latestNews' => $latestNews,
+            'programs' => $programs,
         ]);
     }
 
@@ -33,52 +69,12 @@ class PublicController extends Controller
     }
 
     /**
-     * Halaman D3 Teknik Informatika
+     * Halaman Detail Program Studi
      */
-    public function d3TeknikInformatika(): View
+    public function programDetail(string $slug): View
     {
         return view('pages.program-detail', [
-            'program' => [
-                'title' => 'D3 Teknik Informatika',
-                'shortName' => 'D3 Teknik Informatika',
-                'accreditation' => 'UNGGUL',
-                'accreditationDate' => 'Terakreditasi tahun 2023, Berlaku hingga 2028-08-07',
-                'vision' => 'Menjadi Program Studi unggulan dan terdepan dalam program pendidikan Diploma III Teknik Informatika yang diakui baik di tingkat nasional maupun internasional.',
-                'mission' => [
-                    'Menyelenggarakan program pendidikan di bidang Teknik Informatika yang berkualitas dan berorientasi pada kebutuhan industri.',
-                    'Melakukan penelitian terapan yang relevan dengan pengembangan IPTEK.',
-                    'Melaksanakan pengabdian kepada masyarakat melalui kegiatan yang berkelanjutan.',
-                ],
-                'objectives' => [
-                    'Menghasilkan lulusan yang kompeten dalam perancangan dan implementasi perangkat lunak.',
-                    'Menghasilkan lulusan yang mampu menyelesaikan masalah berbasis teknologi informasi.',
-                ],
-            ],
-        ]);
-    }
-
-    /**
-     * Halaman Sarjana Terapan Teknik Informatika
-     */
-    public function sarjanaTerapan(): View
-    {
-        return view('pages.program-detail', [
-            'program' => [
-                'title' => 'Sarjana Terapan Teknik Informatika',
-                'shortName' => 'Sarjana Terapan',
-                'accreditation' => 'UNGGUL',
-                'accreditationDate' => 'Terakreditasi tahun 2025, Berlaku hingga 2030-08-15',
-                'vision' => 'Menjadi program studi sarjana terapan yang unggul dalam bidang sistem dan teknologi informatika.',
-                'mission' => [
-                    'Menyelenggarakan pendidikan di bidang sistem dan teknologi informatika.',
-                    'Melakukan penelitian terapan untuk pengembangan teknologi informatika.',
-                    'Melaksanakan pengabdian kepada masyarakat melalui transfer teknologi.',
-                ],
-                'objectives' => [
-                    'Menghasilkan lulusan yang kompeten, profesional, dan adaptif dalam bidang informatika.',
-                    'Mengembangkan keterampilan praktis dalam merancang, membangun, dan mengelola sistem informasi.',
-                ],
-            ],
+            'slug' => $slug
         ]);
     }
 
@@ -96,21 +92,93 @@ class PublicController extends Controller
             return view('pages.profil-dosen', [
                 'lecturers' => [],
                 'filters' => $this->emptyLecturerFilters(),
+                'selected' => [
+                    'search' => '',
+                    'education' => [],
+                    'position' => [],
+                ]
             ]);
         }
 
-        $lecturersData = DB::table('lecturers')
-            ->select([
-                'id',
-                'name',
-                'slug',
-                'gender',
-                'highest_education',
-                'academic_position',
-                'activity_status',
-            ])
-            ->orderBy('name')
+        // Get all unique filter options from DB (without dynamic queries applied, to keep options constant)
+        $allLecturersForFilters = DB::table('lecturers')
+            ->select(['highest_education', 'academic_position'])
             ->get();
+
+        $educationFilters = $allLecturersForFilters
+            ->pluck('highest_education')
+            ->filter(function ($value) {
+                $value = trim($value ?? '');
+                if (empty($value) || $value === '-' || preg_match('/[0-9]{5,}/', $value) || str_contains(strtolower($value), 'oakw') || strlen($value) > 50) {
+                    return false;
+                }
+                return true;
+            })
+            ->unique()
+            ->sort()
+            ->values()
+            ->toArray();
+
+        $positionFilters = $allLecturersForFilters
+            ->pluck('academic_position')
+            ->filter(function ($value) {
+                $value = trim($value ?? '');
+                if (empty($value) || $value === '-' || preg_match('/[0-9]{5,}/', $value) || str_contains(strtolower($value), '90i3') || strlen($value) > 50) {
+                    return false;
+                }
+                return true;
+            })
+            ->unique()
+            ->sort()
+            ->values()
+            ->toArray();
+
+        // Build the filtered query
+        $query = DB::table('lecturers')
+            ->select([
+                'lecturers.id',
+                'lecturers.name',
+                'lecturers.slug',
+                'lecturers.gender',
+                'lecturers.highest_education',
+                'lecturers.academic_position',
+                'lecturers.activity_status'
+            ])
+            ->where(function($q) {
+                // Filter out junk lecturers
+                $q->whereNull('lecturers.highest_education')
+                  ->orWhere('lecturers.highest_education', 'not like', '%oakw%');
+            })
+            ->where(function($q) {
+                // Filter out junk lecturers
+                $q->whereNull('lecturers.academic_position')
+                  ->orWhere('lecturers.academic_position', 'not like', '%90i3%');
+            });
+
+        // Search Filter
+        if ($search = request('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('lecturers.name', 'ilike', '%' . $search . '%')
+                ->orWhere('lecturers.highest_education', 'ilike', '%' . $search . '%')
+                ->orWhere('lecturers.academic_position', 'ilike', '%' . $search . '%');
+            });
+        }
+
+        // Pendidikan Terakhir Filter
+        if ($selectedEducations = request('education')) {
+            if (is_array($selectedEducations) && count($selectedEducations) > 0) {
+                $query->whereIn('lecturers.highest_education', $selectedEducations);
+            }
+        }
+
+        // Jabatan Fungsional Filter
+        if ($selectedPositions = request('position')) {
+            if (is_array($selectedPositions) && count($selectedPositions) > 0) {
+                $query->whereIn('lecturers.academic_position', $selectedPositions);
+            }
+        }
+
+        $lecturersData = $query->orderBy('lecturers.name')->get();
 
         $lecturers = $lecturersData
             ->map(function ($lecturer) {
@@ -122,39 +190,22 @@ class PublicController extends Controller
                     'position' => $lecturer->highest_education ?? '-',
                     'functional' => $lecturer->academic_position ?? '-',
                     'status' => $lecturer->activity_status ?? '-',
-
-                    // Untuk keamanan merge, bidang keahlian tidak diambil dari relasi dulu.
-                    // Relasi expertise bisa diaktifkan lagi nanti oleh pemegang halaman dosen
-                    // setelah query-nya dibuat eager loading / join yang aman.
                     'expertise' => '-',
                 ];
             })
             ->toArray();
 
-        $educationFilters = $lecturersData
-            ->pluck('highest_education')
-            ->filter()
-            ->unique()
-            ->sort()
-            ->values()
-            ->toArray();
-
-        $positionFilters = $lecturersData
-            ->pluck('academic_position')
-            ->filter()
-            ->unique()
-            ->sort()
-            ->values()
-            ->toArray();
-
         return view('pages.profil-dosen', [
             'lecturers' => $lecturers,
             'filters' => [
-                'program' => ['Semua Program Studi', 'Teknik Informatika'],
-                'field' => ['Semua Bidang Keahlian'],
-                'education' => array_merge(['Semua Pendidikan Terakhir'], $educationFilters),
-                'position' => array_merge(['Semua Jabatan Fungsional'], $positionFilters),
+                'education' => $educationFilters,
+                'position' => $positionFilters,
             ],
+            'selected' => [
+                'search' => request('search', ''),
+                'education' => (array) request('education', []),
+                'position' => (array) request('position', []),
+            ]
         ]);
     }
 
@@ -318,11 +369,19 @@ class PublicController extends Controller
     }
 
     /**
+     * Halaman Utama Arsip
+     */
+    public function arsip(): View
+    {
+        return view('pages.arsip');
+    }
+
+    /**
      * Halaman Arsip Berita
      */
     public function arsipBerita(): View
     {
-        return view('pages.berita');
+        return view('pages.arsip-berita');
     }
 
     /**
@@ -550,7 +609,6 @@ class PublicController extends Controller
     private function emptyLecturerFilters(): array
     {
         return [
-            'program' => ['Semua Program Studi'],
             'field' => ['Semua Bidang Keahlian'],
             'education' => ['Semua Pendidikan Terakhir'],
             'position' => ['Semua Jabatan Fungsional'],

@@ -18,16 +18,22 @@ class LecturerPublicationResource extends Resource
 {
     protected static ?string $model = LecturerPublication::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedGlobeAsiaAustralia;
+
+    protected static ?string $navigationLabel = 'Publikasi Dosen';
 
     public static function form(Schema $schema): Schema
     {
-        return LecturerPublicationForm::configure($schema);
+        $schema = LecturerPublicationForm::configure($schema);
+        $components = array_merge($schema->getComponents() ?? [], \App\Helpers\DynamicFieldsHelper::getFormComponents(self::$model));
+        return $schema->components($components);
     }
 
     public static function table(Table $table): Table
     {
-        return LecturerPublicationsTable::configure($table);
+        $table = LecturerPublicationsTable::configure($table);
+        $columns = array_merge($table->getColumns() ?? [], \App\Helpers\DynamicFieldsHelper::getTableColumns(self::$model));
+        return $table->columns($columns);
     }
 
     public static function getRelations(): array

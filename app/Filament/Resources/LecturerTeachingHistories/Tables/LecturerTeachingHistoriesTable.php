@@ -17,34 +17,41 @@ class LecturerTeachingHistoriesTable
         return $table
             ->columns([
                 TextColumn::make('lecturer.name')
-                    ->label('Lecturer')
+                    ->label('Dosen')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('studyProgram.name')
-                    ->label('Study Program')
+                    ->label('Program Studi')
                     ->sortable()
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('nidn')
+                    ->label('NIDN')
                     ->sortable()
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('semester_name')
+                    ->label('Semester')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('course_code')
+                    ->label('Kode Mata Kuliah')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('course_name')
+                    ->label('Nama Mata Kuliah')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('class_name')
+                    ->label('Nama Kelas')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('academic_year')
+                    ->label('Tahun Akademik')
                     ->sortable()
                     ->searchable(),
                 IconColumn::make('is_active')
+                    ->label('Status Aktif')
                     ->boolean()
                     ->sortable(),
                 TextColumn::make('created_at')

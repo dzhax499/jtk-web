@@ -78,7 +78,6 @@ class LecturerForm
                 ->relationship('studyProgram', 'name')
                 ->label('Program Studi')
                 ->searchable()
-                ->preload()
                 ->native(false),
 
             TextInput::make('academic_position')
@@ -96,7 +95,6 @@ class LecturerForm
                 ->label('Bidang Keahlian')
                 ->multiple()
                 ->searchable()
-                ->preload()
                 ->native(false),
 
         ];

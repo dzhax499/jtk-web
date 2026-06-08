@@ -21,7 +21,7 @@ class LecturerEducationResource extends Resource
     protected static ?string $pluralModelLabel = 'Riwayat Pendidikan Dosen';
     protected static ?string $navigationLabel = 'Pendidikan Dosen';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBookOpen;
 
     public static function form(Schema $schema): Schema
     {

@@ -14,7 +14,7 @@ class ListStudyPrograms extends ListRecords
 
     public function getHeading(): string | Htmlable
     {
-        return new HtmlString('<span style="color: #00008B; font-size: 2.25rem;" class="font-extrabold tracking-tight">Publikasi Dosen</span>');
+        return new HtmlString('<span style="color: #00008B; font-size: 2.25rem;" class="font-extrabold tracking-tight">Program Studi</span>');
     }
 
     public function getBreadcrumbs(): array

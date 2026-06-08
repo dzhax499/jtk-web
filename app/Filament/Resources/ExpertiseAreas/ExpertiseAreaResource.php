@@ -23,7 +23,7 @@ class ExpertiseAreaResource extends Resource
     protected static ?string $pluralModelLabel = 'Bidang Keahlian';
     protected static ?string $navigationLabel = 'Bidang Keahlian';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedLightBulb;
 
     protected static ?string $recordTitleAttribute = 'name';
 

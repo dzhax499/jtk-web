@@ -21,7 +21,7 @@ class PostResource extends Resource
     protected static ?string $pluralModelLabel = 'Berita';
     protected static ?string $navigationLabel = 'Berita';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedMegaphone;
 
     public static function form(Schema $schema): Schema
     {

@@ -14,11 +14,12 @@ class LecturerLinkForm
             ->components([
                 Select::make('lecturer_id')
                     ->relationship('lecturer', 'name')
-                    ->label('Lecturer')
+                    ->label('Dosen')
                     ->required()
                     ->searchable()
                     ->preload(),
                 Select::make('platform')
+                    ->label('Platform')
                     ->required()
                     ->options([
                         'pddikti' => 'PDDIKTI',
@@ -29,6 +30,7 @@ class LecturerLinkForm
                         'personal_website' => 'Website Pribadi',
                     ]),
                 TextInput::make('url')
+                    ->label('Tautan (URL)')
                     ->required()
                     ->url()
                     ->maxLength(255),

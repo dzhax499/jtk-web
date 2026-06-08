@@ -19,6 +19,9 @@ use Filament\Tables\Table;
 class LecturerLinkResource extends Resource
 {
     protected static ?string $model = LecturerLink::class;
+    protected static ?string $modelLabel = 'Tautan Dosen';
+    protected static ?string $pluralModelLabel = 'Tautan Dosen';
+    protected static ?string $navigationLabel = 'Tautan Dosen';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedLink;
 

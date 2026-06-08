@@ -12,9 +12,11 @@ class LecturerLinkInfolist
         return $schema
             ->components([
                 TextEntry::make('lecturer.name')
-                    ->label('Lecturer'),
-                TextEntry::make('platform'),
-                TextEntry::make('url'),
+                    ->label('Dosen'),
+                TextEntry::make('platform')
+                    ->label('Platform'),
+                TextEntry::make('url')
+                    ->label('Tautan (URL)'),
             ]);
     }
 }

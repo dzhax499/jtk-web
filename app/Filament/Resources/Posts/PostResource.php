@@ -17,6 +17,9 @@ use Filament\Tables\Table;
 class PostResource extends Resource
 {
     protected static ?string $model = Post::class;
+    protected static ?string $modelLabel = 'Berita';
+    protected static ?string $pluralModelLabel = 'Berita';
+    protected static ?string $navigationLabel = 'Berita';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 

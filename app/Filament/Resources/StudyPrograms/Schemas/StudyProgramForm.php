@@ -15,17 +15,25 @@ class StudyProgramForm
         return $schema
             ->components([
                 TextInput::make('name')
+                    ->label('Nama Program Studi')
                     ->required(),
                 TextInput::make('slug')
+                    ->label('Slug')
                     ->required(),
-                TextInput::make('degree'),
+                TextInput::make('degree')
+                    ->label('Tingkat Pendidikan')
+                    ->required(),
                 Toggle::make('is_active')
+                    ->label('Status Aktif')
                     ->required(),
                 Textarea::make('description')
+                    ->label('Deskripsi')
                     ->columnSpanFull(),
                 Textarea::make('vision')
+                    ->label('Visi')
                     ->columnSpanFull(),
                 Textarea::make('mission')
+                    ->label('Misi')
                     ->placeholder("Satu misi per baris")
                     ->columnSpanFull(),
                 

@@ -18,7 +18,9 @@ class LecturerPublicationResource extends Resource
 {
     protected static ?string $model = LecturerPublication::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedGlobeAsiaAustralia;
+
+    protected static ?string $navigationLabel = 'Publikasi Dosen';
 
     public static function form(Schema $schema): Schema
     {

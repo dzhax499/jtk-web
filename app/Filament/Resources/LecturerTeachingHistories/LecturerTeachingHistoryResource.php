@@ -20,7 +20,9 @@ class LecturerTeachingHistoryResource extends Resource
 {
     protected static ?string $model = LecturerTeachingHistory::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedArrowPath;
+
+    protected static ?string $navigationLabel = 'Riwayat Mengajar Dosen';
 
     protected static ?string $recordTitleAttribute = 'course_name';
 

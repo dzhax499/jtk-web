@@ -20,7 +20,9 @@ class LecturerPortfolioItemResource extends Resource
 {
     protected static ?string $model = LecturerPortfolioItem::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentDuplicate;
+
+    protected static ?string $navigationLabel = 'Daftar Portofolio Dosen';
 
     protected static ?string $recordTitleAttribute = 'title';
 

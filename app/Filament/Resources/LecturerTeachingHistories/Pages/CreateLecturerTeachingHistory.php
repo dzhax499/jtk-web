@@ -8,4 +8,11 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateLecturerTeachingHistory extends CreateRecord
 {
     protected static string $resource = LecturerTeachingHistoryResource::class;
+
+    protected static ?string $title = 'Buat Riwayat Mengajar Dosen';
+
+    public function getBreadcrumbs(): array
+    {
+        return [];
+    }
 }

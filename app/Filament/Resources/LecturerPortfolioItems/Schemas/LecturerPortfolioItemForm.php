@@ -15,11 +15,12 @@ class LecturerPortfolioItemForm
             ->components([
                 Select::make('lecturer_id')
                     ->relationship('lecturer', 'name')
-                    ->label('Lecturer')
+                    ->label('Dosen')
                     ->required()
                     ->searchable()
                     ->preload(),
                 Select::make('type')
+                    ->label('Tipe')
                     ->required()
                     ->options([
                         'research' => 'Research (Penelitian)',
@@ -30,18 +31,25 @@ class LecturerPortfolioItemForm
                         'project' => 'Project (Proyek)',
                     ]),
                 Textarea::make('title')
+                    ->label('Judul')
                     ->required()
                     ->columnSpanFull(),
                 TextInput::make('year')
+                    ->label('Tahun')
                     ->numeric(),
-                TextInput::make('category'),
+                TextInput::make('category')
+                    ->label('Kategori'),
                 TextInput::make('source')
+                    ->label('Sumber')
                     ->default('manual admin'),
                 TextInput::make('external_url')
+                    ->label('URL Eksternal')
                     ->url(),
                 Textarea::make('description')
+                    ->label('Deskripsi')
                     ->columnSpanFull(),
                 Textarea::make('raw_data')
+                    ->label('Data Mentah')
                     ->disabled()
                     ->columnSpanFull(),
             ]);

@@ -14,9 +14,10 @@ class SyncLecturerData extends Command
 {
     protected $signature = 'sync:lecturer-data
         {--dry-run : Simulasi tanpa perubahan database, dibungkus transaction rollback}
+        {--scrape-first : Jalankan semua scraper (pddikti, scholar, scopus, sinta) sebelum pipeline seeder}
         {--only=* : Jalankan seeder tertentu saja (biodata|riwayat|portofolio|scholar|scopus)}';
 
-    protected $description = 'Jalankan pipeline seeder data dosen secara berurutan';
+    protected $description = 'Jalankan pipeline seeder data dosen secara berurutan, dengan opsional scraping data terbaru';
 
     private array $seeders = [
         'biodata' => LecturerBiodataOnlySeeder::class,
@@ -43,6 +44,20 @@ class SyncLecturerData extends Command
         }
 
         $toRun = empty($only) ? array_keys($this->seeders) : $only;
+
+        if ($this->option('scrape-first')) {
+            $this->info('Memulai scraping data terbaru...');
+            $scrapers = ['scrape:sinta', 'scrape:scholar', 'scrape:pddikti', 'scrape:scopus'];
+            foreach ($scrapers as $scraper) {
+                $this->line("Menjalankan: {$scraper}...");
+                $exitCode = $this->call($scraper);
+                if ($exitCode !== 0) {
+                    $this->warn("{$scraper} gagal (exit {$exitCode}), lanjut dengan data yang ada.");
+                }
+            }
+            $this->info('Scraping selesai.');
+            $this->line('');
+        }
 
         $this->info('Memulai sinkronisasi data dosen...');
         if ($isDryRun) {

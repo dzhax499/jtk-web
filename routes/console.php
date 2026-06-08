@@ -8,7 +8,7 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Schedule::command('sync:lecturer-data')
+Schedule::command('sync:lecturer-data --scrape-first')
     ->cron('0 0 1 2,8 *')
     ->withoutOverlapping()
     ->appendOutputTo(storage_path('logs/sync-lecturer.log'))

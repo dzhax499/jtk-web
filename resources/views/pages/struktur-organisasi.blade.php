@@ -92,7 +92,6 @@
                     let finalHtml = '<div style="display: flex; flex-direction: column; gap: 0.75rem;">';
                     
                     sections.forEach((sec, idx) => {
-                        const isOpen = idx === 0 ? 'open' : '';
                         let itemsHtml = '<div style="border-top: 1px solid #C6C5D5; padding: 2rem;"><div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; align-items: stretch;">';
                             
                         sec.items.forEach(item => {
@@ -114,7 +113,7 @@
                         itemsHtml += '</div></div>';
                         
                         finalHtml += `
-                        <details ${isOpen} style="background: #ffffff; border: 1px solid #C6C5D5; border-radius: 2px; overflow: hidden;">
+                        <details style="background: #ffffff; border: 1px solid #C6C5D5; border-radius: 2px; overflow: hidden;">
                             <summary style="background: #F3F3F4; display: flex; cursor: pointer; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; font-weight: 700; color: #01018B; font-size: 16px; list-style: none;">
                                 <span>${sec.title}</span>
                                 <svg style="width: 20px; height: 20px; color: #01018B; transition: transform 0.3s;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>

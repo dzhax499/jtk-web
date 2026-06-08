@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class LecturerPortfolioItem extends Model
 {
+    protected $casts = [
+        'extra_attributes' => 'array',
+    ];
+
     protected $guarded = [];
 
     public function lecturer()

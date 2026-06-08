@@ -18,16 +18,22 @@ class StudyProgramResource extends Resource
 {
     protected static ?string $model = StudyProgram::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingLibrary;
+
+    protected static ?string $navigationLabel = 'Program Studi';
 
     public static function form(Schema $schema): Schema
     {
-        return StudyProgramForm::configure($schema);
+        $schema = StudyProgramForm::configure($schema);
+        $components = array_merge($schema->getComponents() ?? [], \App\Helpers\DynamicFieldsHelper::getFormComponents(self::$model));
+        return $schema->components($components);
     }
 
     public static function table(Table $table): Table
     {
-        return StudyProgramsTable::configure($table);
+        $table = StudyProgramsTable::configure($table);
+        $columns = array_merge($table->getColumns() ?? [], \App\Helpers\DynamicFieldsHelper::getTableColumns(self::$model));
+        return $table->columns($columns);
     }
 
     public static function getRelations(): array

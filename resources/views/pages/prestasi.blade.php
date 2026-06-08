@@ -8,8 +8,8 @@
         subtitle="Informasi tentang prestasi dan pencapaian mahasiswa Jurusan Teknik Komputer dan Informatika Politeknik Negeri Bandung"
         bgImage="true">
         <span>
-            <a href="/" class="underline hover:text-white transition">Beranda</a> > 
-            <span class="text-gray-300">Prestasi Mahasiswa</span>
+            <a href="/" class="underline">Beranda</a> > 
+            <span>Prestasi Mahasiswa</span>
         </span>
     </x-hero>
 

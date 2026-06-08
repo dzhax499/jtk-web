@@ -8,7 +8,7 @@
         title="Profil Dosen"
         subtitle="Berkenalan dengan para dosen Jurusan Teknik Komputer dan Informatika Politeknik Negeri Bandung"
         bgImage="true">
-        <span class="text-sm opacity-90"><a href="/" class="hover:underline">Beranda</a> &gt; <span class="font-semibold text-sky-light">Profil Dosen</span></span>
+        <span><a href="/" class="underline">Beranda</a> &gt; <span>Profil Dosen</span>
     </x-hero>
 
     <!-- Content Section -->
@@ -100,8 +100,9 @@
                         <h2 class="text-2xl font-bold text-navy-900">Daftar Dosen</h2>
                         <div class="flex items-center space-x-2">
                             <label class="text-sm text-gray-500 font-medium">Urutkan:</label>
-                            <select class="px-3 py-1.5 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-navy-900/20 text-sm text-gray-700">
-                                <option>Nama A - Z</option>
+                            <select id="sort-dosen" class="px-3 py-1.5 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-navy-900/20 text-sm text-gray-700 cursor-pointer">
+                                <option value="asc">Nama A - Z</option>
+                                <option value="desc">Nama Z - A</option>
                             </select>
                         </div>
                     </div>
@@ -167,4 +168,34 @@
             </div>
         </div>
     </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sortSelect = document.getElementById('sort-dosen');
+            const tbody = document.querySelector('tbody');
+            
+            if (sortSelect && tbody) {
+                sortSelect.addEventListener('change', function() {
+                    const rows = Array.from(tbody.querySelectorAll('tr'));
+                    // Jika tabel kosong (hanya ada baris pesan kosong), lewati sorting
+                    if (rows.length === 1 && rows[0].querySelector('td[colspan]')) {
+                        return;
+                    }
+                    
+                    const direction = this.value;
+                    
+                    rows.sort((a, b) => {
+                        const nameA = a.querySelector('td').textContent.trim().toLowerCase();
+                        const nameB = b.querySelector('td').textContent.trim().toLowerCase();
+                        return direction === 'desc' 
+                            ? nameB.localeCompare(nameA, 'id', { sensitivity: 'base' }) 
+                            : nameA.localeCompare(nameB, 'id', { sensitivity: 'base' });
+                    });
+                    
+                    tbody.innerHTML = '';
+                    rows.forEach(row => tbody.appendChild(row));
+                });
+            }
+        });
+    </script>
 @endsection

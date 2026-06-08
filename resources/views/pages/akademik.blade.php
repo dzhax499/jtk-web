@@ -9,8 +9,8 @@
         subtitle="Pusat informasi komprehensif mengenai kurikulum, kalender perkuliahan, dan panduan kegiatan belajar mengajar Jurusan Teknik Komputer dan Informatika"
         bgImage="true">
         <span>
-            <a href="/" class="underline hover:text-white transition">Beranda</a> > 
-            <span class="text-gray-300">Akademik</span>
+            <a href="/" class="underline">Beranda</a> > 
+            <span>Akademik</span>
         </span>
     </x-hero>
 

@@ -7,7 +7,7 @@
         title="Detail Berita"
         subtitle="Informasi lengkap berita Jurusan Teknik Komputer dan Informatika Politeknik Negeri Bandung"
         bgImage="https://via.placeholder.com/1920x400?text=Detail+Berita">
-        <span>Breadcrumb: <a href="/" class="underline">Beranda</a> &gt; <a href="/berita" class="underline">Berita</a> &gt; <span>Detail</span></span>
+        <span><a href="/" class="underline">Beranda</a> &gt; <a href="/berita" class="underline">Berita</a> &gt; <span>Detail</span></span>
     </x-hero>
 
     <section class="py-16">

@@ -17,17 +17,37 @@ use Filament\Tables\Table;
 class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
-
+    protected static ?string $modelLabel = 'Kategori';
+    protected static ?string $pluralModelLabel = 'Kategori';
+    protected static ?string $navigationLabel = 'Kategori';
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     public static function form(Schema $schema): Schema
     {
-        return CategoryForm::configure($schema);
+        // 1. Ambil form Kategori yang sudah kamu desain (berbahasa Indonesia)
+        $schema = CategoryForm::configure($schema);
+        
+        // 2. Gabungkan dengan form dinamis buatan Klaster 2
+        $components = array_merge(
+            $schema->getComponents() ?? [],
+            \App\Helpers\DynamicFieldsHelper::getFormComponents(self::$model)
+        );
+        
+        return $schema->components($components);
     }
 
     public static function table(Table $table): Table
     {
-        return CategoriesTable::configure($table);
+        // 1. Ambil tabel Kategori yang sudah kamu desain (ada tombol Delete di samping Edit)
+        $table = CategoriesTable::configure($table);
+        
+        // 2. Gabungkan dengan kolom dinamis buatan Klaster 2
+        $columns = array_merge(
+            $table->getColumns() ?? [],
+            \App\Helpers\DynamicFieldsHelper::getTableColumns(self::$model)
+        );
+        
+        return $table->columns($columns);
     }
 
     public static function getRelations(): array

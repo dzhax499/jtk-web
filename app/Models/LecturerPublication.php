@@ -11,6 +11,7 @@ class LecturerPublication extends Model
     protected $guarded = [];
 
     protected $casts = [
+        'extra_attributes' => 'array',
         'raw_data' => 'array',
     ];
 

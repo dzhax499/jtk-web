@@ -16,27 +16,39 @@ class LecturerTeachingHistoryForm
             ->components([
                 Select::make('lecturer_id')
                     ->relationship('lecturer', 'name')
-                    ->label('Lecturer')
+                    ->label('Dosen')
                     ->required()
                     ->searchable()
                     ->preload(),
                 Select::make('study_program_id')
                     ->relationship('studyProgram', 'name')
-                    ->label('Study Program')
+                    ->label('Program Studi')
                     ->searchable()
                     ->preload(),
-                TextInput::make('nidn'),
-                TextInput::make('semester_name'),
-                TextInput::make('course_code'),
-                TextInput::make('course_name')
+                TextInput::make('nidn')
+                    ->label('NIDN'),
+                TextInput::make('semester_name')
+                    ->label('Semester')
                     ->required()
                     ->maxLength(255),
-                TextInput::make('class_name'),
-                TextInput::make('academic_year'),
+                TextInput::make('course_code')
+                    ->label('Kode Mata Kuliah')
+                    ->required()
+                    ->maxLength(255),
+                TextInput::make('course_name')
+                    ->label('Nama Mata Kuliah')
+                    ->required()
+                    ->maxLength(255),
+                TextInput::make('class_name')
+                    ->label('Kelas'),
+                TextInput::make('academic_year')
+                    ->label('Tahun Akademik'),
                 Toggle::make('is_active')
+                    ->label('Status Aktif')
                     ->required()
                     ->default(true),
                 Textarea::make('raw_data')
+                    ->label('Data Mentah')
                     ->disabled()
                     ->columnSpanFull(),
             ]);

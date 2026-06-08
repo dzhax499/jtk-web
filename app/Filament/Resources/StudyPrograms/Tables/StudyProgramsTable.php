@@ -16,12 +16,16 @@ class StudyProgramsTable
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label('Nama Program Studi')
                     ->searchable(),
                 TextColumn::make('slug')
+                    ->label('Slug')
                     ->searchable(),
                 TextColumn::make('degree')
+                    ->label('Tingkat Pendidikan')
                     ->searchable(),
                 IconColumn::make('is_active')
+                    ->label('Status Aktif')
                     ->boolean(),
                 TextColumn::make('created_at')
                     ->dateTime()

@@ -11,8 +11,10 @@ class ExpertiseAreaInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('name'),
-                TextEntry::make('slug'),
+                TextEntry::make('name')
+                    ->label('Nama'),
+                TextEntry::make('slug')
+                    ->label('Slug'),
             ]);
     }
 }

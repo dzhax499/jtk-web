@@ -17,17 +17,24 @@ use Filament\Tables\Table;
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
-
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUser;
+    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $navigationLabel = 'Pengguna';
+    protected static ?string $pluralModelLabel = 'Pengguna';
+    protected static ?string $modelLabel = 'Pengguna';
 
     public static function form(Schema $schema): Schema
     {
-        return UserForm::configure($schema);
+        $schema = UserForm::configure($schema);
+        $components = array_merge($schema->getComponents() ?? [], \App\Helpers\DynamicFieldsHelper::getFormComponents(self::$model));
+        return $schema->components($components);
     }
 
     public static function table(Table $table): Table
     {
-        return UsersTable::configure($table);
+        $table = UsersTable::configure($table);
+        $columns = array_merge($table->getColumns() ?? [], \App\Helpers\DynamicFieldsHelper::getTableColumns(self::$model));
+        return $table->columns($columns);
     }
 
     public static function getRelations(): array

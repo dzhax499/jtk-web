@@ -12,41 +12,76 @@ class LecturerInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('study_program_id')
-                    ->numeric()
+
+                // --- Identitas Utama ---
+                TextEntry::make('name')
+                    ->label('Nama Lengkap'),
+
+                TextEntry::make('gender')
+                    ->label('Jenis Kelamin')
                     ->placeholder('-'),
-                TextEntry::make('name'),
-                TextEntry::make('slug'),
-                TextEntry::make('nip')
-                    ->placeholder('-'),
-                TextEntry::make('nidn')
-                    ->placeholder('-'),
+
                 TextEntry::make('email')
-                    ->label('Email address')
+                    ->label('Alamat Email')
                     ->placeholder('-'),
+
                 TextEntry::make('photo_url')
+                    ->label('URL Foto Profil')
                     ->placeholder('-'),
-                TextEntry::make('academic_position')
-                    ->placeholder('-'),
+
                 TextEntry::make('bio')
+                    ->label('Biografi Singkat')
                     ->placeholder('-')
                     ->columnSpanFull(),
-                IconEntry::make('is_active')
-                    ->boolean(),
-                TextEntry::make('created_at')
-                    ->dateTime()
+
+                // --- Data Kepegawaian ---
+                TextEntry::make('nip')
+                    ->label('NIP / NIP CPNS')
                     ->placeholder('-'),
-                TextEntry::make('updated_at')
-                    ->dateTime()
+
+                TextEntry::make('nidn')
+                    ->label('NIDN')
                     ->placeholder('-'),
-                TextEntry::make('gender')
-                    ->placeholder('-'),
+
                 TextEntry::make('employment_status')
+                    ->label('Ikatan Kerja')
                     ->placeholder('-'),
+
                 TextEntry::make('activity_status')
+                    ->label('Status Kegiatan')
                     ->placeholder('-'),
+
+                IconEntry::make('is_active')
+                    ->label('Dosen Aktif (Tampil di Publik)')
+                    ->boolean(),
+
+                // --- Data Akademik ---
+                TextEntry::make('studyProgram.name')
+                    ->label('Program Studi')
+                    ->placeholder('-'),
+
+                TextEntry::make('academic_position')
+                    ->label('Jabatan Fungsional')
+                    ->placeholder('-'),
+
                 TextEntry::make('highest_education')
+                    ->label('Pendidikan Terakhir')
                     ->placeholder('-'),
+
+                TextEntry::make('expertiseAreas.name')
+                    ->label('Bidang Keahlian')
+                    ->badge()
+                    ->placeholder('-'),
+
+                // --- Sistem ---
+                TextEntry::make('created_at')
+                    ->label('Dibuat Pada')
+                    ->dateTime('d M Y, H:i'),
+
+                TextEntry::make('updated_at')
+                    ->label('Diperbarui Pada')
+                    ->dateTime('d M Y, H:i'),
+
             ]);
     }
 }

@@ -28,20 +28,30 @@ class LecturerResource extends Resource
     public static function form(Schema $schema): Schema
     {
         $schema = LecturerForm::configure($schema);
-        $components = array_merge($schema->getComponents() ?? [], \App\Helpers\DynamicFieldsHelper::getFormComponents(self::$model));
+        
+        $components = array_merge(
+            $schema->getComponents() ?? [],
+            \App\Helpers\DynamicFieldsHelper::getFormComponents(self::$model)
+        );
+        
         return $schema->components($components);
-    }
-
-    public static function infolist(Schema $schema): Schema
-    {
-        return LecturerInfolist::configure($schema);
     }
 
     public static function table(Table $table): Table
     {
         $table = LecturersTable::configure($table);
-        $columns = array_merge($table->getColumns() ?? [], \App\Helpers\DynamicFieldsHelper::getTableColumns(self::$model));
+        
+        $columns = array_merge(
+            $table->getColumns() ?? [],
+            \App\Helpers\DynamicFieldsHelper::getTableColumns(self::$model)
+        );
+        
         return $table->columns($columns);
+    }
+
+    public static function infolist(Schema $schema): Schema
+    {
+        return LecturerInfolist::configure($schema);
     }
 
     public static function getRelations(): array

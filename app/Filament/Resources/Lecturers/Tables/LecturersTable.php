@@ -14,76 +14,46 @@ class LecturersTable
 {
     public static function configure(Table $table): Table
     {
-        $columns = [
-            TextColumn::make('name')
-                ->label('Nama Lengkap')
-                ->searchable()
-                ->sortable()
-                ->weight('bold')
-                ->limit(15)
-                ->tooltip(fn ($record) => $record->name),
-            
-            TextColumn::make('nidn')
-                ->label('NIDN')
-                ->searchable()
-                ->copyable()
-                ->tooltip('Klik untuk menyalin NIDN'),
-
-            TextColumn::make('studyProgram.name')
-                ->label('Program Studi')
-                ->sortable(),
-
-            TextColumn::make('academic_position')
-                ->label('Jabatan Fungsional')
-                ->searchable(),
-
-            TextColumn::make('highest_education')
-                ->label('Pendidikan')
-                ->searchable()
-                ->toggleable(isToggledHiddenByDefault: false),
-
-            TextColumn::make('gender')
-                ->label('L/P')
-                ->formatStateUsing(fn (string $state): string => $state === 'L' ? 'Laki-laki' : 'Perempuan')
-                ->toggleable(isToggledHiddenByDefault: true),
-
-            TextColumn::make('employment_status')
-                ->label('Status Ikatan')
-                ->searchable()
-                ->toggleable(isToggledHiddenByDefault: true),
-
-            IconColumn::make('is_active')
-                ->label('Aktif')
-                ->boolean()
-                ->trueIcon('heroicon-o-check-circle')
-                ->falseIcon('heroicon-o-x-circle')
-                ->trueColor('success')
-                ->falseColor('danger'),
-
-            TextColumn::make('slug')
-                ->toggleable(isToggledHiddenByDefault: true),
-            TextColumn::make('nip')
-                ->toggleable(isToggledHiddenByDefault: true),
-            TextColumn::make('email')
-                ->toggleable(isToggledHiddenByDefault: true),
-            TextColumn::make('activity_status')
-                ->toggleable(isToggledHiddenByDefault: true),
-            TextColumn::make('created_at')
-                ->label('Ditambahkan Pada')
-                ->dateTime()
-                ->sortable()
-                ->toggleable(isToggledHiddenByDefault: true),
-            TextColumn::make('updated_at')
-                ->label('Terakhir Diubah')
-                ->dateTime()
-                ->sortable()
-                ->toggleable(isToggledHiddenByDefault: true),
-        ];
-
         return $table
-            ->columns($columns)
+            ->columns([
+                TextColumn::make('name')
+                    ->label('Nama Lengkap')
+                    ->searchable()
+                    ->sortable()
+                    ->weight('bold')
+                    ->limit(30)
+                    ->tooltip(fn ($record) => $record->name),
+                
+                TextColumn::make('nidn')
+                    ->label('NIDN')
+                    ->searchable()
+                    ->copyable()
+                    ->tooltip('Klik untuk menyalin NIDN'),
+
+                TextColumn::make('studyProgram.name')
+                    ->label('Program Studi')
+                    ->sortable(),
+
+                TextColumn::make('academic_position')
+                    ->label('Jabatan Fungsional')
+                    ->searchable(),
+
+                IconColumn::make('is_active')
+                    ->label('Aktif')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-check-circle')
+                    ->falseIcon('heroicon-o-x-circle')
+                    ->trueColor('success')
+                    ->falseColor('danger'),
+
+                // Kolom teknis
+                TextColumn::make('slug')->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('nip')->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('email')->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('created_at')->label('Dibuat')->dateTime()->toggleable(isToggledHiddenByDefault: true),
+            ])
             ->filters([
-                // Tambahkan filter jika diperlukan, misalnya berdasarkan program studi atau status keaktifan
+                // Filter tambahan bisa di sini
             ])
             ->recordActions([
                 ViewAction::make()->label('Lihat'),

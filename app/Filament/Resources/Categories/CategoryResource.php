@@ -24,15 +24,29 @@ class CategoryResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
+        // 1. Ambil form Kategori yang sudah kamu desain (berbahasa Indonesia)
         $schema = CategoryForm::configure($schema);
-        $components = array_merge($schema->getComponents() ?? [], \App\Helpers\DynamicFieldsHelper::getFormComponents(self::$model));
+        
+        // 2. Gabungkan dengan form dinamis buatan Klaster 2
+        $components = array_merge(
+            $schema->getComponents() ?? [],
+            \App\Helpers\DynamicFieldsHelper::getFormComponents(self::$model)
+        );
+        
         return $schema->components($components);
     }
 
     public static function table(Table $table): Table
     {
+        // 1. Ambil tabel Kategori yang sudah kamu desain (ada tombol Delete di samping Edit)
         $table = CategoriesTable::configure($table);
-        $columns = array_merge($table->getColumns() ?? [], \App\Helpers\DynamicFieldsHelper::getTableColumns(self::$model));
+        
+        // 2. Gabungkan dengan kolom dinamis buatan Klaster 2
+        $columns = array_merge(
+            $table->getColumns() ?? [],
+            \App\Helpers\DynamicFieldsHelper::getTableColumns(self::$model)
+        );
+        
         return $table->columns($columns);
     }
 

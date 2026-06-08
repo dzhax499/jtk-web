@@ -17,9 +17,9 @@ use Filament\Tables\Table;
 class DynamicFieldConfigResource extends Resource
 {
     protected static ?string $model = DynamicFieldConfig::class;
-    protected static ?string $modelLabel = 'Dynamic Field';
-    protected static ?string $pluralModelLabel = 'Dynamic Fields';
-    protected static ?string $navigationLabel = 'Dynamic Fields';
+    protected static ?string $modelLabel = 'Konfigurasi Field';
+    protected static ?string $pluralModelLabel = 'Konfigurasi Field';
+    protected static ?string $navigationLabel = 'Konfigurasi Field';
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedWrench;
 
     public static function form(Schema $schema): Schema

@@ -14,7 +14,7 @@ class ListDynamicFieldConfigs extends ListRecords
 
     public function getHeading(): string | Htmlable
     {
-        return new HtmlString('<span style="color: #00008B; font-size: 2.25rem;" class="font-extrabold tracking-tight">Dynamic Fields</span>');
+        return new HtmlString('<span style="color: #00008B; font-size: 2.25rem;" class="font-extrabold tracking-tight">Kolom Dinamis</span>');
     }
 
     public function getBreadcrumbs(): array
@@ -26,7 +26,7 @@ class ListDynamicFieldConfigs extends ListRecords
     {
         return [
             CreateAction::make()
-                ->label('Tambah Field Baru')
+                ->label('Tambah Kolom')
                 ->color('primary'),
         ];
     }

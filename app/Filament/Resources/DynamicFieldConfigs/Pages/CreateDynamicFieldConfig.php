@@ -14,7 +14,12 @@ class CreateDynamicFieldConfig extends CreateRecord
 
     public function getHeading(): string | Htmlable
     {
-        return new HtmlString('<span style="color: #00008B; font-size: 2.25rem;" class="font-extrabold tracking-tight">Tambah Dynamic Field</span>');
+        return new HtmlString('<span style="color: #00008B; font-size: 2.25rem;" class="font-extrabold tracking-tight">Tambah Kolom Dinamis</span>');
+    }
+
+    public function getBreadcrumbs(): array
+    {
+        return [];
     }
 
     protected function getCreateFormAction(): Action

@@ -123,7 +123,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
                 
                 <div>
-                    <h2 class="text-xl font-bold text-[#01018B] mb-8 uppercase tracking-wide">PROGRAM STUDI</h2>
+                    <h2 class="text-xl font-bold text-[#01018B] text-center mb-8 uppercase tracking-wide">PROGRAM STUDI</h2>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="bg-white rounded-[16px] shadow-[0_2px_15px_rgba(0,0,0,0.04)] border border-gray-100 overflow-hidden flex flex-col hover:shadow-lg transition-shadow">
@@ -167,7 +167,7 @@
                 </div>
 
                 <div>
-                    <h2 class="text-xl font-bold text-[#01018B] mb-8 uppercase tracking-wide">AKREDITASI PROGRAM STUDI</h2>
+                    <h2 class="text-xl font-bold text-[#01018B] text-center mb-8 uppercase tracking-wide">AKREDITASI PROGRAM STUDI</h2>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="bg-white rounded-[16px] shadow-[0_2px_15px_rgba(0,0,0,0.04)] border border-gray-100 overflow-hidden flex flex-col hover:shadow-lg transition-shadow">
@@ -414,10 +414,10 @@
                     </div>
                 </div>
 
-                <button onclick="document.getElementById('dosen-slider-container').scrollBy({left: 320, behavior: 'smooth'})" class="absolute -right-5 top-1/2 -translate-y-1/2 hidden md:flex items-center justify-center w-12 h-12 bg-white rounded-full shadow-[0_4px_15px_rgba(0,0,0,0.1)] border border-gray-100 text-[#01018B] hover:bg-gray-50 transition-colors z-10">
+                <button onclick="document.getElementById('dosen-slider-container').scrollBy({left: 320, behavior: 'smooth'})" class="absolute -right-15 top-10 bottom-10 hidden md:flex items-center justify-center w-12 h-12 bg-white rounded-full shadow-[0_4px_15px_rgba(0,0,0,0.1)] border border-gray-100 text-[#01018B] hover:bg-gray-50 transition-colors z-10">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
                 </button>
-                <button onclick="document.getElementById('dosen-slider-container').scrollBy({left: -320, behavior: 'smooth'})" class="absolute -left-5 top-1/2 -translate-y-1/2 hidden md:flex items-center justify-center w-12 h-12 bg-white rounded-full shadow-[0_4px_15px_rgba(0,0,0,0.1)] border border-gray-100 text-[#01018B] hover:bg-gray-50 transition-colors z-10">
+                <button onclick="document.getElementById('dosen-slider-container').scrollBy({left: -320, behavior: 'smooth'})" class="absolute -left-15 top-10 bottom-10 hidden md:flex items-center justify-center w-12 h-12 bg-white rounded-full shadow-[0_4px_15px_rgba(0,0,0,0.1)] border border-gray-100 text-[#01018B] hover:bg-gray-50 transition-colors z-10">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
                 </button>
             </div>

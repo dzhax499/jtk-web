@@ -20,7 +20,9 @@ return new class extends Migration
             $table->bigInteger('featured_media_id')->nullable();
             $table->dateTime('published_at')->nullable();
             $table->timestamps();
+        });
 
+        Schema::table('pages', function (Blueprint $table) {
             $table->foreign('parent_id')->references('id')->on('pages')->onDelete('set null');
             $table->foreign('author_id')->references('id')->on('users')->onDelete('set null');
             $table->foreign('featured_media_id')->references('id')->on('media')->onDelete('set null');

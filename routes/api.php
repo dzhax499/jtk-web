@@ -14,22 +14,24 @@ Route::get('/health', fn () => response()->json([
 ]));
 
 // Pendukung halaman berita/prestasi dan konten CMS
-Route::get('/categories', [CategoryApiController::class, 'index']);
-Route::get('/media', [MediaApiController::class, 'index']);
+Route::middleware('throttle:api')->group(function () {
+    Route::get('/categories', [CategoryApiController::class, 'index']);
+    Route::get('/media', [MediaApiController::class, 'index']);
 
-// Akademik, Akreditasi, Visi Misi, dan halaman CMS lain
-Route::get('/pages', [PageApiController::class, 'index']);
-Route::get('/pages/{slug}', [PageApiController::class, 'show']);
+    // Akademik, Akreditasi, Visi Misi, dan halaman CMS lain
+    Route::get('/pages', [PageApiController::class, 'index']);
+    Route::get('/pages/{slug}', [PageApiController::class, 'show']);
 
-// Berita dan Prestasi
-Route::get('/posts', [PostApiController::class, 'index']);
-Route::get('/posts/{slug}', [PostApiController::class, 'show']);
+    // Berita dan Prestasi
+    Route::get('/posts', [PostApiController::class, 'index']);
+    Route::get('/posts/{slug}', [PostApiController::class, 'show']);
 
-// Data program studi
-Route::get('/study-programs', [StudyProgramApiController::class, 'index']);
-Route::get('/study-programs/{slug}', [StudyProgramApiController::class, 'show']);
+    // Data program studi
+    Route::get('/study-programs', [StudyProgramApiController::class, 'index']);
+    Route::get('/study-programs/{slug}', [StudyProgramApiController::class, 'show']);
 
-// Data dosen
-Route::get('/lecturers', [LecturerApiController::class, 'index']);
-Route::get('/lecturers/{slug}', [LecturerApiController::class, 'show']);
-Route::get('/lecturers/{slug}/portfolio', [LecturerApiController::class, 'portfolio']);
+    // Data dosen
+    Route::get('/lecturers', [LecturerApiController::class, 'index']);
+    Route::get('/lecturers/{slug}', [LecturerApiController::class, 'show']);
+    Route::get('/lecturers/{slug}/portfolio', [LecturerApiController::class, 'portfolio']);
+});
